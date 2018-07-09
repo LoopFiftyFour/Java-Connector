@@ -89,15 +89,9 @@ public class Loop54Client {
 
         TestRequestManager requestManager = new TestRequestManager();
         NullClientInfo clientInfo = new NullClientInfo() {
-            @Override public String getRemoteIp() {
-                return remoteIp;
-            }
-            @Override public String getReferrer() {
-                return referer;
-            }
-            @Override public String getUserAgent() {
-                return userAgent;
-            }
+            @Override public String getRemoteIp() { return remoteIp; }
+            @Override public String getReferrer() { return referer; }
+            @Override public String getUserAgent() { return userAgent; }
         };
 
         com.loop54.Loop54Client client = new com.loop54.Loop54Client(requestManager, () -> clientInfo);

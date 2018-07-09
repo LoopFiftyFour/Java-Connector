@@ -23,15 +23,9 @@ public class UserMetaData {
         String userAgent = "testcase";
 
         NullClientInfo clientInfo = new NullClientInfo() {
-            @Override public String getRemoteIp() {
-                return remoteIp;
-            }
-            @Override public String getReferrer() {
-                return referer;
-            }
-            @Override public String getUserAgent() {
-                return userAgent;
-            }
+            @Override public String getRemoteIp() { return remoteIp; }
+            @Override public String getReferrer() { return referer; }
+            @Override public String getUserAgent() { return userAgent; }
         };
 
         meta.setFromClientInfo(clientInfo);
@@ -51,15 +45,9 @@ public class UserMetaData {
         String userAgent = "testcase";
 
         NullClientInfo clientInfo = new NullClientInfo() {
-            @Override public String getRemoteIp() {
-                return remoteIp;
-            }
-            @Override public String getReferrer() {
-                return referer;
-            }
-            @Override public String getUserAgent() {
-                return userAgent;
-            }
+            @Override public String getRemoteIp() { return remoteIp; }
+            @Override public String getReferrer() { return referer; }
+            @Override public String getUserAgent() { return userAgent; }
         };
         clientInfo.headers.put(com.loop54.user.UserMetaData.PROXY_IP_HEADER_NAME, proxyIp);
 
@@ -80,15 +68,9 @@ public class UserMetaData {
         String userId = "test.user";
 
         NullClientInfo clientInfo = new NullClientInfo() {
-            @Override public String getRemoteIp() {
-                return remoteIp;
-            }
-            @Override public String getReferrer() {
-                return referer;
-            }
-            @Override public String getUserAgent() {
-                return userAgent;
-            }
+            @Override public String getRemoteIp() { return remoteIp; }
+            @Override public String getReferrer() { return referer; }
+            @Override public String getUserAgent() { return userAgent; }
         };
         clientInfo.setCookie(com.loop54.user.UserMetaData.USER_ID_COOKIE_KEY, userId, LocalDateTime.now().plusYears(1));
 
@@ -110,15 +92,9 @@ public class UserMetaData {
         String userId = "test.user";
 
         NullClientInfo clientInfo = new NullClientInfo() {
-            @Override public String getRemoteIp() {
-                return remoteIp;
-            }
-            @Override public String getReferrer() {
-                return referer;
-            }
-            @Override public String getUserAgent() {
-                return userAgent;
-            }
+            @Override public String getRemoteIp() { return remoteIp; }
+            @Override public String getReferrer() { return referer; }
+            @Override public String getUserAgent() { return userAgent; }
         };
 
         meta.userId = userId;
