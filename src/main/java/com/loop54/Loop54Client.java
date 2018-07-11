@@ -4,12 +4,8 @@ import com.loop54.exceptions.ClientInfoException;
 import com.loop54.exceptions.Loop54ArgumentException;
 import com.loop54.exceptions.Loop54Exception;
 import com.loop54.http.IRequestManager;
-import com.loop54.model.request.AutoCompleteRequest;
-import com.loop54.model.request.Request;
-import com.loop54.model.request.SearchRequest;
-import com.loop54.model.response.AutoCompleteResponse;
-import com.loop54.model.response.Response;
-import com.loop54.model.response.SearchResponse;
+import com.loop54.model.request.*;
+import com.loop54.model.response.*;
 import com.loop54.user.IRemoteClientInfo;
 import com.loop54.user.IRemoteClientInfoProvider;
 import com.loop54.user.UserMetaData;
@@ -54,10 +50,30 @@ public class Loop54Client implements ILoop54Client {
     @Override public CompletableFuture<SearchResponse> searchAsync(SearchRequest request) { return searchAsync(getRequestContainer(request)); }
     @Override public CompletableFuture<SearchResponse> searchAsync(RequestContainer<SearchRequest> request) { return callEngine(SEARCH_REQUEST_NAME, request, SearchResponse.class); }
 
+    @Override public GetEntitiesResponse getEntities(GetEntitiesRequest request) throws Loop54Exception { return sync(getEntitiesAsync(request)); }
+    @Override public GetEntitiesResponse getEntities(RequestContainer<GetEntitiesRequest> request) throws Loop54Exception { return sync(getEntitiesAsync(request)); }
+    @Override public CompletableFuture<GetEntitiesResponse> getEntitiesAsync(GetEntitiesRequest request) { return getEntitiesAsync(getRequestContainer(request)); }
+    @Override public CompletableFuture<GetEntitiesResponse> getEntitiesAsync(RequestContainer<GetEntitiesRequest> request) { return callEngine(GET_ENTITIES_REQUEST_NAME, request, GetEntitiesResponse.class); }
+
+    @Override public GetEntitiesByAttributeResponse getEntitiesByAttribute(GetEntitiesByAttributeRequest request) throws Loop54Exception { return sync(getEntitiesByAttributeAsync(request)); }
+    @Override public GetEntitiesByAttributeResponse getEntitiesByAttribute(RequestContainer<GetEntitiesByAttributeRequest> request) throws Loop54Exception { return sync(getEntitiesByAttributeAsync(request)); }
+    @Override public CompletableFuture<GetEntitiesByAttributeResponse> getEntitiesByAttributeAsync(GetEntitiesByAttributeRequest request) { return getEntitiesByAttributeAsync(getRequestContainer(request)); }
+    @Override public CompletableFuture<GetEntitiesByAttributeResponse> getEntitiesByAttributeAsync(RequestContainer<GetEntitiesByAttributeRequest> request) { return callEngine(GET_ENTITIES_BY_ATTRIBUTE_REQUEST_NAME, request, GetEntitiesByAttributeResponse.class); }
+
     @Override public AutoCompleteResponse autoComplete(AutoCompleteRequest request) throws Loop54Exception { return sync(autoCompleteAsync(request)); }
     @Override public AutoCompleteResponse autoComplete(RequestContainer<AutoCompleteRequest> request) throws Loop54Exception { return sync(autoCompleteAsync(request)); }
     @Override public CompletableFuture<AutoCompleteResponse> autoCompleteAsync(AutoCompleteRequest request) { return autoCompleteAsync(getRequestContainer(request)); }
     @Override public CompletableFuture<AutoCompleteResponse> autoCompleteAsync(RequestContainer<AutoCompleteRequest> request) { return callEngine(AUTO_COMPLETE_REQUEST_NAME, request, AutoCompleteResponse.class); }
+
+    @Override public GetRelatedEntitiesResponse getRelatedEntities(GetRelatedEntitiesRequest request) throws Loop54Exception { return sync(getRelatedEntitiesAsync(request)); }
+    @Override public GetRelatedEntitiesResponse getRelatedEntities(RequestContainer<GetRelatedEntitiesRequest> request) throws Loop54Exception { return sync(getRelatedEntitiesAsync(request)); }
+    @Override public CompletableFuture<GetRelatedEntitiesResponse> getRelatedEntitiesAsync(GetRelatedEntitiesRequest request) { return getRelatedEntitiesAsync(getRequestContainer(request)); }
+    @Override public CompletableFuture<GetRelatedEntitiesResponse> getRelatedEntitiesAsync(RequestContainer<GetRelatedEntitiesRequest> request) { return callEngine(GET_RELATED_ENTITIES_REQUEST_NAME, request, GetRelatedEntitiesResponse.class); }
+
+    @Override public Response createEvents(CreateEventsRequest request) throws Loop54Exception { return sync(createEventsAsync(request)); }
+    @Override public Response createEvents(RequestContainer<CreateEventsRequest> request) throws Loop54Exception { return sync(createEventsAsync(request)); }
+    @Override public CompletableFuture<Response> createEventsAsync(CreateEventsRequest request) { return createEventsAsync(getRequestContainer(request)); }
+    @Override public CompletableFuture<Response> createEventsAsync(RequestContainer<CreateEventsRequest> request) { return callEngine(CREATE_EVENTS_REQUEST_NAME, request, Response.class); }
 
     /** Waits for the result of the given future, and extracts / wraps any exception into a {@link Loop54Exception}. */
     private <T extends Response> T sync(CompletableFuture<T> response) throws Loop54Exception {
