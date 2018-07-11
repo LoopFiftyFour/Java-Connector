@@ -45,6 +45,13 @@ public class Loop54Client implements ILoop54Client {
         this.remoteClientInfoProvider = remoteClientInfoProvider;
     }
 
+    /**
+     * @return IRequestManager used by this client.
+     */
+    public IRequestManager getRequestManager() {
+        return requestManager;
+    }
+
     @Override public SearchResponse search(SearchRequest request) throws Loop54Exception { return sync(searchAsync(request)); }
     @Override public SearchResponse search(RequestContainer<SearchRequest> request) throws Loop54Exception { return sync(searchAsync(request)); }
     @Override public CompletableFuture<SearchResponse> searchAsync(SearchRequest request) { return searchAsync(getRequestContainer(request)); }

@@ -4,11 +4,10 @@ import com.loop54.Loop54Client;
 import com.loop54.Loop54Settings;
 import com.loop54.exceptions.Loop54Exception;
 import com.loop54.http.RequestManager;
-import com.loop54.model.request.AutoCompleteRequest;
-import com.loop54.model.request.SearchRequest;
-import com.loop54.model.response.AutoCompleteResponse;
-import com.loop54.model.response.EntityCollection;
-import com.loop54.model.response.SearchResponse;
+import com.loop54.model.request.*;
+import com.loop54.model.request.parameters.filters.AttributeFilterParameter;
+import com.loop54.model.request.parameters.filters.FilterComparisonMode;
+import com.loop54.model.response.*;
 import com.loop54.user.UserMetaData;
 import org.junit.jupiter.api.Test;
 
@@ -91,5 +90,40 @@ public class CallMethods {
             assertEquals(results.items.size(), desiredCount); //return exactly as many as we asked for
         else
             assertEquals(results.items.size(), results.count); //return exactly as many as exist
+    }
+
+    @Test
+    public void getRelatedEntitiesHasResults() throws Loop54Exception
+    {
+        //Should be a wheat flour
+        GetRelatedEntitiesResponse response = getClient().getRelatedEntities(Loop54Client.getRequestContainer(new GetRelatedEntitiesRequest("Product", "13"), createMetaData()));
+        assertTrue(response.results.count > 0);
+        assertTrue(response.results.items.size() > 0);
+    }
+
+    @Test
+    public void getEntitiesHasResults() throws Loop54Exception
+    {
+        //Should result in an expensive steak
+        GetEntitiesRequest request = new GetEntitiesRequest();
+
+        AttributeFilterParameter<Double> filter = new AttributeFilterParameter<>("Price", 100.0);
+        filter.comparisonMode = FilterComparisonMode.GREATER_THAN_OR_EQUALS;
+
+        request.resultsOptions.filter = filter;
+
+        GetEntitiesResponse response = getClient().getEntities(Loop54Client.getRequestContainer(request, createMetaData()));
+        assertTrue(response.results.count > 0);
+        assertTrue(response.results.items.size() > 0);
+    }
+
+    @Test
+    public void getEntitiesByAttributeHasResults() throws Loop54Exception
+    {
+        //Should result in two flour products
+        GetEntitiesByAttributeRequest request = new GetEntitiesByAttributeRequest("Manufacturer", "Grinders inc");
+        GetEntitiesByAttributeResponse response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));
+        assertTrue(response.results.count > 0);
+        assertTrue(response.results.items.size() > 0);
     }
 }

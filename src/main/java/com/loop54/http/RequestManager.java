@@ -44,6 +44,13 @@ public class RequestManager implements IRequestManager {
 
     private final Loop54Settings settings;
 
+    /**
+     * @return Settings used by this request manager.
+     */
+    public Loop54Settings getSettings() {
+        return settings;
+    }
+
     /** @param settings The settings for this instance to use when calling Loop54. */
     public RequestManager(Loop54Settings settings) {
         if (settings == null)
