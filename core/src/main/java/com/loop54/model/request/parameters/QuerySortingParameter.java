@@ -1,5 +1,7 @@
 package com.loop54.model.request.parameters;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /** This class specifies how queries should be sorted when making a request. */
 public class QuerySortingParameter {
     public QuerySortingParameter() { }
@@ -26,8 +28,13 @@ public class QuerySortingParameter {
 
     /** The types of sorting available when sorting queries. */
     public enum Types {
+        @JsonProperty("relevance")
         RELEVANCE,
+
+        @JsonProperty("popularity")
         POPULARITY,
+
+        @JsonProperty("alphabetic")
         ALPHABETIC,
     }
 }
