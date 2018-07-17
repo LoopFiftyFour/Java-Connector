@@ -8,7 +8,8 @@ import com.loop54.model.Entity;
 public class CustomEvent extends Event {
 
     /**
-     * @param entity The entity that the user has purchased.
+     * @param type Custom type string for the event. For example "Facebook_Like" or another interaction from the user.
+     * @param entity The entity that the user has interacted with.
      */
     public CustomEvent(String type, Entity entity) { super(type, entity); }
 }

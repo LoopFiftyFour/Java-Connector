@@ -29,6 +29,8 @@ public class Loop54Settings {
     /**
      * Forwards to {@link #Loop54Settings(String, String, boolean, int)}, with HTTPS enabled, and a request
      * timeout of 10 seconds.
+     * @param endpoint The endpoint of the Loop54 search engine. If you don't have this please contact customer support.
+     * @param apiKey The api key authenticating you as a trusted caller. If you don't have this please contact customer support.
      */
     public Loop54Settings(String endpoint, String apiKey) {
         this(endpoint, apiKey, true, 10000);

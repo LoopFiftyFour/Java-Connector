@@ -8,7 +8,10 @@ import java.util.Optional;
 
 /** This class wraps a request object together with options for the API call. */
 public class RequestContainer<T extends Request> {
-    /** @param requestData The request to wrap. */
+    /**
+     * @param requestData The request to wrap.
+     * @param metaDataOverrides Object containing overrides for user meta data.
+     */
     public RequestContainer(T requestData, UserMetaData metaDataOverrides) {
         this.request = requestData;
         this.metaDataOverrides = Optional.ofNullable(metaDataOverrides);

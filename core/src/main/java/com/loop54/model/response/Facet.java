@@ -9,13 +9,23 @@ import com.loop54.model.ModelUtils;
 public abstract class Facet {
     public String name;
 
-    /** The name of the facet (as set in the request). If name is not specified in the request parameter this will be the requested attributeName. */
+    /**
+     * The name of the facet (as set in the request). If name is not specified in the request parameter this will be
+     * the requested attributeName.
+     * @return The name of the facet.
+     */
     public String getName() { return name; }
 
-    /** The type of the facet (as set in the request). */
+    /**
+     * The type of the facet (as set in the request).
+     * @return Type of the facet.
+     */
     public abstract FacetType getType();
 
-    /** Whether or not the facet have any options. */
+    /**
+     * Whether or not the facet have any options.
+     * @return Whether or not the facet have any options.
+     */
     public abstract boolean hasValues();
 
     static <T> T getValueOrNull(Object node, Class<T> clazz) {

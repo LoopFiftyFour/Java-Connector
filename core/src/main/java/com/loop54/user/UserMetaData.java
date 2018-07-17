@@ -15,7 +15,10 @@ import java.time.LocalDateTime;
 public class UserMetaData {
     public UserMetaData() { }
 
-    /** The unique id of the user. Could be used for overriding the default, random, cookie-stored identifier. */
+    /**
+     * The unique id of the user. Could be used for overriding the default, random, cookie-stored identifier.
+     * @param userId unique identifier of the current end-user. Used to connect behaviour.
+     */
     public UserMetaData(String userId) {
         if (userId == null)
             throw new IllegalArgumentException("User id was null");

@@ -5,7 +5,10 @@ import com.loop54.model.request.parameters.QueryCollectionParameters;
 
 /** This class is used to configure a search request to the Loop54 e-commerce search engine. */
 public class SearchRequest extends Request {
-    /** The search query from the end-user. Can at most be 200 chars long. */
+    /**
+     * The search query from the end-user. Can at most be 200 chars long.
+     * @param query The query to search for.
+     */
     public SearchRequest(String query) {
         this.query = query;
     }

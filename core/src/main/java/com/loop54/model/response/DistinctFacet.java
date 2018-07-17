@@ -19,7 +19,10 @@ public class DistinctFacet extends Facet {
 
     private List<DistinctFacetItem> items;
 
-    /** The options found for this facet. */
+    /**
+     * The options found for this facet.
+     * @return The options found for this facet.
+     */
     public List<DistinctFacetItem> getItems() { return items; }
 
     /** Represents a facet option found in the result set. */
@@ -30,6 +33,7 @@ public class DistinctFacet extends Facet {
          * Gets the facet option as the type provided.
          *
          * @param <T> The type of the expected facet value.
+         * @param clazz Type of the option. Must match the type of the attribute faceted on.
          * @return The facet option as the type provided.
          */
         public <T> T getItem(Class<T> clazz) { return getValueOrNull(item, clazz); }

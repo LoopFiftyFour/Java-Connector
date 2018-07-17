@@ -30,12 +30,18 @@ public class Entity {
     /** The unique id of the entity. Could for instance be a SKU id. */
     public String id;
 
-    /** All attributes available on the entity. When sending an Entity with a CreateEvent call these are not necessary to be set. */
+    /**
+     * All attributes available on the entity. When sending an Entity with a CreateEvent call these are not necessary to be set.
+     * @return All attributes available on the entity.
+     */
     public List<EntityAttribute> getAttributes() {
         return internalAttributeMapping == null ? null : internalAttributeMapping.values().stream().collect(Collectors.toList());
     }
 
-    /** See {@link #getAttributes}. */
+    /**
+     * See {@link #getAttributes}.
+     * @param attributes A list of attributes to set on the entity
+     */
     public void setAttributes(List<EntityAttribute> attributes) {
         // In the engine attributes are treated case-insensitive.
         internalAttributeMapping = new HashMap<>();
@@ -50,6 +56,7 @@ public class Entity {
      *
      * @param name  Name of the attribute.
      * @param clazz Type of the attribute. This needs to match what the library has deserialized or an exception will be thrown.
+     * @param <T> The expected type of the value in the attribute.
      * @return The attribute value. If more than one attribute exist the first one will be returned. If the attribute does not exist null will be returned.
      */
     public <T> T getAttributeValueOrNull(String name, Class<T> clazz) {
@@ -66,6 +73,7 @@ public class Entity {
      *
      * @param name  Name of the attribute.
      * @param clazz Type of the attribute. This needs to match what the library has deserialized or an exception will be thrown.
+     * @param <T> The expected type of the value in the attribute.
      * @return All values related to the attribute as an array or null if the attribute does not exist.
      */
     public <T> List<T> getAttributeValuesOrNull(String name, Class<T> clazz) {

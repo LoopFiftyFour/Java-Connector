@@ -34,6 +34,9 @@ public class EntityAttribute {
 
     /**
      * Casts the first value to the specified generic type and returns it, or null if there are no values.
+     * @param <T> The expected type of the value in the attribute.
+     * @param clazz Type of the attribute. This needs to match what the library has deserialized or an exception will be
+     *              thrown.
      * @return The first (or only) value or null if empty.
      */
     public <T> T getValue(Class<T> clazz) {
@@ -42,6 +45,9 @@ public class EntityAttribute {
 
     /**
      * Casts the values to the specified generic type and return them all as a list.
+     * @param <T> The expected type of the values in the attribute.
+     * @param clazz Type of the attribute. This needs to match what the library has deserialized or an exception will be
+     *              thrown.
      * @return All values with the desired type as a list.
      */
     public <T> List<T> getValues(Class<T> clazz) {

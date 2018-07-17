@@ -7,7 +7,7 @@ package com.loop54.model.request.parameters.filters;
 public class AttributeFilterParameter<T> extends FilterParameter {
 
     /**
-     * @param type Type of the filter. If you want to use {@link FilterParameterType#ATTRIBUTE} it's easier to use the {@link #AttributeFilterParameter(String, Object)}"/> constructor.
+     * @param type Type of the filter. If you want to use {@link FilterParameterType#ATTRIBUTE} it's easier to use the {@link #AttributeFilterParameter(String, Object)} constructor.
      * @param value The value to compare.
      */
     public AttributeFilterParameter(FilterParameterType type, T value) {

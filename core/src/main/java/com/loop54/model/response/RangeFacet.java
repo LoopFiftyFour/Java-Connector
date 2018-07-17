@@ -25,28 +25,32 @@ public class RangeFacet extends Facet {
 
     /**
      * Gets the minimum value of the facet.
-     * @param T The type of the expected facet value.
+     * @param <T> The type of the expected facet value.
+     * @param clazz Type of the values in the facet. Must match the type of the attribute faceted on.
      * @return Minimum value of the facet.
      */
     public <T> T getMin(Class<T> clazz) { return getValueOrNull(min, clazz); }
 
     /**
      * Gets the maximum value of the facet.
-     * @param T The type of the expected facet value.
+     * @param <T> The type of the expected facet value.
+     * @param clazz Type of the values in the facet. Must match the type of the attribute faceted on.
      * @return Maximum value of the facet.
      */
     public <T> T getMax(Class<T> clazz) { return getValueOrNull(max, clazz); }
 
     /**
      * Gets the minimum selected value of the facet, as provided in the request.
-     * @param T The type of the expected facet value.
+     * @param <T> The type of the expected facet value.
+     * @param clazz Type of the values in the facet. Must match the type of the attribute faceted on.
      * @return Minimum selected value of the facet.
      */
     public <T> T getSelectedMin(Class<T> clazz) { return getValueOrNull(selectedMin, clazz); }
 
     /**
      * Gets the minimum selected value of the facet, as provided in the request.
-     * @param T The type of the expected facet value.
+     * @param <T> The type of the expected facet value.
+     * @param clazz Type of the values in the facet. Must match the type of the attribute faceted on.
      * @return Minimum selected value of the facet.
      */
     public <T> T getSelectedMax(Class<T> clazz) { return getValueOrNull(selectedMax, clazz); }

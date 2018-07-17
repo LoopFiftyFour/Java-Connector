@@ -14,6 +14,9 @@ public abstract class FacetParameter {
     /** The name of the attribute on the entities to facet the result on. If the attribute does not exist on any entity, all entities will pass and an empty facet will be returned. */
     public final String attributeName;
 
-    /** Type of the facet. Range or Distinct. */
+    /**
+     * Type of the facet. Range or Distinct.
+     * @return Type of the facet parameter
+     */
     public abstract FacetType getType();
 }
