@@ -42,9 +42,8 @@ public class EntityCollectionParameters {
      * Adds a facet with the type {@link FacetType#DISTINCT} to the entity collection parameter.
      * @param attributeName What attribute on the entities to facet on. This must match one of the attributes available on the entities in the search engine.
      * @param selected Values selected by the user. If none are selected this can be null.
-     * @param <T> Expected type of the attribute
      */
-    public <T> void addDistinctFacet(String attributeName, List<T> selected) {
+    public void addDistinctFacet(String attributeName, List<?> selected) {
         addDistinctFacet(attributeName, selected, null, null);
     }
 
@@ -54,13 +53,12 @@ public class EntityCollectionParameters {
      * @param selected Values selected by the user. If none are selected this can be null.
      * @param name The desired name of the facet in the response. Will be the same as the attributeName if null.
      * @param sortBy How to sort the facet options in the response.
-     * @param <T> Expected type of the attribute
      */
-    public <T> void addDistinctFacet(String attributeName, List<T> selected, String name, List<DistinctFacetItemSortingParameter> sortBy) {
+    public void addDistinctFacet(String attributeName, List<?> selected, String name, List<DistinctFacetItemSortingParameter> sortBy) {
         if (facets == null)
             facets = new ArrayList<>();
 
-        facets.add(new DistinctFacetParameter<T>(attributeName, selected, name, sortBy));
+        facets.add(new DistinctFacetParameter<>(attributeName, selected, name, sortBy));
     }
 
 
@@ -77,12 +75,11 @@ public class EntityCollectionParameters {
      * @param attributeName What attribute on the entities to facet on. This must match one of the attributes available on the entities in the search engine.
      * @param selected The min and max values selected by the user. Can be left to null if nothing is selected.
      * @param name The desired name of the facet in the response. Will be the same as the attributeName if null.
-     * @param <T> Type of the attribute to filter on.
      */
-    public <T> void addRangeFacet(String attributeName, RangeFacetParameter.RangeFacetSelectedParameter<T> selected, String name) {
+    public void addRangeFacet(String attributeName, RangeFacetParameter.RangeFacetSelectedParameter<?> selected, String name) {
         if (facets == null)
             facets = new ArrayList<>();
 
-        facets.add(new RangeFacetParameter<T>(attributeName, selected, name));
+        facets.add(new RangeFacetParameter<>(attributeName, selected, name));
     }
 }
