@@ -44,7 +44,7 @@ public class Loop54SettingsCollection {
 
         exception = Assertions.assertThrows(IllegalArgumentException.class,
                 () -> result.add("Test1", (Loop54Settings)null));
-        Assertions.assertTrue(exception.getMessage().contains("settings"));
+        Assertions.assertTrue(exception.getMessage().contains("settingsToAdd"));
 
         //Assert the collection is unchanged after the failure
         Assertions.assertEquals(0, result.size());

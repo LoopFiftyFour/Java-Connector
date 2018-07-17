@@ -40,21 +40,21 @@ public class Loop54SettingsCollection implements Iterable<Map.Entry<String,Loop5
     /**
      * Adds a named setting to the collection.
      * @param instanceName Name of the setting instance. For example 'swedish', 'english' or 'content'.
-     * @param settings The settings to affiliate with the instance.
+     * @param settingsToAdd The settings to affiliate with the instance.
      * @return The Loop54SettingsCollection instance. For chaining.
      */
-    public Loop54SettingsCollection add(String instanceName, Loop54Settings settings) {
-        if (settings == null)
-            throw new IllegalArgumentException("settings is null");
+    public Loop54SettingsCollection add(String instanceName, Loop54Settings settingsToAdd) {
+        if (settingsToAdd == null)
+            throw new IllegalArgumentException("settingsToAdd is null");
 
         if (instanceName == null)
             throw new IllegalArgumentException("instanceName is null");
 
-        if (this.settings.containsKey(instanceName))
+        if (settings.containsKey(instanceName))
             throw new Loop54ArgumentException("There's already a '" + instanceName + "' in the collection. Cannot add" +
                     " it again.");
 
-        this.settings.put(instanceName, settings);
+        settings.put(instanceName, settingsToAdd);
         return this;
     }
 
@@ -70,5 +70,4 @@ public class Loop54SettingsCollection implements Iterable<Map.Entry<String,Loop5
     public int size() {
         return settings.size();
     }
-
 }

@@ -7,8 +7,7 @@ public class InverseFilterParameter extends FilterParameter {
     /**
      * @param not The filter to inverse. Meaning if that filter results in false the inverse will be true.
      */
-    public InverseFilterParameter(FilterParameter not)
-    {
+    public InverseFilterParameter(FilterParameter not) {
         this.not = not;
     }
 

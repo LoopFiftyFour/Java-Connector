@@ -93,8 +93,7 @@ public class CallMethods {
     }
 
     @Test
-    public void getRelatedEntitiesHasResults() throws Loop54Exception
-    {
+    public void getRelatedEntitiesHasResults() throws Loop54Exception {
         //Should be a wheat flour
         GetRelatedEntitiesResponse response = getClient().getRelatedEntities(Loop54Client.getRequestContainer(new GetRelatedEntitiesRequest("Product", "13"), createMetaData()));
         assertTrue(response.results.count > 0);
@@ -102,8 +101,7 @@ public class CallMethods {
     }
 
     @Test
-    public void getEntitiesHasResults() throws Loop54Exception
-    {
+    public void getEntitiesHasResults() throws Loop54Exception {
         //Should result in an expensive steak
         GetEntitiesRequest request = new GetEntitiesRequest();
 
@@ -118,8 +116,7 @@ public class CallMethods {
     }
 
     @Test
-    public void getEntitiesByAttributeHasResults() throws Loop54Exception
-    {
+    public void getEntitiesByAttributeHasResults() throws Loop54Exception {
         //Should result in two flour products
         GetEntitiesByAttributeRequest request = new GetEntitiesByAttributeRequest("Manufacturer", "Grinders inc");
         GetEntitiesByAttributeResponse response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));

@@ -10,8 +10,7 @@ public class GetRelatedEntitiesRequest extends Request {
      * @param entityType Type of the entity to query
      * @param entityId Id of the entity to query
      */
-    public GetRelatedEntitiesRequest(String entityType, String entityId)
-    {
+    public GetRelatedEntitiesRequest(String entityType, String entityId) {
         if (entityType == null)
             throw new IllegalArgumentException("entityType was null");
 
@@ -24,8 +23,7 @@ public class GetRelatedEntitiesRequest extends Request {
     /**
      * @param entity The entity to use in the query.
      */
-    public GetRelatedEntitiesRequest(Entity entity)
-    {
+    public GetRelatedEntitiesRequest(Entity entity) {
         if (entity == null)
             throw new IllegalArgumentException("entity was null");
 

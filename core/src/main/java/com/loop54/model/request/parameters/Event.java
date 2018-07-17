@@ -22,8 +22,7 @@ public abstract class Event {
      */
     public static final String PURCHASE = "purchase";
 
-    protected Event(String type, Entity entity)
-    {
+    protected Event(String type, Entity entity) {
         this.type = type;
         this.entity = entity;
     }

@@ -33,9 +33,8 @@ public class EntityCollectionParameters {
     /**
      * Adds a facet with the type {@link FacetType#DISTINCT} to the entity collection parameter.
      * @param attributeName What attribute on the entities to facet on. This must match one of the attributes available on the entities in the search engine.
-     * @param <T> Expected type of the attribute
      */
-    public <T> void addDistinctFacet(String attributeName) {
+    public void addDistinctFacet(String attributeName) {
         addDistinctFacet(attributeName, null, null, null);
     }
 
@@ -55,7 +54,7 @@ public class EntityCollectionParameters {
      * @param selected Values selected by the user. If none are selected this can be null.
      * @param name The desired name of the facet in the response. Will be the same as the attributeName if null.
      * @param sortBy How to sort the facet options in the response.
-     * @param <T>
+     * @param <T> Expected type of the attribute
      */
     public <T> void addDistinctFacet(String attributeName, List<T> selected, String name, List<DistinctFacetItemSortingParameter> sortBy) {
         if (facets == null)
@@ -68,9 +67,8 @@ public class EntityCollectionParameters {
     /**
      * Adds a facet with the type {@link FacetType#RANGE} to the entity collection parameter.
      * @param attributeName What attribute on the entities to facet on. This must match one of the attributes available on the entities in the search engine.
-     * @param <T> Type of the attribute to filter on.
      */
-    public <T> void addRangeFacet(String attributeName) {
+    public void addRangeFacet(String attributeName) {
         addRangeFacet(attributeName, null, null);
     }
 

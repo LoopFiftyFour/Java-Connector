@@ -1,7 +1,9 @@
 package com.loop54.model.request;
 
+
 import com.loop54.model.request.parameters.EntityCollectionParameters;
 import com.loop54.model.request.parameters.Event;
+import com.loop54.model.request.parameters.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,7 @@ public class CreateEventsRequest extends Request {
     }
 
     /**
-     * @param evt An event to add to the request. Can be of type {@link #ClickEvent}, {@link #AddToCartEvent}, {@link #PurchaseEvent} or {@link #CustomEvent}.
+     * @param evt An event to add to the request. Can be of type {@link ClickEvent}, {@link AddToCartEvent}, {@link PurchaseEvent} or {@link CustomEvent}.
      */
     public CreateEventsRequest(Event evt) {
         events.add(evt);
