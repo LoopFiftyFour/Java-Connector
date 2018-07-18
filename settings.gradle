@@ -1,2 +1,5 @@
 rootProject.name = 'JavaConnector'
+include 'core'
+include 'web'
+include 'spring'
 
