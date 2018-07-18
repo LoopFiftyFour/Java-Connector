@@ -1,4 +1,4 @@
-package com.loop54.test.serialization;
+package com.loop54.serialization;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -13,7 +13,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FacetJsonConverter {
+public class FacetJsonConverterTest {
     @Test
     public void deserializeEmptyDistinctFacet() throws IOException {
         String facetString = "{\"name\": \"category1\", \"type\": \"distinct\", \"items\": []}";

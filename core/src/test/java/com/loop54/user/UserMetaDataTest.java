@@ -1,13 +1,14 @@
-package com.loop54.test.user;
+package com.loop54.user;
 
-import com.loop54.test.NullClientInfo;
+import com.loop54.NullClientInfo;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UserMetaData {
+public class UserMetaDataTest {
     @Test
     public void setSetFromClientInfo() {
         com.loop54.user.UserMetaData meta = new com.loop54.user.UserMetaData();
@@ -30,9 +31,9 @@ public class UserMetaData {
 
         meta.setFromClientInfo(clientInfo);
 
-        assertEquals(remoteIp, meta.ipAddress);
-        assertEquals(referer, meta.referer);
-        assertEquals(userAgent, meta.userAgent);
+        Assertions.assertEquals(remoteIp, meta.ipAddress);
+        Assertions.assertEquals(referer, meta.referer);
+        Assertions.assertEquals(userAgent, meta.userAgent);
     }
 
     @Test
@@ -53,9 +54,9 @@ public class UserMetaData {
 
         meta.setFromClientInfo(clientInfo);
 
-        assertEquals(proxyIp, meta.ipAddress);
-        assertEquals(referer, meta.referer);
-        assertEquals(userAgent, meta.userAgent);
+        Assertions.assertEquals(proxyIp, meta.ipAddress);
+        Assertions.assertEquals(referer, meta.referer);
+        Assertions.assertEquals(userAgent, meta.userAgent);
     }
 
     @Test
@@ -76,10 +77,10 @@ public class UserMetaData {
 
         meta.setFromClientInfo(clientInfo);
 
-        assertEquals(remoteIp, meta.ipAddress);
-        assertEquals(referer, meta.referer);
-        assertEquals(userAgent, meta.userAgent);
-        assertEquals(userId, meta.userId);
+        Assertions.assertEquals(remoteIp, meta.ipAddress);
+        Assertions.assertEquals(referer, meta.referer);
+        Assertions.assertEquals(userAgent, meta.userAgent);
+        Assertions.assertEquals(userId, meta.userId);
     }
 
     @Test
@@ -100,9 +101,9 @@ public class UserMetaData {
         meta.userId = userId;
         meta.setFromClientInfo(clientInfo);
 
-        assertEquals(remoteIp, meta.ipAddress);
-        assertEquals(referer, meta.referer);
-        assertEquals(userAgent, meta.userAgent);
-        assertEquals(userId, meta.userId);
+        Assertions.assertEquals(remoteIp, meta.ipAddress);
+        Assertions.assertEquals(referer, meta.referer);
+        Assertions.assertEquals(userAgent, meta.userAgent);
+        Assertions.assertEquals(userId, meta.userId);
     }
 }

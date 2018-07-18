@@ -1,7 +1,5 @@
-package com.loop54.test;
+package com.loop54;
 
-import com.loop54.Loop54Client;
-import com.loop54.Loop54Settings;
 import com.loop54.exceptions.Loop54Exception;
 import com.loop54.http.RequestManager;
 import com.loop54.model.request.*;
@@ -17,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class CallMethods {
+public class CallMethodsTest {
     private Loop54Client getClient() {
         Loop54Settings settings = new Loop54Settings("https://helloworld.54proxy.com", null, true, 5000);
         return new Loop54Client(new RequestManager(settings), () -> new NullClientInfo());

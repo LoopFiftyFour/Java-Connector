@@ -1,4 +1,4 @@
-package com.loop54.test.http;
+package com.loop54.http;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;

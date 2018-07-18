@@ -3,7 +3,8 @@ plugins {
 }
 
 group 'Loop54'
-version '1.0-SNAPSHOT'
+archivesBaseName = 'loop54-spring'
+version '1.0.0'
 
 sourceCompatibility = 1.8
 
@@ -12,8 +13,14 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
     compile 'org.springframework:spring-web:4.1.6.RELEASE'
     compile 'javax.servlet:javax.servlet-api:3.0.1'
     compile project(":core")
+}
+
+task fatJar(type: Jar) {
+    description 'Assembles a jar archive that includes all dependencies'
+    baseName = archivesBaseName + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }

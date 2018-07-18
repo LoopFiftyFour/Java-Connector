@@ -1,11 +1,10 @@
-package com.loop54.test;
+package com.loop54;
 
-import com.loop54.ILoop54Client;
 import com.loop54.exceptions.Loop54RuntimeException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class Loop54ClientProvider {
+public class Loop54ClientProviderTest {
     @Test
     public void createSingleSetting() {
         com.loop54.Loop54ClientProvider provider = new com.loop54.Loop54ClientProvider(() -> new NullClientInfo(),

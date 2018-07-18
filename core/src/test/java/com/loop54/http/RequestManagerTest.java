@@ -1,9 +1,8 @@
-package com.loop54.test.http;
+package com.loop54.http;
 
 import com.loop54.Loop54Settings;
 import com.loop54.exceptions.EngineNotReachableException;
 import com.loop54.exceptions.EngineStatusCodeException;
-import com.loop54.http.Headers;
 import com.loop54.model.request.Request;
 import com.loop54.model.response.Response;
 import com.loop54.user.UserMetaData;
@@ -13,7 +12,7 @@ import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RequestManager {
+public class RequestManagerTest {
     private ResourceHoster setupHoster(String data, int statusCode) {
         ResourceHoster hoster = new ResourceHoster();
         hoster.resourceString = data;

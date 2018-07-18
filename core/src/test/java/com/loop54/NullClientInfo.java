@@ -1,4 +1,4 @@
-package com.loop54.test;
+package com.loop54;
 
 import com.loop54.user.IRemoteClientInfo;
 

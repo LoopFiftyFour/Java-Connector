@@ -1,4 +1,4 @@
-package com.loop54.test;
+package com.loop54;
 
 import com.loop54.Loop54Settings;
 import com.loop54.exceptions.Loop54ArgumentException;
@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-public class Loop54SettingsCollection {
+public class Loop54SettingsCollectionTest {
     @Test
     public void create() {
-        com.loop54.Loop54SettingsCollection result = com.loop54.Loop54SettingsCollection.create();
+        com.loop54.Loop54SettingsCollection result = Loop54SettingsCollection.create();
         Assertions.assertNotNull(result);
         Assertions.assertEquals(0, result.size());
         Assertions.assertFalse(result.iterator().hasNext());
@@ -18,7 +18,7 @@ public class Loop54SettingsCollection {
 
     @Test
     public void createAndAdd() {
-        com.loop54.Loop54SettingsCollection result = com.loop54.Loop54SettingsCollection.create()
+        com.loop54.Loop54SettingsCollection result = Loop54SettingsCollection.create()
                 .add("Test", "https://test-1.54proxy.com");
 
         Iterator<Map.Entry<String, Loop54Settings>> iterator = result.iterator();
@@ -31,7 +31,7 @@ public class Loop54SettingsCollection {
 
     @Test
     public void addNullShouldThrow() {
-        com.loop54.Loop54SettingsCollection result = com.loop54.Loop54SettingsCollection.create();
+        com.loop54.Loop54SettingsCollection result = Loop54SettingsCollection.create();
 
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class,
                 () -> result.add("Test1", (String)null));
@@ -53,7 +53,7 @@ public class Loop54SettingsCollection {
 
     @Test
     public void addMultipleAndEnumerate() {
-        com.loop54.Loop54SettingsCollection result = com.loop54.Loop54SettingsCollection.create()
+        com.loop54.Loop54SettingsCollection result = Loop54SettingsCollection.create()
                 .add("Test1", "https://test-1.54proxy.com")
                 .add("Test2", "https://test-2.54proxy.com")
                 .add("Test3",
@@ -76,7 +76,7 @@ public class Loop54SettingsCollection {
 
     @Test
     public void addSameNameShouldThrow() {
-        com.loop54.Loop54SettingsCollection result = com.loop54.Loop54SettingsCollection.create()
+        com.loop54.Loop54SettingsCollection result = Loop54SettingsCollection.create()
                 .add("Test1", "https://test-1.54proxy.com");
 
         Loop54ArgumentException exception = Assertions.assertThrows(Loop54ArgumentException.class,

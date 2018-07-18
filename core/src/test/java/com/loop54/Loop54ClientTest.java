@@ -1,7 +1,5 @@
-package com.loop54.test;
+package com.loop54;
 
-import com.loop54.ILoop54Client;
-import com.loop54.RequestContainer;
 import com.loop54.exceptions.Loop54ArgumentException;
 import com.loop54.exceptions.Loop54Exception;
 import com.loop54.http.IRequestManager;
@@ -11,13 +9,14 @@ import com.loop54.model.request.SearchRequest;
 import com.loop54.model.response.Response;
 import com.loop54.user.IRemoteClientInfo;
 import com.loop54.user.UserMetaData;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.CompletableFuture;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class Loop54Client {
+public class Loop54ClientTest {
     static class TestRequestManager implements IRequestManager {
         public String calledAction;
         public Object calledRequestData;
@@ -34,6 +33,7 @@ public class Loop54Client {
 
     @Test
     public void searchWithoutOverrides() throws Loop54Exception {
+        //Assertions.assertTrue(false);
         TestRequestManager requestManager = new TestRequestManager();
         com.loop54.Loop54Client client = new com.loop54.Loop54Client(requestManager, () -> new NullClientInfo());
 
@@ -69,7 +69,7 @@ public class Loop54Client {
         assertEquals("search", requestManager.calledAction);
         assertSame(search, requestManager.calledRequestData);
         assertNotNull(requestManager.calledMetaData);
-        assertEquals("test.user", requestManager.calledMetaData.userId);
+        Assertions.assertEquals("test.user", requestManager.calledMetaData.userId);
     }
 
     @Test
@@ -101,10 +101,10 @@ public class Loop54Client {
         assertEquals(expectedAction, requestManager.calledAction);
         assertSame(request, requestManager.calledRequestData);
         assertNotNull(requestManager.calledMetaData);
-        assertEquals("test.user", requestManager.calledMetaData.userId);
-        assertEquals(remoteIp, requestManager.calledMetaData.ipAddress);
-        assertEquals(referer, requestManager.calledMetaData.referer);
-        assertEquals(userAgent, requestManager.calledMetaData.userAgent);
+        Assertions.assertEquals("test.user", requestManager.calledMetaData.userId);
+        Assertions.assertEquals(remoteIp, requestManager.calledMetaData.ipAddress);
+        Assertions.assertEquals(referer, requestManager.calledMetaData.referer);
+        Assertions.assertEquals(userAgent, requestManager.calledMetaData.userAgent);
     }
 }
 
