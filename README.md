@@ -3,9 +3,10 @@
 Java Wrapper for Loop54 JSON V3 API
 
 ## How to install
-The Loop54 Connector is available for download as a NuGet package. For installation instructions, see https://www.nuget.org/packages/Loop54.Connector/.
+*TBD*
 
-Requires Java 1.8 or later.
+Requires Java 1.8 or later. If running Java 1.7 or under please use an older version of the library available in the 
+GitHub history.
 
 ## How to use
 The Loop54 Connector is easily configured if running Spring.
@@ -39,13 +40,13 @@ If you are using multiple instances of the Loop54 engine within you application 
 And then inject the `ILoop54ClientProvider` interface into your application with the `@Autowire` annotation. And obtain 
 a specific instance using the `getNamed` method with the same name as above:
 
-	ILoop54Client client = clientProvider.getNamed("Swedish");
+	ILoop54Client loop54Client = clientProvider.getNamed("swedish");
 
 ### Using the `ILoop54Client`
 The `ILoop54Client` contains methods for making all public API calls to the Loop54 e-commerce search engine. It contains 
 both synchronous and asynchronous variants of all methods.
 
-    string searchQuery = "banana";
+    String searchQuery = "banana";
     SearchRequest request = new SearchRequest(searchQuery);
     SearchResponse response = loop54Client.search(request);
     
@@ -72,7 +73,8 @@ All other request types also have their own types to use:
 
 ### But wait! I'm not using Spring
 There is still hope for you. If not using the above mentioned frameworks you can implement some of the functionality 
-yourself and use the client just as well. You will need to implement the `IRemoteClientInfoProvider` interface and the `IRemoteClientInfo` interface and after doing that you can create a new instance of `ILoop54Client` like this:
+yourself and use the client just as well. You will need to implement the `IRemoteClientInfoProvider` interface and the 
+`IRemoteClientInfo` interface and after doing that you can create a new instance of `ILoop54Client` like this:
 
     IRemoteClientInfoProvider myRemoteClientInfoProvider = new MySuperAwesomeCustomRemoteClientInfoProvider();
     Loop54Settings settings = new Loop54Settings("https://helloworld.54proxy.com");
