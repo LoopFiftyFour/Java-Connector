@@ -1,4 +1,8 @@
 .idea
 /.gradle/
-build
 out
+core/build/*
+!core/build/libs/
+spring/build/*
+!spring/build/libs/
+web/build
