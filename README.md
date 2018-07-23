@@ -102,3 +102,23 @@ With intuitive APIs to call them.
     - Referer
     - UserAgent
     - Library version
+    
+## Building and testing
+
+To build the library simply use the supplied gradle wrapper by going to the root directory of the repository in the command line and issue the following command:
+
+    gradlew build
+    
+This will download gradle 4.6 and all dependencies, build all modules and run the unit tests.
+
+To generate the javadoc, run:
+
+    gradlew javadoc
+
+Run the test application in the `web` module by using the following command:
+
+    gradlew :web:appRun
+    
+And the application will start and be hosted on http://localhost:8080/web.
+
+_Building, generating javadoc and running the test app requires **JDK 1.8**._
