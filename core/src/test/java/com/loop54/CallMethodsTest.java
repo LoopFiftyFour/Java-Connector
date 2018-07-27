@@ -7,6 +7,7 @@ import com.loop54.model.request.parameters.filters.AttributeFilterParameter;
 import com.loop54.model.request.parameters.filters.FilterComparisonMode;
 import com.loop54.model.response.*;
 import com.loop54.user.UserMetaData;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -70,6 +71,15 @@ public class CallMethodsTest {
         SearchResponse response = getClient().search(Loop54Client.getRequestContainer(searchRequest, createMetaData()));
 
         assertCount(response.results, count);
+    }
+
+    @Test
+    public void searchWithCustomData() throws Loop54Exception {
+        SearchRequest searchRequest = new SearchRequest("banana");
+        searchRequest.addCustomData("message", "ping");
+        SearchResponse response = getClient().search(Loop54Client.getRequestContainer(searchRequest, createMetaData()));
+        String responseMessage = response.getCustomDataOrDefault("responseMessage", String.class);
+        Assertions.assertEquals("pong", responseMessage);
     }
 
     private void assertCount(EntityCollection results, int desiredCount) {

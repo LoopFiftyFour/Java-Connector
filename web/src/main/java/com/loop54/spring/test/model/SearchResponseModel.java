@@ -29,6 +29,17 @@ public class SearchResponseModel {
     private String query;
 
     @ModelAttribute
+    public String getResponseMessage() {
+        return responseMessage;
+    }
+
+    public void setResponseMessage(String responseMessage) {
+        this.responseMessage = responseMessage;
+    }
+
+    private String responseMessage;
+
+    @ModelAttribute
     public DistinctFacetModel[] getDistinctFacets() {
         return distinctFacets;
     }

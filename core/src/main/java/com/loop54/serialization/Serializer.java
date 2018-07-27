@@ -8,6 +8,7 @@ import com.loop54.exceptions.SerializationException;
 import com.loop54.model.response.Facet;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.*;
 
@@ -29,6 +30,14 @@ public class Serializer {
             return MAPPER.readValue(data, clazz);
         } catch (IOException ioe) {
             throw new SerializationException("Could not deserialize object of type " + clazz.getName(), ioe);
+        }
+    }
+
+    public static <T> T deserialize(LinkedHashMap data, Class<T> clazz) throws Loop54Exception {
+        try {
+            return MAPPER.convertValue(data, clazz);
+        } catch (Exception e) {
+            throw new SerializationException("Could not deserialize object of type " + clazz.getName(), e);
         }
     }
 }

@@ -38,7 +38,8 @@ public class SearchController {
         search.resultsOptions.addDistinctFacet("Category");
         search.resultsOptions.addRangeFacet("Price");
 
-        return new ModelAndView("search", "results", makeSearchAndModel(search));
+        SearchResponse response = loop54Service.getNamed("english").search(search);
+        return new ModelAndView("search", "results", makeModel(response));
     }
 
     @RequestMapping(value = "/selectFacet", method = RequestMethod.GET)
@@ -58,11 +59,41 @@ public class SearchController {
         search.resultsOptions.addDistinctFacet("Category");
         search.resultsOptions.addRangeFacet("Price");
 
-        return new ModelAndView("search", "results", makeSearchAndModel(search));
+        SearchResponse response = loop54Service.getNamed("english").search(search);
+        return new ModelAndView("search", "results", makeModel(response));
     }
 
-    private SearchResponseModel makeSearchAndModel(SearchRequest request) throws Loop54Exception {
-        SearchResponse response = loop54Service.getNamed("english").search(request);
+    @RequestMapping(value = "/withCustomData", method = RequestMethod.GET)
+    public ModelAndView withCustomData() throws Loop54Exception {
+        SearchRequest search = new SearchRequest("meat");
+        search.resultsOptions.skip = 0;
+        search.resultsOptions.take = 20;
+        search.relatedResultsOptions.skip = 0;
+        search.relatedResultsOptions.take = 20;
+
+        search.resultsOptions.addDistinctFacet("Manufacturer");
+        search.resultsOptions.addDistinctFacet("Organic");
+        search.resultsOptions.addDistinctFacet("Category");
+        search.resultsOptions.addRangeFacet("Price");
+
+        //Add custom data to the request
+        //What custom data that is available to you may vary depending on your price package.
+        //Please contact customer support for more information.
+        search.addCustomData("message", "ping");
+
+        SearchResponse response = loop54Service.getNamed("english").search(search);
+
+        //Get the custom data from the response
+        //This method can deserialize complex classes as well, for instance a EntityCollection if doing content search.
+        //Again, contact customer support for more information.
+        String responseMessage = response.getCustomDataOrDefault("responseMessage", String.class);
+
+        SearchResponseModel searchModel = makeModel(response);
+        searchModel.setResponseMessage(responseMessage);
+        return new ModelAndView("search", "results", searchModel);
+    }
+
+    private SearchResponseModel makeModel(SearchResponse response) {
         SearchResponseModel searchModel = new SearchResponseModel();
         searchModel.setQuery(response.query);
         searchModel.setCount(response.results.count);

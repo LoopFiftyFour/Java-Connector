@@ -7,6 +7,9 @@
 <body>
 <h1>Search</h1>
 <hr/>
+<c:if test="${not empty results.responseMessage}">
+    <b>Ping: ${results.responseMessage}</b>
+</c:if>
 <div>Query: ${results.query}</div>
 <div>Make sense: ${results.makesSense}</div>
 <hr/>

@@ -9,6 +9,7 @@
 <ul>
     <li><a href="<c:url value="/search"/>">Search</a></li>
     <li><a href="<c:url value="/search/selectFacet"/>">Search with selected facet</a></li>
+    <li><a href="<c:url value="/search/withCustomData"/>">Search with custom data</a></li>
     <li><a href="<c:url value="/getentities"/>">GetEntities</a></li>
     <li><a href="<c:url value="/getrelatedentities"/>">GetRelatedEntities</a></li>
     <li><a href="<c:url value="/getentitiesbyattribute"/>">GetEntitiesByAttribute</a></li>
