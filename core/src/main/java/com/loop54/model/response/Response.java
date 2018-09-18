@@ -6,8 +6,10 @@ import com.loop54.serialization.Serializer;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /** A response from the engine. Used for responses that don't return any standardized data parameters. */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Response {
     /** Any additional, non-standard, data. Contact support for information about how and when to use this. */
     public Map<String, Object> customData;

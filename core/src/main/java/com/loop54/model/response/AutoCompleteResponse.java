@@ -2,8 +2,6 @@ package com.loop54.model.response;
 
 /** The result of an autocomplete request. */
 public class AutoCompleteResponse extends Response {
-    /** The query made in the autocomplete request. */
-    public String query;
 
     /** The query that the engine considered most relevant, will get a result with scopes. */
     public ScopedQueryResult scopedQuery;

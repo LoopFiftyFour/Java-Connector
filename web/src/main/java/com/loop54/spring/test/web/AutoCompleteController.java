@@ -47,6 +47,8 @@ public class AutoCompleteController {
         List<String> scopes = response.scopedQuery.scopes;
         autoModel.setScoped(scopes.toArray(new String[scopes.size()]));
         autoModel.setScopedQuery(response.scopedQuery.query);
+		if(response.scopedQuery.scopeAttributeName!=null)
+			autoModel.setScopeAttribute(response.scopedQuery.scopeAttributeName);
 
         return new ModelAndView("autocomplete", "results", autoModel);
     }

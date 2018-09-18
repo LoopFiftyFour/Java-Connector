@@ -28,7 +28,10 @@ public class SearchController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index() throws Loop54Exception {
-        SearchRequest search = new SearchRequest("meat");
+		
+		String query = "meat";
+		
+        SearchRequest search = new SearchRequest(query);
         search.resultsOptions.skip = 0;
         search.resultsOptions.take = 20;
         search.relatedResultsOptions.skip = 0;
@@ -39,12 +42,15 @@ public class SearchController {
         search.resultsOptions.addRangeFacet("Price");
 
         SearchResponse response = loop54Service.getNamed("english").search(search);
-        return new ModelAndView("search", "results", makeModel(response));
+        return new ModelAndView("search", "results", makeModel(response, query));
     }
 
     @RequestMapping(value = "/selectFacet", method = RequestMethod.GET)
     public ModelAndView selectFacet() throws Loop54Exception {
-        SearchRequest search = new SearchRequest("meat");
+		
+		String query = "meat";
+		
+        SearchRequest search = new SearchRequest(query);
         search.resultsOptions.skip = 0;
         search.resultsOptions.take = 20;
         search.relatedResultsOptions.skip = 0;
@@ -60,12 +66,15 @@ public class SearchController {
         search.resultsOptions.addRangeFacet("Price");
 
         SearchResponse response = loop54Service.getNamed("english").search(search);
-        return new ModelAndView("search", "results", makeModel(response));
+        return new ModelAndView("search", "results", makeModel(response, query));
     }
 
     @RequestMapping(value = "/withCustomData", method = RequestMethod.GET)
     public ModelAndView withCustomData() throws Loop54Exception {
-        SearchRequest search = new SearchRequest("meat");
+		
+		String query = "meat";
+		
+        SearchRequest search = new SearchRequest(query);
         search.resultsOptions.skip = 0;
         search.resultsOptions.take = 20;
         search.relatedResultsOptions.skip = 0;
@@ -88,14 +97,14 @@ public class SearchController {
         //Again, contact customer support for more information.
         String responseMessage = response.getCustomDataOrDefault("responseMessage", String.class);
 
-        SearchResponseModel searchModel = makeModel(response);
+        SearchResponseModel searchModel = makeModel(response, query);
         searchModel.setResponseMessage(responseMessage);
         return new ModelAndView("search", "results", searchModel);
     }
 
-    private SearchResponseModel makeModel(SearchResponse response) {
+    private SearchResponseModel makeModel(SearchResponse response, String query) {
         SearchResponseModel searchModel = new SearchResponseModel();
-        searchModel.setQuery(response.query);
+        searchModel.setQuery(query);
         searchModel.setCount(response.results.count);
         searchModel.setRelatedCount(response.relatedResults.count);
         searchModel.setMakesSense(response.makesSense);

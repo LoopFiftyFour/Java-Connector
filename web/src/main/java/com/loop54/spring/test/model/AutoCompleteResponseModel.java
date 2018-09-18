@@ -11,6 +11,7 @@ public class AutoCompleteResponseModel {
     private int count;
     private String[] results;
     private String scopedQuery;
+	private String scopeAttribute;
     private String[] scoped;
 
     @ModelAttribute
@@ -20,6 +21,15 @@ public class AutoCompleteResponseModel {
 
     public void setQuery(String query) {
         this.query = query;
+    }
+	
+	@ModelAttribute
+    public String getScopeAttribute() {
+        return scopeAttribute;
+    }
+	
+	public void setScopeAttribute(String attributeName) {
+        this.scopeAttribute = attributeName;
     }
 
     @ModelAttribute

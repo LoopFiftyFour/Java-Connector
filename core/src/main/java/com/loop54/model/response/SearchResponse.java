@@ -5,9 +5,6 @@ public class SearchResponse extends Response {
     /** Whether or not the engine understood the search query. */
     public boolean makesSense;
 
-    /** The query made in the search request. */
-    public String query;
-
     /** A collection of suggestions for alternate spellings of the query. */
     public QueryCollection spellingSuggestions;
 

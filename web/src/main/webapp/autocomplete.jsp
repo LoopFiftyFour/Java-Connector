@@ -16,7 +16,7 @@
     </c:forEach>
 </ul>
 
-<h2>Scoped query ${results.scopedQuery}</h2>
+<h2>Scoped query (query: ${results.scopedQuery}, scopes based on ${results.scopeAttribute})</h2>
 <ul>
     <c:forEach items="${results.scoped}" var="i">
         <li>${i}</li>
