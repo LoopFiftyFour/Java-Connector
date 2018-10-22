@@ -1,5 +1,7 @@
 package com.loop54.model.request.parameters;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /** This class is used to specify how to sort entities in a response from the Loop54 e-commerce search engine. */
 public class EntitySortingParameter {
     public EntitySortingParameter() { }
@@ -30,18 +32,23 @@ public class EntitySortingParameter {
 
     public enum Types {
         /** Sort the entities by a specific attribute that exist in your catalogue. For instance "price". */
+    	@JsonProperty("attribute")
         ATTRIBUTE,
 
         /** Sort the entities by id. */
+        @JsonProperty("id")
         ID,
 
         /** Sort the entities by type. Type can vary. But in most cases it is "Product" but it can also be "Content" depending on setup. */
+        @JsonProperty("type")
         TYPE,
 
         /** Sort the entities by their relevance. For instance the context of a search hit. */
+        @JsonProperty("relevance")
         RELEVANCE,
 
         /** Sort the entities by their popularity. */
+        @JsonProperty("popularity")
         POPULARITY,
     }
 }

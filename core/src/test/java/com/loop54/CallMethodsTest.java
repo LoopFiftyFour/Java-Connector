@@ -2,19 +2,30 @@ package com.loop54;
 
 import com.loop54.exceptions.Loop54Exception;
 import com.loop54.http.RequestManager;
+import com.loop54.model.Entity;
 import com.loop54.model.request.*;
+import com.loop54.model.request.parameters.EntitySortingParameter;
+import com.loop54.model.request.parameters.SortOrders;
+import com.loop54.model.request.parameters.facets.DistinctFacetItemSortingParameter;
 import com.loop54.model.request.parameters.filters.AttributeFilterParameter;
 import com.loop54.model.request.parameters.filters.FilterComparisonMode;
 import com.loop54.model.response.*;
+import com.loop54.model.response.DistinctFacet.DistinctFacetItem;
 import com.loop54.user.UserMetaData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 public class CallMethodsTest {
     private Loop54Client getClient() {
@@ -81,6 +92,43 @@ public class CallMethodsTest {
         String responseMessage = response.getCustomDataOrDefault("responseMessage", String.class);
         Assertions.assertEquals("pong", responseMessage);
     }
+    
+    @Test
+    public void searchWithSortedFacets() throws Loop54Exception {
+    	String facetName = "Manufacturer";
+        SearchRequest searchRequest = new SearchRequest("a");
+		// Add facets to the search request
+        ArrayList<DistinctFacetItemSortingParameter> sortBy = new ArrayList<>();
+        sortBy.add(new DistinctFacetItemSortingParameter(){{ type = DistinctFacetItemSortingParameter.Types.COUNT; order = SortOrders.DESC; }});
+        searchRequest.resultsOptions.addDistinctFacet(facetName, null, null, sortBy);
+        SearchResponse response = getClient().search(Loop54Client.getRequestContainer(searchRequest, createMetaData()));
+        assertTrue(response.results.count > 0, response.results.count + "");
+        assertFalse(response.results.items.isEmpty(), response.results.items.size() + "");
+        assertFalse(response.results.facets.isEmpty(), response.results.facets.size() + "");
+        
+        DistinctFacet facet = response.results.getDistinctFacetByName(facetName);
+        assertNotNull(facet, "Expected facet was not found");
+        assertTrue(facet.hasValues(), "Expected facet had no values");
+        
+        List<DistinctFacetItem> facetItems = facet.getItems();
+        
+        // Sort the facet list in descending count order
+        List<DistinctFacetItem> facetItemsToSort = new ArrayList<>();
+        facetItemsToSort.addAll(facet.getItems());    
+        
+        Collections.sort(facetItemsToSort, new Comparator<DistinctFacetItem>() {
+            public int compare(DistinctFacetItem result1, DistinctFacetItem result2) {
+                if(result1.count > result2.count)
+                	return -1;
+                if(result1.count < result2.count)
+                	return 1;
+                return 0;
+            }
+        });
+        
+        // The facet list should already have been sorted, so no difference after sorting.
+        assertIterableEquals(facetItems, facetItemsToSort);
+    }
 
     private void assertCount(EntityCollection results, int desiredCount) {
         // do not return more than exist
@@ -130,5 +178,35 @@ public class CallMethodsTest {
         GetEntitiesByAttributeResponse response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
         assertTrue(response.results.items.size() > 0);
+    }
+    
+    @Test
+    public void getEntitiesByAttributeSort() throws Loop54Exception {
+        GetEntitiesByAttributeRequest request = new GetEntitiesByAttributeRequest("Category", "meat");
+        request.resultsOptions.sortBy = new ArrayList<>();
+ 		request.resultsOptions.sortBy.add(new EntitySortingParameter("Price"){{ order = SortOrders.DESC; }}); // Primary sorting: Sort on attribute Price, descending order
+        GetEntitiesByAttributeResponse response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));
+        assertTrue(response.results.count > 0);
+        assertTrue(response.results.items.size() > 0);
+        
+        List<Entity> items = response.results.items;
+        
+        // Sort the item list in descending price order
+        List<Entity> itemsToSort = new ArrayList<>();
+        itemsToSort.addAll(response.results.items);    
+        Collections.sort(itemsToSort, new Comparator<Entity>() {
+            public int compare(Entity result1, Entity result2) {
+            	Double price1 = result1.getAttributeValueOrNull("price", Double.class);
+            	Double price2 = result2.getAttributeValueOrNull("price", Double.class);
+                if(price1 > price2)
+                	return -1;
+                if(price1 < price2)
+                	return 1;
+                return 0;
+            }
+        });    
+        
+        // The item list should already have been sorted, so no difference after sorting.
+        assertIterableEquals(items, itemsToSort);
     }
 }

@@ -1,5 +1,6 @@
 package com.loop54.model.request.parameters.facets;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.loop54.model.request.parameters.SortOrders;
 
 /** Describes how to sort the items returned in the facet. */
@@ -12,8 +13,11 @@ public class DistinctFacetItemSortingParameter {
 
     public enum Types
     {
+    	@JsonProperty("item")
         ITEM,
+        @JsonProperty("count")
         COUNT,
+        @JsonProperty("selected")
         SELECTED,
     }
 }
