@@ -30,10 +30,14 @@ public class SearchController {
 		// Setup
 		String query1 = "a";
 		String query2 = "b";
+		String query3 = "dfshdfjsdkhfsdjkf";
+		String query4 = "apple";
 
 		// Code examples
 		searchExample(query1);
-		searchCheckResultExample(query2);
+		searchExample(query2);
+		searchExample(query3);
+		searchExample(query4);
 
 		return new ModelAndView("search");
 	}
@@ -88,26 +92,6 @@ public class SearchController {
 		// CODE SAMPLE END
 
 		System.out.println("search-full (end) ");
-	}
-
-	private void searchCheckResultExample(String query) throws Loop54Exception
-	{
-		System.out.println("search-check-result: ");
-		// initialize "Search" request and set the search query
-		SearchRequest request = new SearchRequest(query);
-
-		// specify the number of response items
-		request.resultsOptions.skip = 0;
-		request.resultsOptions.take = 10;
-		request.relatedResultsOptions.skip = 0;
-		request.relatedResultsOptions.take = 9;
-
-		// fetch the response from the engine
-		SearchResponse response = loop54Client.search(request);
-
-		checkResults(response);
-
-		System.out.println("search-check-result (end) ");
 	}
 
 	private void checkResults(SearchResponse response)

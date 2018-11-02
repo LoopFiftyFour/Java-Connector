@@ -33,6 +33,7 @@ public class FacetingController {
 	public ModelAndView index() throws Loop54Exception {
 		// Setup
 		String query = "a";
+		String query2 = "dfshdfjsdkhfsdjkf";
 
 		// Code examples
 		facetingSingleFacetExample(query);
@@ -40,6 +41,7 @@ public class FacetingController {
 		facetingEngineResponseExample(query);
 		facetingDistinctFacetExample(query);
 		facetingRangeFacetExample(query);
+		facetingSingleFacetExample(query2);
 
 		return new ModelAndView("faceting");
 	}
