@@ -1,6 +1,6 @@
 package com.loop54.user;
 
-import com.loop54.NullClientInfo;
+import com.loop54.user.NullClientInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

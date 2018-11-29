@@ -12,6 +12,7 @@ import com.loop54.model.request.parameters.filters.FilterComparisonMode;
 import com.loop54.model.response.*;
 import com.loop54.model.response.DistinctFacet.DistinctFacetItem;
 import com.loop54.user.UserMetaData;
+import com.loop54.user.NullClientInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 public class CallMethodsTest {
     private Loop54Client getClient() {
-        Loop54Settings settings = new Loop54Settings("https://helloworld.54proxy.com", null, true, 5000);
+        Loop54Settings settings = new Loop54Settings("https://helloworld.54proxy.com", "TestApiKey", true, 5000);
         return new Loop54Client(new RequestManager(settings), () -> new NullClientInfo());
     }
 
@@ -208,5 +209,10 @@ public class CallMethodsTest {
         
         // The item list should already have been sorted, so no difference after sorting.
         assertIterableEquals(items, itemsToSort);
+    }
+	
+    @Test
+    public void sync() throws Loop54Exception {
+        Response response = getClient().sync(Loop54Client.getRequestContainer(new Request(), createMetaData()));
     }
 }

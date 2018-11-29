@@ -27,6 +27,7 @@ public class Loop54Client implements ILoop54Client {
     private static final String GET_ENTITIES_BY_ATTRIBUTE_REQUEST_NAME = "getEntitiesByAttribute";
     private static final String GET_RELATED_ENTITIES_REQUEST_NAME = "getRelatedEntities";
     private static final String CREATE_EVENTS_REQUEST_NAME = "createEvents";
+    private static final String SYNC_REQUEST_NAME = "sync";
 
     private final IRequestManager requestManager;
     private final IRemoteClientInfoProvider remoteClientInfoProvider;
@@ -52,38 +53,45 @@ public class Loop54Client implements ILoop54Client {
         return requestManager;
     }
 
-    @Override public SearchResponse search(SearchRequest request) throws Loop54Exception { return sync(searchAsync(request)); }
-    @Override public SearchResponse search(RequestContainer<SearchRequest> request) throws Loop54Exception { return sync(searchAsync(request)); }
+    @Override public SearchResponse search(SearchRequest request) throws Loop54Exception { return getFuture(searchAsync(request)); }
+    @Override public SearchResponse search(RequestContainer<SearchRequest> request) throws Loop54Exception { return getFuture(searchAsync(request)); }
     @Override public CompletableFuture<SearchResponse> searchAsync(SearchRequest request) { return searchAsync(getRequestContainer(request)); }
     @Override public CompletableFuture<SearchResponse> searchAsync(RequestContainer<SearchRequest> request) { return callEngine(SEARCH_REQUEST_NAME, request, SearchResponse.class); }
 
-    @Override public GetEntitiesResponse getEntities(GetEntitiesRequest request) throws Loop54Exception { return sync(getEntitiesAsync(request)); }
-    @Override public GetEntitiesResponse getEntities(RequestContainer<GetEntitiesRequest> request) throws Loop54Exception { return sync(getEntitiesAsync(request)); }
+    @Override public GetEntitiesResponse getEntities(GetEntitiesRequest request) throws Loop54Exception { return getFuture(getEntitiesAsync(request)); }
+    @Override public GetEntitiesResponse getEntities(RequestContainer<GetEntitiesRequest> request) throws Loop54Exception { return getFuture(getEntitiesAsync(request)); }
     @Override public CompletableFuture<GetEntitiesResponse> getEntitiesAsync(GetEntitiesRequest request) { return getEntitiesAsync(getRequestContainer(request)); }
     @Override public CompletableFuture<GetEntitiesResponse> getEntitiesAsync(RequestContainer<GetEntitiesRequest> request) { return callEngine(GET_ENTITIES_REQUEST_NAME, request, GetEntitiesResponse.class); }
 
-    @Override public GetEntitiesByAttributeResponse getEntitiesByAttribute(GetEntitiesByAttributeRequest request) throws Loop54Exception { return sync(getEntitiesByAttributeAsync(request)); }
-    @Override public GetEntitiesByAttributeResponse getEntitiesByAttribute(RequestContainer<GetEntitiesByAttributeRequest> request) throws Loop54Exception { return sync(getEntitiesByAttributeAsync(request)); }
+    @Override public GetEntitiesByAttributeResponse getEntitiesByAttribute(GetEntitiesByAttributeRequest request) throws Loop54Exception { return getFuture(getEntitiesByAttributeAsync(request)); }
+    @Override public GetEntitiesByAttributeResponse getEntitiesByAttribute(RequestContainer<GetEntitiesByAttributeRequest> request) throws Loop54Exception { return getFuture(getEntitiesByAttributeAsync(request)); }
     @Override public CompletableFuture<GetEntitiesByAttributeResponse> getEntitiesByAttributeAsync(GetEntitiesByAttributeRequest request) { return getEntitiesByAttributeAsync(getRequestContainer(request)); }
     @Override public CompletableFuture<GetEntitiesByAttributeResponse> getEntitiesByAttributeAsync(RequestContainer<GetEntitiesByAttributeRequest> request) { return callEngine(GET_ENTITIES_BY_ATTRIBUTE_REQUEST_NAME, request, GetEntitiesByAttributeResponse.class); }
 
-    @Override public AutoCompleteResponse autoComplete(AutoCompleteRequest request) throws Loop54Exception { return sync(autoCompleteAsync(request)); }
-    @Override public AutoCompleteResponse autoComplete(RequestContainer<AutoCompleteRequest> request) throws Loop54Exception { return sync(autoCompleteAsync(request)); }
+    @Override public AutoCompleteResponse autoComplete(AutoCompleteRequest request) throws Loop54Exception { return getFuture(autoCompleteAsync(request)); }
+    @Override public AutoCompleteResponse autoComplete(RequestContainer<AutoCompleteRequest> request) throws Loop54Exception { return getFuture(autoCompleteAsync(request)); }
     @Override public CompletableFuture<AutoCompleteResponse> autoCompleteAsync(AutoCompleteRequest request) { return autoCompleteAsync(getRequestContainer(request)); }
     @Override public CompletableFuture<AutoCompleteResponse> autoCompleteAsync(RequestContainer<AutoCompleteRequest> request) { return callEngine(AUTO_COMPLETE_REQUEST_NAME, request, AutoCompleteResponse.class); }
 
-    @Override public GetRelatedEntitiesResponse getRelatedEntities(GetRelatedEntitiesRequest request) throws Loop54Exception { return sync(getRelatedEntitiesAsync(request)); }
-    @Override public GetRelatedEntitiesResponse getRelatedEntities(RequestContainer<GetRelatedEntitiesRequest> request) throws Loop54Exception { return sync(getRelatedEntitiesAsync(request)); }
+    @Override public GetRelatedEntitiesResponse getRelatedEntities(GetRelatedEntitiesRequest request) throws Loop54Exception { return getFuture(getRelatedEntitiesAsync(request)); }
+    @Override public GetRelatedEntitiesResponse getRelatedEntities(RequestContainer<GetRelatedEntitiesRequest> request) throws Loop54Exception { return getFuture(getRelatedEntitiesAsync(request)); }
     @Override public CompletableFuture<GetRelatedEntitiesResponse> getRelatedEntitiesAsync(GetRelatedEntitiesRequest request) { return getRelatedEntitiesAsync(getRequestContainer(request)); }
     @Override public CompletableFuture<GetRelatedEntitiesResponse> getRelatedEntitiesAsync(RequestContainer<GetRelatedEntitiesRequest> request) { return callEngine(GET_RELATED_ENTITIES_REQUEST_NAME, request, GetRelatedEntitiesResponse.class); }
 
-    @Override public Response createEvents(CreateEventsRequest request) throws Loop54Exception { return sync(createEventsAsync(request)); }
-    @Override public Response createEvents(RequestContainer<CreateEventsRequest> request) throws Loop54Exception { return sync(createEventsAsync(request)); }
+    @Override public Response sync() throws Loop54Exception { return sync(new Request()); }
+    @Override public Response sync(Request request) throws Loop54Exception { return getFuture(syncAsync(request)); }
+    @Override public Response sync(RequestContainer<Request> request) throws Loop54Exception { return getFuture(syncAsync(request)); }
+    @Override public CompletableFuture<Response> syncAsync() { return syncAsync(new Request()); }
+    @Override public CompletableFuture<Response> syncAsync(Request request) { return syncAsync(getRequestContainer(request)); }
+    @Override public CompletableFuture<Response> syncAsync(RequestContainer<Request> request) { return callEngine(SYNC_REQUEST_NAME, request, Response.class); }
+	
+    @Override public Response createEvents(CreateEventsRequest request) throws Loop54Exception { return getFuture(createEventsAsync(request)); }
+    @Override public Response createEvents(RequestContainer<CreateEventsRequest> request) throws Loop54Exception { return getFuture(createEventsAsync(request)); }
     @Override public CompletableFuture<Response> createEventsAsync(CreateEventsRequest request) { return createEventsAsync(getRequestContainer(request)); }
     @Override public CompletableFuture<Response> createEventsAsync(RequestContainer<CreateEventsRequest> request) { return callEngine(CREATE_EVENTS_REQUEST_NAME, request, Response.class); }
 
     /** Waits for the result of the given future, and extracts / wraps any exception into a {@link Loop54Exception}. */
-    private <T extends Response> T sync(CompletableFuture<T> response) throws Loop54Exception {
+    private <T extends Response> T getFuture(CompletableFuture<T> response) throws Loop54Exception {
         try {
             return response.get();
         } catch (ExecutionException ee) {

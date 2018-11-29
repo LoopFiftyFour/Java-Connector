@@ -11,6 +11,7 @@ import com.loop54.user.IRemoteClientInfo;
 import com.loop54.user.UserMetaData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import com.loop54.user.NullClientInfo;
 
 import java.util.concurrent.CompletableFuture;
 

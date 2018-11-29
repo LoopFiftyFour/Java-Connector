@@ -3,6 +3,7 @@ package com.loop54;
 import com.loop54.exceptions.Loop54RuntimeException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import com.loop54.user.NullClientInfo;
 
 public class Loop54ClientProviderTest {
     @Test
