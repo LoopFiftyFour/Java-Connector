@@ -17,7 +17,7 @@ public class EntityAttributeJsonConverterTest {
     public void deserializeStringEntityAttribute() throws IOException {
         String entityAttributeString = "{\"name\": \"category1\", \"type\": \"string\", \"values\": [\"Toys\"]}";
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = Serializer.MAPPER;
         EntityAttribute attribute = mapper.readValue(entityAttributeString, EntityAttribute.class);
 
         assertEquals("category1", attribute.getName());
@@ -29,7 +29,7 @@ public class EntityAttributeJsonConverterTest {
     public void deserializeEmptyStringEntityAttribute() throws IOException {
         String entityAttributeString = "{\"name\": \"category1\", \"type\": \"string\", \"values\": []}";
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = Serializer.MAPPER;
         EntityAttribute attribute = mapper.readValue(entityAttributeString, EntityAttribute.class);
 
         assertEquals("category1", attribute.getName());
@@ -41,7 +41,7 @@ public class EntityAttributeJsonConverterTest {
     public void deserializeDoubleEntityAttribute() throws IOException {
         String entityAttributeString = "{\"name\": \"Price\", \"type\": \"number\", \"values\": [12, 13.37]}";
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = Serializer.MAPPER;
         EntityAttribute attribute = mapper.readValue(entityAttributeString, EntityAttribute.class);
 
         assertEquals("Price", attribute.getName());
@@ -53,7 +53,7 @@ public class EntityAttributeJsonConverterTest {
 
     @Test
     public void deserializeEntityAttributeMissingRequired() {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = Serializer.MAPPER;
 
         String noName = "{\"type\": \"number\", \"values\": [12, 13.37]}";
         Exception exception = assertThrows(MismatchedInputException.class, () -> mapper.readValue(noName, EntityAttribute.class));

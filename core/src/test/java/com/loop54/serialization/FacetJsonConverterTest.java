@@ -14,9 +14,16 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FacetJsonConverterTest {
+
+	@Test
+    public void deserializeUnexpectedProperty() throws IOException {
+        String facetString = "{\"unexpected\": \"indeed\", \"name\": \"category1\", \"type\": \"distinct\", \"items\": []}";
+        DistinctFacet distinctFacet = deserializeFacet(facetString, DistinctFacet.class);
+    }
+	
     @Test
     public void deserializeEmptyDistinctFacet() throws IOException {
-        String facetString = "{\"name\": \"category1\", \"type\": \"distinct\", \"items\": []}";
+        String facetString = "{\"approximated\": true, \"name\": \"category1\", \"type\": \"distinct\", \"items\": []}";
         DistinctFacet distinctFacet = deserializeFacet(facetString, DistinctFacet.class);
 
         assertEquals("category1", distinctFacet.getName());
@@ -27,7 +34,7 @@ public class FacetJsonConverterTest {
 
     @Test
     public void deserializeDistinctStringFacet() throws IOException {
-        String facetString = "{\"name\": \"category1\", \"type\": \"distinct\", \"items\": [{\"item\": \"Toys\", \"count\": 3, \"selected\": false}, {\"item\": \"Teddy bears\", \"count\": 2, \"selected\": true}]}";
+        String facetString = "{\"approximated\": true, \"name\": \"category1\", \"type\": \"distinct\", \"items\": [{\"item\": \"Toys\", \"count\": 3, \"selected\": false}, {\"item\": \"Teddy bears\", \"count\": 2, \"selected\": true}]}";
         DistinctFacet distinctFacet = deserializeFacet(facetString, DistinctFacet.class);
 
         assertEquals("category1", distinctFacet.getName());
@@ -40,7 +47,7 @@ public class FacetJsonConverterTest {
 
     @Test
     public void deserializeDistinctDoubleFacet() throws IOException {
-        String facetString = "{\"name\": \"vatrate\", \"type\": \"distinct\", \"items\": [{\"item\": 25, \"count\": 10, \"selected\": false}, {\"item\": 13.37, \"count\": 3, \"selected\": true}, {\"item\": 12.5, \"count\": 2, \"selected\": false}]}";
+        String facetString = "{\"approximated\": true, \"name\": \"vatrate\", \"type\": \"distinct\", \"items\": [{\"item\": 25, \"count\": 10, \"selected\": false}, {\"item\": 13.37, \"count\": 3, \"selected\": true}, {\"item\": 12.5, \"count\": 2, \"selected\": false}]}";
         DistinctFacet distinctFacet = deserializeFacet(facetString, DistinctFacet.class);
 
         assertEquals("vatrate", distinctFacet.getName());
@@ -117,18 +124,8 @@ public class FacetJsonConverterTest {
     }
 
     private <T extends Facet> T deserializeFacet(String json, Class<T> clazz) throws IOException {
-        ObjectMapper mapper = getMapper();
+        ObjectMapper mapper = Serializer.MAPPER;
         Facet facet = mapper.readValue(json, Facet.class);
         return (T)facet;
-    }
-
-    private ObjectMapper getMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-
-        SimpleModule module = new SimpleModule();
-        module.addDeserializer(Facet.class, new FacetJsonDeserializer());
-        mapper.registerModule(module);
-
-        return mapper;
     }
 }

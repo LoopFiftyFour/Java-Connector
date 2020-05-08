@@ -11,8 +11,6 @@ import java.io.IOException;
 
 public class FacetJsonDeserializer extends JsonDeserializer<Facet> {
 
-    private final ObjectMapper mapper = new ObjectMapper();
-
     @Override
     public Facet deserialize(JsonParser parser, DeserializationContext deserializer) throws IOException {
         ObjectCodec codec = parser.getCodec();
@@ -28,10 +26,10 @@ public class FacetJsonDeserializer extends JsonDeserializer<Facet> {
     }
 
     private DistinctFacet deserializeDistinct(JsonNode node) {
-        return mapper.convertValue(node, DistinctFacet.class);
+        return Serializer.MAPPER.convertValue(node, DistinctFacet.class);
     }
 
     private RangeFacet deserializeRange(JsonNode node) {
-        return mapper.convertValue(node, RangeFacet.class);
+        return Serializer.MAPPER.convertValue(node, RangeFacet.class);
     }
 }

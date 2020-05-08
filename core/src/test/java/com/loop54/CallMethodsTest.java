@@ -49,8 +49,8 @@ public class CallMethodsTest {
     private void autoComplete(String query) throws Loop54Exception {
         AutoCompleteResponse response = getClient().autoComplete(Loop54Client.getRequestContainer(new AutoCompleteRequest(query), createMetaData()));
 
-        assertTrue(response.queries.count > 0, response.queries.count + "");
-        assertFalse(response.queries.items.isEmpty(), response.queries.items.size() + "");
+        assertTrue(response.queries.count > 0, "\"" + query + "\" returned a count of " + response.queries.count);
+        assertFalse(response.queries.items.isEmpty(), "\"" + query + "\" returned no items");
     }
 
     @Test

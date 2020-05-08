@@ -105,11 +105,33 @@ With intuitive APIs to call them.
     
 ## Building and testing
 
+_Building, generating javadoc and running the test apps requires **JDK 1.8**._ 
+It might work with later versions, but has not been tested.
+
+First of all, make sure you have JDK installed by running (assuming Ubuntu Linux):
+
+	java -version
+	
+If this tells you that java is not installed, you need to run:
+
+	sudo apt-get update
+	sudo apt install openjdk-8-jdk-headless
+	
+If you're on windows, download the 1.8 JDK from https://www.java.com/
+
 To build the library simply use the supplied gradle wrapper by going to the root directory of the repository in the command line and issue the following command:
 
-    gradlew build
-    
-This will download gradle 4.6 and all dependencies, build all modules and run the unit tests.
+    gradlew build --info
+
+The `--info` flag is so that you get detailed error information when tests fail, instead of just a short summary of which tests failed.
+
+This will download gradle 5.1 and all dependencies, build all modules and run the unit tests. 
+
+If you get an error saying `Could not determine java version from '[x]'` that means that your locally installed Java version is newer than the gradle wrapper supports. You need to either upgrade the gradle wrapper or downgrade your Java version.
+
+If you get an error saying `Could not set unknown property '[x]'` for the `web` or `codeexamples` projects, that means that `gretty` plugin has released a new version that is not compatible with your gradle version. You need to either upgrade the gradle wrapper or specify an exact `gretty` version in the `build.gradle` cofig files in the `web` and `codeexamples` projects.
+
+You may run into some flaky tests. Some of the tests use `helloworld.54proxy.com` instead of a mock engine. This engine can become stale (no behavior data) and this might cause some tests to fail, especially the `autoComplete` tests. To fix this, you need to search a few times for phrases beginning with the strings that fail. For instance, if the "be" test fails, search a few times for "beef" to make sure there is data in the engine.
 
 To generate the javadoc, run:
 
@@ -120,5 +142,3 @@ Run the test application in the `web` module by using the following command:
     gradlew :web:appRun
     
 And the application will start and be hosted on http://localhost:8080/web.
-
-_Building, generating javadoc and running the test app requires **JDK 1.8**._
