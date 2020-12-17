@@ -1,4 +1,3 @@
-
 # Java-Connector
 Java Wrapper for Loop54 JSON V3 API
 
