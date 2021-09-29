@@ -7,5 +7,5 @@ public class VersionHeaders {
     public static final String API_VERSION = "V3";
 
     public static final String LIB_VERSION_HEADER = "Lib-Version";
-    public static final String LIB_VERSION = "Java:4.1.3"; // TODO: populate with semantic version
+    public static final String LIB_VERSION = "Java:4.2.0"; // TODO: populate with semantic version
 }

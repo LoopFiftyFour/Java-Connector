@@ -2,6 +2,7 @@ package com.loop54.model.request;
 
 import com.loop54.model.Entity;
 import com.loop54.model.request.parameters.EntityCollectionParameters;
+import com.loop54.model.request.parameters.RelationKinds;
 
 /** This class is used to configure a GetEntities request to the Loop54 e-commerce search engine. */
 public class GetRelatedEntitiesRequest extends Request {
@@ -40,4 +41,10 @@ public class GetRelatedEntitiesRequest extends Request {
      * Note that filtering is advised when doing this request.
      */
     public final EntityCollectionParameters resultsOptions = new EntityCollectionParameters();
+    
+    /**
+     * The kind of relation that will be used to create resulting entities. SIMILAR or COMPLEMENTARY.
+     * Defaults to SIMILAR in the engine if not specified.
+     */
+    public RelationKinds relationKind;
 }

@@ -120,7 +120,7 @@ If you're on windows, download the 1.8 JDK from https://www.java.com/
 
 To build the library simply use the supplied gradle wrapper by going to the root directory of the repository in the command line and issue the following command:
 
-    gradlew build --info
+    ./gradlew build --info
 
 The `--info` flag is so that you get detailed error information when tests fail, instead of just a short summary of which tests failed.
 
@@ -134,10 +134,10 @@ You may run into some flaky tests. Some of the tests use `helloworld.54proxy.com
 
 To generate the javadoc, run:
 
-    gradlew javadoc
+    ./gradlew javadoc
 
 Run the test application in the `web` module by using the following command:
 
-    gradlew :web:appRun
+    ./gradlew :web:appRun
     
 And the application will start and be hosted on http://localhost:8080/web.

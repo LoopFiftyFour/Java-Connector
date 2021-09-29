@@ -5,6 +5,7 @@ import com.loop54.http.RequestManager;
 import com.loop54.model.Entity;
 import com.loop54.model.request.*;
 import com.loop54.model.request.parameters.EntitySortingParameter;
+import com.loop54.model.request.parameters.RelationKinds;
 import com.loop54.model.request.parameters.SortOrders;
 import com.loop54.model.request.parameters.facets.DistinctFacetItemSortingParameter;
 import com.loop54.model.request.parameters.filters.AttributeFilterParameter;
@@ -152,7 +153,10 @@ public class CallMethodsTest {
     @Test
     public void getRelatedEntitiesHasResults() throws Loop54Exception {
         //Should be a wheat flour
-        GetRelatedEntitiesResponse response = getClient().getRelatedEntities(Loop54Client.getRequestContainer(new GetRelatedEntitiesRequest("Product", "13"), createMetaData()));
+        GetRelatedEntitiesRequest request = new GetRelatedEntitiesRequest("Product", "13");
+//         request.relationKind = RelationKinds.SIMILAR;
+        
+        GetRelatedEntitiesResponse response = getClient().getRelatedEntities(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
         assertTrue(response.results.items.size() > 0);
     }
