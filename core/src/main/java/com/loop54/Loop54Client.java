@@ -26,6 +26,7 @@ public class Loop54Client implements ILoop54Client {
     private static final String GET_ENTITIES_REQUEST_NAME = "getEntities";
     private static final String GET_ENTITIES_BY_ATTRIBUTE_REQUEST_NAME = "getEntitiesByAttribute";
     private static final String GET_RELATED_ENTITIES_REQUEST_NAME = "getRelatedEntities";
+    private static final String GET_COMPLEMENTARY_ENTITIES_REQUEST_NAME = "getComplementaryEntities";
     private static final String CREATE_EVENTS_REQUEST_NAME = "createEvents";
     private static final String SYNC_REQUEST_NAME = "sync";
 
@@ -77,6 +78,11 @@ public class Loop54Client implements ILoop54Client {
     @Override public GetRelatedEntitiesResponse getRelatedEntities(RequestContainer<GetRelatedEntitiesRequest> request) throws Loop54Exception { return getFuture(getRelatedEntitiesAsync(request)); }
     @Override public CompletableFuture<GetRelatedEntitiesResponse> getRelatedEntitiesAsync(GetRelatedEntitiesRequest request) { return getRelatedEntitiesAsync(getRequestContainer(request)); }
     @Override public CompletableFuture<GetRelatedEntitiesResponse> getRelatedEntitiesAsync(RequestContainer<GetRelatedEntitiesRequest> request) { return callEngine(GET_RELATED_ENTITIES_REQUEST_NAME, request, GetRelatedEntitiesResponse.class); }
+
+    @Override public GetComplementaryEntitiesResponse getComplementaryEntities(GetComplementaryEntitiesRequest request) throws Loop54Exception { return getFuture(getComplementaryEntitiesAsync(request)); }
+    @Override public GetComplementaryEntitiesResponse getComplementaryEntities(RequestContainer<GetComplementaryEntitiesRequest> request) throws Loop54Exception { return getFuture(getComplementaryEntitiesAsync(request)); }
+    @Override public CompletableFuture<GetComplementaryEntitiesResponse> getComplementaryEntitiesAsync(GetComplementaryEntitiesRequest request) { return getComplementaryEntitiesAsync(getRequestContainer(request)); }
+    @Override public CompletableFuture<GetComplementaryEntitiesResponse> getComplementaryEntitiesAsync(RequestContainer<GetComplementaryEntitiesRequest> request) { return callEngine(GET_COMPLEMENTARY_ENTITIES_REQUEST_NAME, request, GetComplementaryEntitiesResponse.class); }
 
     @Override public Response sync() throws Loop54Exception { return sync(new Request()); }
     @Override public Response sync(Request request) throws Loop54Exception { return getFuture(syncAsync(request)); }

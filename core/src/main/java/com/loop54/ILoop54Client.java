@@ -32,6 +32,11 @@ public interface ILoop54Client {
     CompletableFuture<GetRelatedEntitiesResponse> getRelatedEntitiesAsync(GetRelatedEntitiesRequest request);
     CompletableFuture<GetRelatedEntitiesResponse> getRelatedEntitiesAsync(RequestContainer<GetRelatedEntitiesRequest> request);
 
+    GetComplementaryEntitiesResponse getComplementaryEntities(GetComplementaryEntitiesRequest request) throws Loop54Exception;
+    GetComplementaryEntitiesResponse getComplementaryEntities(RequestContainer<GetComplementaryEntitiesRequest> request) throws Loop54Exception;
+    CompletableFuture<GetComplementaryEntitiesResponse> getComplementaryEntitiesAsync(GetComplementaryEntitiesRequest request);
+    CompletableFuture<GetComplementaryEntitiesResponse> getComplementaryEntitiesAsync(RequestContainer<GetComplementaryEntitiesRequest> request);
+
     Response sync() throws Loop54Exception;
     Response sync(Request request) throws Loop54Exception;
     Response sync(RequestContainer<Request> request) throws Loop54Exception;
