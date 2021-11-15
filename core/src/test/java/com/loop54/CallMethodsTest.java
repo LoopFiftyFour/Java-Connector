@@ -5,7 +5,6 @@ import com.loop54.http.RequestManager;
 import com.loop54.model.Entity;
 import com.loop54.model.request.*;
 import com.loop54.model.request.parameters.EntitySortingParameter;
-import com.loop54.model.request.parameters.RelationKinds;
 import com.loop54.model.request.parameters.SortOrders;
 import com.loop54.model.request.parameters.facets.DistinctFacetItemSortingParameter;
 import com.loop54.model.request.parameters.filters.AttributeFilterParameter;
@@ -16,6 +15,7 @@ import com.loop54.user.UserMetaData;
 import com.loop54.user.NullClientInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -154,9 +154,19 @@ public class CallMethodsTest {
     public void getRelatedEntitiesHasResults() throws Loop54Exception {
         //Should be a wheat flour
         GetRelatedEntitiesRequest request = new GetRelatedEntitiesRequest("Product", "13");
-//         request.relationKind = RelationKinds.SIMILAR;
         
         GetRelatedEntitiesResponse response = getClient().getRelatedEntities(Loop54Client.getRequestContainer(request, createMetaData()));
+        assertTrue(response.results.count > 0);
+        assertTrue(response.results.items.size() > 0);
+    }
+
+    @Disabled("Not released to HelloWorld engine yet")
+    @Test
+    public void getComplementaryEntitiesHasResults() throws Loop54Exception {
+        //Should be a wheat flour
+        GetComplementaryEntitiesRequest request = new GetComplementaryEntitiesRequest("Product", "13");
+        
+        GetComplementaryEntitiesResponse response = getClient().getComplementaryEntities(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
         assertTrue(response.results.items.size() > 0);
     }

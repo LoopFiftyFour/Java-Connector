@@ -4,7 +4,6 @@ package com.loop54.spring.test.web;
 import com.loop54.ILoop54ClientProvider;
 import com.loop54.exceptions.Loop54Exception;
 import com.loop54.model.request.GetRelatedEntitiesRequest;
-import com.loop54.model.request.parameters.RelationKinds;
 import com.loop54.model.response.*;
 import com.loop54.spring.test.model.GetEntitiesResponseModel;
 import com.loop54.spring.test.model.ModelUtil;
@@ -33,8 +32,6 @@ public class GetRelatedEntitiesController {
         request.resultsOptions.addDistinctFacet("Organic", null, null, null);
         request.resultsOptions.addDistinctFacet("Category", null, null, null);
         request.resultsOptions.addRangeFacet("Price", null, null);
-
-        request.relationKind = RelationKinds.SIMILAR;
 
         GetRelatedEntitiesResponse response = loop54Service.getNamed("english").getRelatedEntities(request);
         GetEntitiesResponseModel getModel = new GetEntitiesResponseModel();

@@ -3,14 +3,14 @@ package com.loop54.model.request;
 import com.loop54.model.Entity;
 import com.loop54.model.request.parameters.EntityCollectionParameters;
 
-/** This class is used to configure a GetEntities request to the Loop54 e-commerce search engine. */
-public class GetRelatedEntitiesRequest extends Request {
+/** This class is used to configure a GetComplementaryEntities request to the Loop54 e-commerce search engine. */
+public class GetComplementaryEntitiesRequest extends Request {
 
     /**
      * @param entityType Type of the entity to query
      * @param entityId Id of the entity to query
      */
-    public GetRelatedEntitiesRequest(String entityType, String entityId) {
+    public GetComplementaryEntitiesRequest(String entityType, String entityId) {
         if (entityType == null)
             throw new IllegalArgumentException("entityType was null");
 
@@ -23,7 +23,7 @@ public class GetRelatedEntitiesRequest extends Request {
     /**
      * @param entity The entity to use in the query.
      */
-    public GetRelatedEntitiesRequest(Entity entity) {
+    public GetComplementaryEntitiesRequest(Entity entity) {
         if (entity == null)
             throw new IllegalArgumentException("entity was null");
 
@@ -31,7 +31,7 @@ public class GetRelatedEntitiesRequest extends Request {
     }
 
     /**
-     * The entity who's related entities we want to get. Only needs the type and id set.
+     * The entity whose complementary entities we want to get. Only needs the type and id set.
      */
     public Entity entity;
 
