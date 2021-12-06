@@ -27,6 +27,7 @@ public class Loop54Client implements ILoop54Client {
     private static final String GET_ENTITIES_BY_ATTRIBUTE_REQUEST_NAME = "getEntitiesByAttribute";
     private static final String GET_RELATED_ENTITIES_REQUEST_NAME = "getRelatedEntities";
     private static final String GET_COMPLEMENTARY_ENTITIES_REQUEST_NAME = "getComplementaryEntities";
+    private static final String GET_BASKET_RECOMMENDATIONS_REQUEST_NAME = "getBasketRecommendations";
     private static final String CREATE_EVENTS_REQUEST_NAME = "createEvents";
     private static final String SYNC_REQUEST_NAME = "sync";
 
@@ -83,6 +84,11 @@ public class Loop54Client implements ILoop54Client {
     @Override public GetComplementaryEntitiesResponse getComplementaryEntities(RequestContainer<GetComplementaryEntitiesRequest> request) throws Loop54Exception { return getFuture(getComplementaryEntitiesAsync(request)); }
     @Override public CompletableFuture<GetComplementaryEntitiesResponse> getComplementaryEntitiesAsync(GetComplementaryEntitiesRequest request) { return getComplementaryEntitiesAsync(getRequestContainer(request)); }
     @Override public CompletableFuture<GetComplementaryEntitiesResponse> getComplementaryEntitiesAsync(RequestContainer<GetComplementaryEntitiesRequest> request) { return callEngine(GET_COMPLEMENTARY_ENTITIES_REQUEST_NAME, request, GetComplementaryEntitiesResponse.class); }
+
+    @Override public GetBasketRecommendationsResponse getBasketRecommendations(GetBasketRecommendationsRequest request) throws Loop54Exception { return getFuture(getBasketRecommendationsAsync(request)); }
+    @Override public GetBasketRecommendationsResponse getBasketRecommendations(RequestContainer<GetBasketRecommendationsRequest> request) throws Loop54Exception { return getFuture(getBasketRecommendationsAsync(request)); }
+    @Override public CompletableFuture<GetBasketRecommendationsResponse> getBasketRecommendationsAsync(GetBasketRecommendationsRequest request) { return getBasketRecommendationsAsync(getRequestContainer(request)); }
+    @Override public CompletableFuture<GetBasketRecommendationsResponse> getBasketRecommendationsAsync(RequestContainer<GetBasketRecommendationsRequest> request) { return callEngine(GET_BASKET_RECOMMENDATIONS_REQUEST_NAME, request, GetBasketRecommendationsResponse.class); }
 
     @Override public Response sync() throws Loop54Exception { return sync(new Request()); }
     @Override public Response sync(Request request) throws Loop54Exception { return getFuture(syncAsync(request)); }
