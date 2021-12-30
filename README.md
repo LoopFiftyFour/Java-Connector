@@ -4,17 +4,18 @@ Java Wrapper for Loop54 JSON V3 API
 ## How to install
 Either download any of these jars and import them into you project:
 
-* [loop54-core-1.0.0.jar](http://files.loop54.com/files/libs/loop54-core-1.0.0.jar) - **Core** functionallity **without** it's dependencies
-* [loop54-core-all-1.0.0.jar](http://files.loop54.com/files/libs/loop54-core-all-1.0.0.jar) - **Core** functionallity **with** all it's dependencies 
-* [loop54-spring-1.0.0.jar](http://files.loop54.com/files/libs/loop54-spring-1.0.0.jar) - **Core** functionallity **plus Spring** specific implementation **without** it's dependencies
-* [loop54-spring-all-1.0.0.jar](http://files.loop54.com/files/libs/loop54-spring-all-1.0.0.jar) - **Core** functionallity **plus Spring** specific implementation **with** all it's dependencies
+* [loop54-core-1.0.0.jar](https://static.loop54.com/lib/java/core/loop54-core-1.0.0.jar) - **Core** functionallity **without** it's dependencies
+* [loop54-core-all-1.0.0.jar](https://static.loop54.com/lib/java/core/loop54-core-all-1.0.0.jar) - **Core** functionallity **with** all it's dependencies 
+* [loop54-spring-1.0.0.jar](https://static.loop54.com/lib/java/spring/loop54-spring-1.0.0.jar) - **Core** functionallity **plus Spring** specific implementation **without** it's dependencies
+* [loop54-spring-all-1.0.0.jar](https://static.loop54.com/lib/java/spring/loop54-spring-all-1.0.0.jar) - **Core** functionallity **plus Spring** specific implementation **with** all it's dependencies
 
 Or download the source and reference the core and spring modules and build it using gradle.
 
 Requires Java 1.8 or later. If running Java 1.7 or under please use an older version of the library available in the 
 GitHub history.
 
-Javadoc for the latest release is available [here](http://files.loop54.com/files/javadoc/core/index.html)
+Javadoc for the latest release is available [here](https://static.loop54.com/docs/java/core/javadoc/).
+Javadoc for the latest Spring specific implementation is available [here](https://static.loop54.com/docs/java/spring/javadoc/).
 
 ## How to use
 The Loop54 Connector is easily configured if running Spring.
