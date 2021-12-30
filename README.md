@@ -14,7 +14,7 @@ Or download the source and reference the core and spring modules and build it us
 Requires Java 1.8 or later. If running Java 1.7 or under please use an older version of the library available in the 
 GitHub history.
 
-Javadoc for the latest release is available [here](https://static.loop54.com/docs/java/core/javadoc/).
+Javadoc for the latest release is available [here](https://static.loop54.com/docs/java/core/javadoc/).\
 Javadoc for the latest Spring specific implementation is available [here](https://static.loop54.com/docs/java/spring/javadoc/).
 
 ## How to use
