@@ -53,4 +53,9 @@ public interface ILoop54Client {
     Response createEvents(RequestContainer<CreateEventsRequest> request) throws Loop54Exception;
     CompletableFuture<Response> createEventsAsync(CreateEventsRequest request);
     CompletableFuture<Response> createEventsAsync(RequestContainer<CreateEventsRequest> request);
+
+    Response customCall(String name, Request request) throws Loop54Exception;
+    Response customCall(String name, RequestContainer<Request> request) throws Loop54Exception;
+    CompletableFuture<Response> customCallAsync(String name, Request request);
+    CompletableFuture<Response> customCallAsync(String name, RequestContainer<Request> request);
 }

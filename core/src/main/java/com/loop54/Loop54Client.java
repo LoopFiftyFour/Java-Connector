@@ -102,6 +102,11 @@ public class Loop54Client implements ILoop54Client {
     @Override public CompletableFuture<Response> createEventsAsync(CreateEventsRequest request) { return createEventsAsync(getRequestContainer(request)); }
     @Override public CompletableFuture<Response> createEventsAsync(RequestContainer<CreateEventsRequest> request) { return callEngine(CREATE_EVENTS_REQUEST_NAME, request, Response.class); }
 
+    @Override public Response customCall(String name, Request request) throws Loop54Exception { return getFuture(customCallAsync(name, request)); }
+    @Override public Response customCall(String name, RequestContainer<Request> request) throws Loop54Exception { return getFuture(customCallAsync(name, request)); }
+    @Override public CompletableFuture<Response> customCallAsync(String name, Request request) { return customCallAsync(name, getRequestContainer(request)); }
+    @Override public CompletableFuture<Response> customCallAsync(String name, RequestContainer<Request> request) { return callEngine(name, request, Response.class); }
+
     /** Waits for the result of the given future, and extracts / wraps any exception into a {@link Loop54Exception}. */
     private <T extends Response> T getFuture(CompletableFuture<T> response) throws Loop54Exception {
         try {
