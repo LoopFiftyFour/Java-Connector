@@ -97,9 +97,9 @@ public class CallMethodsTest {
     
     @Test
     public void searchWithSortedFacets() throws Loop54Exception {
-    	String facetName = "Manufacturer";
+        String facetName = "Manufacturer";
         SearchRequest searchRequest = new SearchRequest("a");
-		// Add facets to the search request
+        // Add facets to the search request
         ArrayList<DistinctFacetItemSortingParameter> sortBy = new ArrayList<>();
         sortBy.add(new DistinctFacetItemSortingParameter(){{ type = DistinctFacetItemSortingParameter.Types.COUNT; order = SortOrders.DESC; }});
         searchRequest.resultsOptions.addDistinctFacet(facetName, null, null, sortBy);
@@ -121,9 +121,9 @@ public class CallMethodsTest {
         Collections.sort(facetItemsToSort, new Comparator<DistinctFacetItem>() {
             public int compare(DistinctFacetItem result1, DistinctFacetItem result2) {
                 if(result1.count > result2.count)
-                	return -1;
+                    return -1;
                 if(result1.count < result2.count)
-                	return 1;
+                    return 1;
                 return 0;
             }
         });
@@ -197,7 +197,7 @@ public class CallMethodsTest {
         assertTrue(response.results.count > 0);
         assertTrue(response.results.items.size() > 0);
     }
-
+    
     @Test
     public void getEntitiesByAttributeHasResults() throws Loop54Exception {
         //Should result in two flour products
@@ -206,12 +206,29 @@ public class CallMethodsTest {
         assertTrue(response.results.count > 0);
         assertTrue(response.results.items.size() > 0);
     }
+
+    @Disabled("Not released to HelloWorld engine yet")
+    @Test
+    public void getEntitiesByAttributeHasResultsMulti() throws Loop54Exception {
+        //Should result in two flour products
+        GetEntitiesByAttributeRequest request = new GetEntitiesByAttributeRequest("Manufacturer", "Grinders inc");
+        GetEntitiesByAttributeResponse response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));
+        assertTrue(response.results.count > 0);
+        assertTrue(response.results.items.size() > 0);
+        
+        
+        String[] values = {"Grinders inc", "Happy birds"};
+        GetEntitiesByAttributeRequest request2 = new GetEntitiesByAttributeRequest("Manufacturer", values);
+        GetEntitiesByAttributeResponse response2 = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request2, createMetaData()));
+        assertTrue(response2.results.count > response.results.count); //one more manufacturer should yield more results
+        assertTrue(response2.results.items.size() > 0);
+    }
     
     @Test
     public void getEntitiesByAttributeSort() throws Loop54Exception {
         GetEntitiesByAttributeRequest request = new GetEntitiesByAttributeRequest("Category", "meat");
         request.resultsOptions.sortBy = new ArrayList<>();
- 		request.resultsOptions.sortBy.add(new EntitySortingParameter("Price"){{ order = SortOrders.DESC; }}); // Primary sorting: Sort on attribute Price, descending order
+        request.resultsOptions.sortBy.add(new EntitySortingParameter("Price"){{ order = SortOrders.DESC; }}); // Primary sorting: Sort on attribute Price, descending order
         GetEntitiesByAttributeResponse response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
         assertTrue(response.results.items.size() > 0);
@@ -223,12 +240,12 @@ public class CallMethodsTest {
         itemsToSort.addAll(response.results.items);    
         Collections.sort(itemsToSort, new Comparator<Entity>() {
             public int compare(Entity result1, Entity result2) {
-            	Double price1 = result1.getAttributeValueOrNull("price", Double.class);
-            	Double price2 = result2.getAttributeValueOrNull("price", Double.class);
+                Double price1 = result1.getAttributeValueOrNull("price", Double.class);
+                Double price2 = result2.getAttributeValueOrNull("price", Double.class);
                 if(price1 > price2)
-                	return -1;
+                    return -1;
                 if(price1 < price2)
-                	return 1;
+                    return 1;
                 return 0;
             }
         });    
@@ -236,7 +253,7 @@ public class CallMethodsTest {
         // The item list should already have been sorted, so no difference after sorting.
         assertIterableEquals(items, itemsToSort);
     }
-	
+    
     @Test
     public void sync() throws Loop54Exception {
         Response response = getClient().sync(Loop54Client.getRequestContainer(new Request(), createMetaData()));
