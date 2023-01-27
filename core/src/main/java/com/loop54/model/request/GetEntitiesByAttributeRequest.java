@@ -5,18 +5,28 @@ import com.loop54.model.request.parameters.EntityCollectionParameters;
 /** This class is used to configure a GetEntities request to the Loop54 e-commerce search engine. */
 public class GetEntitiesByAttributeRequest extends Request {
 
-    public GetEntitiesByAttributeRequest(String attributeName, String attributeValue) {
+    public GetEntitiesByAttributeRequest(String attributeName, String attributeValue, RequestAliasData requestAlias) {
 		AttributeNameValuePairSingle attr = new AttributeNameValuePairSingle();
         attr.name = attributeName;
         attr.value = attributeValue;
 		attribute = attr;
+		this.requestAlias = requestAlias;
     }
 	
-	public GetEntitiesByAttributeRequest(String attributeName, String[] attributeValues) {
+	public GetEntitiesByAttributeRequest(String attributeName, String[] attributeValues, RequestAliasData requestAlias) {
 		AttributeNameValuePairMulti attr = new AttributeNameValuePairMulti();
         attr.name = attributeName;
         attr.value = attributeValues;
 		attribute = attr;
+		this.requestAlias = requestAlias;
+    }
+
+    public GetEntitiesByAttributeRequest(String attributeName, String attributeValue) {
+		this(attributeName, attributeValue, null);
+    }
+	
+	public GetEntitiesByAttributeRequest(String attributeName, String[] attributeValues) {
+		this(attributeName, attributeValues, null);
     }
 
     /**
@@ -24,6 +34,11 @@ public class GetEntitiesByAttributeRequest extends Request {
      * engine. See the endpoint GetIndexedAttribute.
      */
     public AttributeNameValuePair attribute;
+    
+    /**
+     * Provides human-readable labels in the Portal.
+     */
+    public RequestAliasData requestAlias = null;
 
     /**
      * Parameters for specifying which entities to retrieve. Such as filtering, faceting, sorting and paging.
