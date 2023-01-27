@@ -197,7 +197,7 @@ public class CallMethodsTest {
         assertTrue(response.results.count > 0);
         assertTrue(response.results.items.size() > 0);
     }
-
+    
     @Test
     public void getEntitiesByAttributeHasResults() throws Loop54Exception {
         
@@ -211,6 +211,23 @@ public class CallMethodsTest {
         GetEntitiesByAttributeResponse response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
         assertTrue(response.results.items.size() > 0);
+    }
+
+    @Disabled("Not released to HelloWorld engine yet")
+    @Test
+    public void getEntitiesByAttributeHasResultsMulti() throws Loop54Exception {
+        //Should result in two flour products
+        GetEntitiesByAttributeRequest request = new GetEntitiesByAttributeRequest("Manufacturer", "Grinders inc");
+        GetEntitiesByAttributeResponse response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));
+        assertTrue(response.results.count > 0);
+        assertTrue(response.results.items.size() > 0);
+        
+        
+        String[] values = {"Grinders inc", "Happy birds"};
+        GetEntitiesByAttributeRequest request2 = new GetEntitiesByAttributeRequest("Manufacturer", values);
+        GetEntitiesByAttributeResponse response2 = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request2, createMetaData()));
+        assertTrue(response2.results.count > response.results.count); //one more manufacturer should yield more results
+        assertTrue(response2.results.items.size() > 0);
     }
     
     @Test
