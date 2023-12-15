@@ -1,6 +1,5 @@
 package com.loop54;
 
-import com.loop54.exceptions.ClientInfoException;
 import com.loop54.exceptions.Loop54ArgumentException;
 import com.loop54.exceptions.Loop54Exception;
 import com.loop54.http.IRequestManager;
@@ -28,6 +27,9 @@ public class Loop54Client implements ILoop54Client {
     private static final String GET_RELATED_ENTITIES_REQUEST_NAME = "getRelatedEntities";
     private static final String GET_COMPLEMENTARY_ENTITIES_REQUEST_NAME = "getComplementaryEntities";
     private static final String GET_BASKET_RECOMMENDATIONS_REQUEST_NAME = "getBasketRecommendations";
+    private static final String GET_RECOMMENDED_ENTITIES_REQUEST_NAME = "getRecommendedEntities";
+    private static final String GET_POPULAR_ENTITIES_REQUEST_NAME = "getPopularEntities";
+    private static final String GET_RECENT_ENTITIES_REQUEST_NAME = "getRecentEntities";
     private static final String CREATE_EVENTS_REQUEST_NAME = "createEvents";
     private static final String SYNC_REQUEST_NAME = "sync";
 
@@ -89,6 +91,21 @@ public class Loop54Client implements ILoop54Client {
     @Override public GetBasketRecommendationsResponse getBasketRecommendations(RequestContainer<GetBasketRecommendationsRequest> request) throws Loop54Exception { return getFuture(getBasketRecommendationsAsync(request)); }
     @Override public CompletableFuture<GetBasketRecommendationsResponse> getBasketRecommendationsAsync(GetBasketRecommendationsRequest request) { return getBasketRecommendationsAsync(getRequestContainer(request)); }
     @Override public CompletableFuture<GetBasketRecommendationsResponse> getBasketRecommendationsAsync(RequestContainer<GetBasketRecommendationsRequest> request) { return callEngine(GET_BASKET_RECOMMENDATIONS_REQUEST_NAME, request, GetBasketRecommendationsResponse.class); }
+
+    @Override public GetRecommendedEntitiesResponse getRecommendedEntities(GetRecommendedEntitiesRequest request) throws Loop54Exception { return getFuture(getRecommendedEntitiesAsync(request)); }
+    @Override public GetRecommendedEntitiesResponse getRecommendedEntities(RequestContainer<GetRecommendedEntitiesRequest> request) throws Loop54Exception { return getFuture(getRecommendedEntitiesAsync(request)); }
+    @Override public CompletableFuture<GetRecommendedEntitiesResponse> getRecommendedEntitiesAsync(GetRecommendedEntitiesRequest request) { return getRecommendedEntitiesAsync(getRequestContainer(request)); }
+    @Override public CompletableFuture<GetRecommendedEntitiesResponse> getRecommendedEntitiesAsync(RequestContainer<GetRecommendedEntitiesRequest> request) { return callEngine(GET_RECOMMENDED_ENTITIES_REQUEST_NAME, request, GetRecommendedEntitiesResponse.class); }
+
+    @Override public GetPopularEntitiesResponse getPopularEntities(GetPopularEntitiesRequest request) throws Loop54Exception { return getFuture(getPopularEntitiesAsync(request)); }
+    @Override public GetPopularEntitiesResponse getPopularEntities(RequestContainer<GetPopularEntitiesRequest> request) throws Loop54Exception { return getFuture(getPopularEntitiesAsync(request)); }
+    @Override public CompletableFuture<GetPopularEntitiesResponse> getPopularEntitiesAsync(GetPopularEntitiesRequest request) { return getPopularEntitiesAsync(getRequestContainer(request)); }
+    @Override public CompletableFuture<GetPopularEntitiesResponse> getPopularEntitiesAsync(RequestContainer<GetPopularEntitiesRequest> request) { return callEngine(GET_POPULAR_ENTITIES_REQUEST_NAME, request, GetPopularEntitiesResponse.class); }
+    
+    @Override public GetRecentEntitiesResponse getRecentEntities(GetRecentEntitiesRequest request) throws Loop54Exception { return getFuture(getRecentEntitiesAsync(request)); }
+    @Override public GetRecentEntitiesResponse getRecentEntities(RequestContainer<GetRecentEntitiesRequest> request) throws Loop54Exception { return getFuture(getRecentEntitiesAsync(request)); }
+    @Override public CompletableFuture<GetRecentEntitiesResponse> getRecentEntitiesAsync(GetRecentEntitiesRequest request) { return getRecentEntitiesAsync(getRequestContainer(request)); }
+    @Override public CompletableFuture<GetRecentEntitiesResponse> getRecentEntitiesAsync(RequestContainer<GetRecentEntitiesRequest> request) { return callEngine(GET_RECENT_ENTITIES_REQUEST_NAME, request, GetRecentEntitiesResponse.class); }
 
     @Override public Response sync() throws Loop54Exception { return sync(new Request()); }
     @Override public Response sync(Request request) throws Loop54Exception { return getFuture(syncAsync(request)); }

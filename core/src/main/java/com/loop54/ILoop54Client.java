@@ -42,6 +42,21 @@ public interface ILoop54Client {
     CompletableFuture<GetBasketRecommendationsResponse> getBasketRecommendationsAsync(GetBasketRecommendationsRequest request);
     CompletableFuture<GetBasketRecommendationsResponse> getBasketRecommendationsAsync(RequestContainer<GetBasketRecommendationsRequest> request);
 
+    GetRecommendedEntitiesResponse getRecommendedEntities(GetRecommendedEntitiesRequest request) throws Loop54Exception;
+    GetRecommendedEntitiesResponse getRecommendedEntities(RequestContainer<GetRecommendedEntitiesRequest> request) throws Loop54Exception;
+    CompletableFuture<GetRecommendedEntitiesResponse> getRecommendedEntitiesAsync(GetRecommendedEntitiesRequest request);
+    CompletableFuture<GetRecommendedEntitiesResponse> getRecommendedEntitiesAsync(RequestContainer<GetRecommendedEntitiesRequest> request);
+
+    GetPopularEntitiesResponse getPopularEntities(GetPopularEntitiesRequest request) throws Loop54Exception;
+    GetPopularEntitiesResponse getPopularEntities(RequestContainer<GetPopularEntitiesRequest> request) throws Loop54Exception;
+    CompletableFuture<GetPopularEntitiesResponse> getPopularEntitiesAsync(GetPopularEntitiesRequest request);
+    CompletableFuture<GetPopularEntitiesResponse> getPopularEntitiesAsync(RequestContainer<GetPopularEntitiesRequest> request);
+
+    GetRecentEntitiesResponse getRecentEntities(GetRecentEntitiesRequest request) throws Loop54Exception;
+    GetRecentEntitiesResponse getRecentEntities(RequestContainer<GetRecentEntitiesRequest> request) throws Loop54Exception;
+    CompletableFuture<GetRecentEntitiesResponse> getRecentEntitiesAsync(GetRecentEntitiesRequest request);
+    CompletableFuture<GetRecentEntitiesResponse> getRecentEntitiesAsync(RequestContainer<GetRecentEntitiesRequest> request);
+
     Response sync() throws Loop54Exception;
     Response sync(Request request) throws Loop54Exception;
     Response sync(RequestContainer<Request> request) throws Loop54Exception;

@@ -163,7 +163,7 @@ public class CallMethodsTest {
     @Disabled("Not released to HelloWorld engine yet")
     @Test
     public void getComplementaryEntitiesHasResults() throws Loop54Exception {
-        //Should be a wheat flour
+        // wheat flour (13) is often bought with cinnamon roll (2)
         GetComplementaryEntitiesRequest request = new GetComplementaryEntitiesRequest("Product", "13");
         
         GetComplementaryEntitiesResponse response = getClient().getComplementaryEntities(Loop54Client.getRequestContainer(request, createMetaData()));
@@ -174,11 +174,38 @@ public class CallMethodsTest {
     @Disabled("Not released to HelloWorld engine yet")
     @Test
     public void getBasketRecommendationsHasResults() throws Loop54Exception {
-        List<Entity> entities = Arrays.asList(new Entity("Product", "26397727"));
+        List<Entity> entities = Arrays.asList(new Entity("Product", "13"));
 
         GetBasketRecommendationsRequest request = new GetBasketRecommendationsRequest(entities);
         
         GetBasketRecommendationsResponse response = getClient().getBasketRecommendations(Loop54Client.getRequestContainer(request, createMetaData()));
+        assertTrue(response.results.count > 0);
+        assertTrue(response.results.items.size() > 0);
+    }
+
+    @Test
+    public void getRecommendedEntitiesHasResults() throws Loop54Exception {
+        GetRecommendedEntitiesRequest request = new GetRecommendedEntitiesRequest();
+        
+        GetRecommendedEntitiesResponse response = getClient().getRecommendedEntities(Loop54Client.getRequestContainer(request, createMetaData()));
+        assertTrue(response.results.count > 0);
+        assertTrue(response.results.items.size() > 0);
+    }
+
+    @Test
+    public void getPopularEntitiesHasResults() throws Loop54Exception {
+        GetPopularEntitiesRequest request = new GetPopularEntitiesRequest("click");
+        
+        GetPopularEntitiesResponse response = getClient().getPopularEntities(Loop54Client.getRequestContainer(request, createMetaData()));
+        assertTrue(response.results.count > 0);
+        assertTrue(response.results.items.size() > 0);
+    }
+
+    @Test
+    public void getRecentEntitiesHasResults() throws Loop54Exception {
+        GetRecentEntitiesRequest request = new GetRecentEntitiesRequest("click");
+        
+        GetRecentEntitiesResponse response = getClient().getRecentEntities(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
         assertTrue(response.results.items.size() > 0);
     }
@@ -213,7 +240,6 @@ public class CallMethodsTest {
         assertTrue(response.results.items.size() > 0);
     }
 
-    @Disabled("Not released to HelloWorld engine yet")
     @Test
     public void getEntitiesByAttributeHasResultsMulti() throws Loop54Exception {
         //Should result in two flour products
