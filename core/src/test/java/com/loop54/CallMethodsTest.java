@@ -160,7 +160,6 @@ public class CallMethodsTest {
         assertTrue(response.results.items.size() > 0);
     }
 
-    @Disabled("Not released to HelloWorld engine yet")
     @Test
     public void getComplementaryEntitiesHasResults() throws Loop54Exception {
         // wheat flour (13) is often bought with cinnamon roll (2)
@@ -171,10 +170,10 @@ public class CallMethodsTest {
         assertTrue(response.results.items.size() > 0);
     }
 
-    @Disabled("Not released to HelloWorld engine yet")
     @Test
     public void getBasketRecommendationsHasResults() throws Loop54Exception {
-        List<Entity> entities = Arrays.asList(new Entity("Product", "13"));
+        // wheat flour (13) is often bought with cinnamon roll (2)
+        List<Entity> entities = Arrays.asList(new Entity("Product", "2"));
 
         GetBasketRecommendationsRequest request = new GetBasketRecommendationsRequest(entities);
         
