@@ -20,6 +20,7 @@ import java.util.concurrent.ExecutionException;
  * 2. The {@link IRemoteClientInfo} gotten from the {@link IRemoteClientInfoProvider}
  */
 public class Loop54Client implements ILoop54Client {
+    public static final String CURRENT_USER_LITERAL = "(CurrentUser)";
     private static final String SEARCH_REQUEST_NAME = "search";
     private static final String AUTO_COMPLETE_REQUEST_NAME = "autoComplete";
     private static final String GET_ENTITIES_REQUEST_NAME = "getEntities";
