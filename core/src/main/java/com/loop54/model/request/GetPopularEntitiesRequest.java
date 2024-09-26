@@ -21,6 +21,14 @@ public class GetPopularEntitiesRequest extends Request {
     }
 
     /**
+     * Retrieve the globally most common products for a specfic user
+     * @param  behaviorType interaction or navigation type to include (such as {@literal click}, {@literal purchase} or {@literal search}).
+     * @param  forUserId    a user ID to retrieve the most common/recent entities for that user or null to retrieve the globally most common/recent entities.
+     * {@link Loop54Client#CURRENT_USER_PLACEHOLDER} can be specified to use the user ID from the User-Id request header.
+    */
+    public GetPopularEntitiesRequest(String behaviorType, String forUserId) { this(behaviorType, forUserId, null); }
+
+    /**
      * Retrieve the globally most common products
      * @param  behaviorType interaction or navigation type to include (such as {@literal click}, {@literal purchase} or {@literal search}).
      */
