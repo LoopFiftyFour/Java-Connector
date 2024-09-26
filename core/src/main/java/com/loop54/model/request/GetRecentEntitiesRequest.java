@@ -9,8 +9,8 @@ import com.loop54.model.request.parameters.EntityCollectionParameters;
 public class GetRecentEntitiesRequest extends Request {
     /**
      * @param  behaviorType interaction or navigation type to include (such as {@literal click}, {@literal purchase} or {@literal search}).
-     * @param  forUserId    a user ID to retrieve the most common/recent entities for that user or null to retrieve the globally most common/recent entities.
-     * The literal {@literal (CurrentUser)} can be specified to use the user ID from the User-Id request header.
+     * @param  forUserId    a user ID to retrieve the most common/recent entities for that user or null to retrieve the globally most common/recent entities.     
+     * {@link Loop54Client#CURRENT_USER_PLACEHOLDER} can be specified to use the user ID from the User-Id request header.
      * @param  entityType   entity types to include (such as {@literal Product} or {@literal Query})
      */
     public GetRecentEntitiesRequest(String behaviorType, String forUserId, List<String> entityType) {
@@ -20,21 +20,10 @@ public class GetRecentEntitiesRequest extends Request {
     }
 
     /**
-     * Retrieve entities that a current user most recent interacted with or navigated to.
-     * @param  behaviorType interaction or navigation type to include (such as {@literal click}, {@literal purchase} or {@literal search}).
-     * @param  entityType   entity types to include (such as {@literal Product} or {@literal Query})
-     */
-    public GetRecentEntitiesRequest(String behaviorType, List<String> entityType) {
-        this.behaviorType = behaviorType;
-        this.forUserId = Loop54Client.CURRENT_USER_LITERAL;
-        this.entityType = entityType;
-    }
-
-    /**
      * Retrieve the globally most recent products for a specfic user
      * @param  behaviorType interaction or navigation type to include (such as {@literal click}, {@literal purchase} or {@literal search}).
      * @param  forUserId    a user ID to retrieve the most common/recent entities for that user or null to retrieve the globally most common/recent entities.
-     * The literal {@literal (CurrentUser)} can be specified to use the user ID from the User-Id request header.
+     * {@link Loop54Client#CURRENT_USER_PLACEHOLDER} can be specified to use the user ID from the User-Id request header.
      */
     public GetRecentEntitiesRequest(String behaviorType, String forUserId) { this(behaviorType, forUserId, null); }
 
@@ -45,13 +34,24 @@ public class GetRecentEntitiesRequest extends Request {
     public GetRecentEntitiesRequest(String behaviorType) { this(behaviorType, null, null); }
 
     /**
+     * Creates a request to get the most recent entities for the current user.
+     *
+     * @param behaviorType interaction or navigation type to include (such as {@literal click}, {@literal purchase}, or {@literal search}).
+     * @param entityType   entity types to include (such as {@literal Product} or {@literal Query}).
+     * @return a new instance of {@code GetRecentEntitiesRequest} for the current user.
+     */
+    public static GetRecentEntitiesRequest forCurrentUser(String behaviorType, List<String> entityType) {
+        return new GetRecentEntitiesRequest(behaviorType, Loop54Client.CURRENT_USER_PLACEHOLDER, entityType);
+    }
+
+    /**
      * The interaction or navigation type to include (such as {@literal click}, {@literal purchase} or {@literal search}).
      */
     public String behaviorType;
 
     /**
      * A user ID to retrieve the most common/recent entities for that user or null to retrieve the globally most common/recent entities.
-     * The literal {@literal (CurrentUser)} can be specified to use the user ID from the User-Id request header.
+     * {@link Loop54Client#CURRENT_USER_PLACEHOLDER} can be specified to use the user ID from the User-Id request header.
      */
     public String forUserId;
     

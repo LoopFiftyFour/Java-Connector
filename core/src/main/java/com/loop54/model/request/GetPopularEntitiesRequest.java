@@ -11,7 +11,7 @@ public class GetPopularEntitiesRequest extends Request {
     /**
      * @param  behaviorType interaction or navigation type to include (such as {@literal click}, {@literal purchase} or {@literal search}).
      * @param  forUserId    a user ID to retrieve the most common/recent entities for that user or null to retrieve the globally most common/recent entities.
-     * The literal {@literal (CurrentUser)} can be specified to use the user ID from the User-Id request header.
+     * {@link Loop54Client#CURRENT_USER_PLACEHOLDER} can be specified to use the user ID from the User-Id request header.
      * @param  entityType   entity types to include (such as {@literal Product} or {@literal Query})
      */
     public GetPopularEntitiesRequest(String behaviorType, String forUserId, List<String> entityType) {
@@ -21,29 +21,21 @@ public class GetPopularEntitiesRequest extends Request {
     }
 
     /**
-     * Retrieve entities that a current user most commonly interacted with or navigated to.
-     * @param  behaviorType interaction or navigation type to include (such as {@literal click}, {@literal purchase} or {@literal search}).
-     * @param  entityType   entity types to include (such as {@literal Product} or {@literal Query})
-     */
-    public GetPopularEntitiesRequest(String behaviorType, List<String> entityType) {
-        this.behaviorType = behaviorType;
-        this.forUserId = Loop54Client.CURRENT_USER_LITERAL;
-        this.entityType = entityType;
-    }
-
-    /**
-     * Retrieve the globally most common products for a specfic user
-     * @param  behaviorType interaction or navigation type to include (such as {@literal click}, {@literal purchase} or {@literal search}).
-     * @param  forUserId    a user ID to retrieve the most common/recent entities for that user or null to retrieve the globally most common/recent entities.
-     * The literal {@literal (CurrentUser)} can be specified to use the user ID from the User-Id request header.
-     */
-    public GetPopularEntitiesRequest(String behaviorType, String forUserId) { this(behaviorType, forUserId, null); }
-
-    /**
      * Retrieve the globally most common products
      * @param  behaviorType interaction or navigation type to include (such as {@literal click}, {@literal purchase} or {@literal search}).
      */
     public GetPopularEntitiesRequest(String behaviorType) { this(behaviorType, null, null); }
+
+    /**
+     * Creates a request to get the most popular entities for the current user.
+     *
+     * @param behaviorType interaction or navigation type to include (such as {@literal click}, {@literal purchase}, or {@literal search}).
+     * @param entityType   entity types to include (such as {@literal Product} or {@literal Query}).
+     * @return a new instance of {@code GetPopularEntitiesRequest} for the current user.
+     */
+    public static GetPopularEntitiesRequest forCurrentUser(String behaviorType, List<String> entityType) {
+        return new GetPopularEntitiesRequest(behaviorType, Loop54Client.CURRENT_USER_PLACEHOLDER, entityType);
+    }
 
     /**
      * The interaction or navigation type to include (such as {@literal click}, {@literal purchase} or {@literal search}).
@@ -52,7 +44,7 @@ public class GetPopularEntitiesRequest extends Request {
 
     /**
      * A user ID to retrieve the most common/recent entities for that user or null to retrieve the globally most common/recent entities.
-     * The literal {@literal (CurrentUser)} can be specified to use the user ID from the User-Id request header.
+     * {@link Loop54Client#CURRENT_USER_PLACEHOLDER} can be specified to use the user ID from the User-Id request header.
      */
     public String forUserId;
     
