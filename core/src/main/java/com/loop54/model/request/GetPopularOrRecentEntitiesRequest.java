@@ -4,9 +4,13 @@ import java.util.List;
 
 import com.loop54.model.request.parameters.EntityCollectionParameters;
 
-/// <summary>Base class for requests to get the most popular or most recent entities.</summary>
+/** Base class for requests to get the most popular or most recent entities.*/
 public abstract class GetPopularOrRecentEntitiesRequest extends Request
 {
+    /**
+    * Represents a placeholder value used in `GetRecentEntitiesRequest` and `GetPopularEntitiesRequest` to indicate that the request should 
+    * target the current user's data.
+    */
     public static final String CURRENT_USER_PLACEHOLDER = "(CurrentUser)";
     
     protected GetPopularOrRecentEntitiesRequest(String behaviorType, String forUserId, List<String> entityType) {

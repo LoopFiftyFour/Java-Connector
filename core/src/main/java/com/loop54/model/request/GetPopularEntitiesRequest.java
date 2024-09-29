@@ -16,7 +16,7 @@ public class GetPopularEntitiesRequest extends GetPopularOrRecentEntitiesRequest
     }
 
     /**
-     * Retrieve the globally most common products for a specfic user
+     * Retrieve the globally most common entities for a specfic user
      * @param  behaviorType interaction or navigation type to include (such as {@literal click}, {@literal purchase} or {@literal search}).
      * @param  forUserId    a user ID to retrieve the most common/recent entities for that user or null to retrieve the globally most common/recent entities.
      * {@link GetGetPopularOrRecentEntitiesRequest#CURRENT_USER_PLACEHOLDER} can be specified to use the user ID from the User-Id request header.
