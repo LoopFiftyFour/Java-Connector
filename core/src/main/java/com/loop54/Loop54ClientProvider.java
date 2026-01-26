@@ -1,10 +1,10 @@
 package com.loop54;
 
-import com.loop54.exceptions.Loop54Exception;
 import com.loop54.exceptions.Loop54RuntimeException;
 import com.loop54.http.RequestManager;
 import com.loop54.user.IRemoteClientInfoProvider;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -65,5 +65,34 @@ public class Loop54ClientProvider implements ILoop54ClientProvider {
                     clients.size() + " registered. Use the 'ILoop54ClientProvider.GetNamed' method instead.");
 
         return clients.values().stream().findFirst().get();
+    }
+
+    /**
+     * Closes all clients and releases any system resources associated with them.
+     * After calling this method, the provider and its clients should no longer be used.
+     *
+     * @throws IOException if an I/O error occurs while closing any of the clients
+     */
+    @Override
+    public void close() throws IOException {
+        IOException firstException = null;
+
+        for (ILoop54Client client : clients.values()) {
+            try {
+                client.close();
+            } catch (IOException e) {
+                if (firstException == null) {
+                    firstException = e;
+                } else {
+                    firstException.addSuppressed(e);
+                }
+            }
+        }
+
+        clients.clear();
+
+        if (firstException != null) {
+            throw firstException;
+        }
     }
 }

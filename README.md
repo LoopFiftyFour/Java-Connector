@@ -23,7 +23,7 @@ The Loop54 Connector is easily configured if running Spring.
 ### Spring
 Simply add the following code to the Spring configuration class marked with `@Configuration`:
 
-    @Bean
+    @Bean(destroyMethod = "close")
     public ILoop54Client loop54Client() {
         Loop54Settings settings = new Loop54Settings("https://helloworld.54proxy.com");
         return new Loop54Client(
@@ -37,7 +37,7 @@ An `ILoop54Client` is then injectable by using the `@Autowire` annotation
 
 If you are using multiple instances of the Loop54 engine within you application you instead need to do the following:
 
-	@Bean
+	@Bean(destroyMethod = "close")
     public ILoop54ClientProvider loop54ClientProvider() {
         return new Loop54ClientProvider(
                 new SpringRemoteClientInfoProvider(),
@@ -87,7 +87,9 @@ yourself and use the client just as well. You will need to implement the `IRemot
 
     IRemoteClientInfoProvider myRemoteClientInfoProvider = new MySuperAwesomeCustomRemoteClientInfoProvider();
     Loop54Settings settings = new Loop54Settings("https://helloworld.54proxy.com");
-    ILoop54Client loop54Client = new Loop54Client(new RequestManager(settings), myRemoteClientInfoProvider);
+    try (ILoop54Client loop54Client = new Loop54Client(new RequestManager(settings), myRemoteClientInfoProvider)) {
+        // use the client
+    }
     
 And you are good to go!
 

@@ -5,10 +5,11 @@ import com.loop54.model.response.Response;
 import com.loop54.model.response.SearchResponse;
 import com.loop54.user.UserMetaData;
 
+import java.io.Closeable;
 import java.util.concurrent.CompletableFuture;
 
 /** Handles the HTTP request to the Loop54 API. */
-public interface IRequestManager {
+public interface IRequestManager extends Closeable {
     /**
      * Calls the loop54 search engine and returns a deserialized response object.
      *

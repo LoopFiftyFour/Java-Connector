@@ -6,16 +6,12 @@ import com.loop54.*;
 import com.loop54.user.*;
 import com.loop54.http.*;
 import com.loop54.model.response.*;
-import com.loop54.model.Entity;
 import com.loop54.model.request.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/sync")
@@ -38,13 +34,15 @@ public class SyncController {
 	private void syncExample() throws Loop54Exception
 	{
 		System.out.println("sync:");
-		
+
 		// CODE SAMPLE sync BEGIN
 		// Set up a Loop54Client with an Api key and a null client info (we don't need metadata about the user here)
 		Loop54Settings settings = new Loop54Settings("https://helloworld.54proxy.com", "TestApiKey");
-        ILoop54Client client = new Loop54Client(new RequestManager(settings), () -> new NullClientInfo());
-		
-		Response response = client.sync();
+		try (ILoop54Client client = new Loop54Client(new RequestManager(settings), () -> new NullClientInfo())) {
+			Response response = client.sync();
+		} catch (java.io.IOException e) {
+			throw new RuntimeException("Failed to close client", e);
+		}
 		// CODE SAMPLE END
 
 		System.out.println("sync (end)");
