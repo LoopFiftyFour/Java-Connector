@@ -46,4 +46,35 @@ subprojects {
     }
 }
 
+tasks.register("generateReadme") {
+    inputs.file("README.template.md")
+    inputs.file("build.gradle")
+    outputs.file("README.md")
+    doLast {
+        // Read version from build.gradle to get the current value (in case setVersion just updated it)
+        def buildContent = file("build.gradle").text
+        def versionMatch = buildContent =~ /projectVersion\s*=\s*'([^']*)'/
+        def currentVersion = versionMatch ? versionMatch[0][1] : projectVersion
+        def template = file("README.template.md").text
+        file("README.md").text = template.replace("{{VERSION}}", currentVersion)
+    }
+}
 
+tasks.register("setVersion") {
+    description = "Sets the project version. Usage: ./gradlew setVersion -PnewVersion=x.y.z"
+
+    finalizedBy generateReadme
+    doLast {
+        if (!project.hasProperty('newVersion')) {
+            throw new GradleException("Missing required property 'newVersion'. Usage: ./gradlew setVersion -PnewVersion=x.y.z")
+        }
+        def newVersion = project.property('newVersion')
+        def buildFile = file("build.gradle")
+        def content = buildFile.text
+        def updated = content.replaceFirst(/projectVersion\s*=\s*'[^']*'/, "projectVersion = '${newVersion}'")
+        buildFile.text = updated
+        // Update ext property for generateReadme task
+        ext.projectVersion = newVersion
+        println "Version updated to ${newVersion}"
+    }
+}
