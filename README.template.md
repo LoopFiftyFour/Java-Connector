@@ -144,4 +144,4 @@ Run the test application in the `web` module by using the following command:
 
     ./gradlew :web:appRun
     
-And the application will start and be hosted on http://localhost:8080/web.
+And the application will start and be hosted on http://localhost:8080/index.
