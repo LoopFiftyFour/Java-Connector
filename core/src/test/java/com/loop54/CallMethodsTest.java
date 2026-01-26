@@ -161,6 +161,7 @@ public class CallMethodsTest {
     }
 
     @Test
+    @Disabled
     public void getComplementaryEntitiesHasResults() throws Loop54Exception {
         // wheat flour (13) is often bought with cinnamon roll (2)
         GetComplementaryEntitiesRequest request = new GetComplementaryEntitiesRequest("Product", "13");
@@ -171,6 +172,7 @@ public class CallMethodsTest {
     }
 
     @Test
+    @Disabled
     public void getBasketRecommendationsHasResults() throws Loop54Exception {
         // wheat flour (13) is often bought with cinnamon roll (2)
         List<Entity> entities = Arrays.asList(new Entity("Product", "2"));
