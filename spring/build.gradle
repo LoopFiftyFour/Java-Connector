@@ -2,23 +2,13 @@ plugins {
     id 'java'
 }
 
-group 'Loop54'
-version '1.0.0'
 base {
     archivesName = 'loop54-spring'
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-}
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    implementation 'org.springframework:spring-web:7.0.3'
-    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0'
+    implementation "org.springframework:spring-web:${versions.spring}"
+    compileOnly "jakarta.servlet:jakarta.servlet-api:${versions.jakartaServlet}"
     implementation project(":core")
 }
 

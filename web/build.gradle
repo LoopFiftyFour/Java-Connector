@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'war'
-    id 'org.gretty' version '5.0.1'
+    id 'org.gretty'
 }
 
 gretty {
@@ -9,21 +9,11 @@ gretty {
     contextPath = '/'
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-}
-
 dependencies {
-    implementation 'ch.qos.logback:logback-classic:1.5.25'
-    implementation 'org.springframework:spring-webmvc:7.0.3'
-    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
-    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0'
+    implementation "ch.qos.logback:logback-classic:${versions.logback}"
+    implementation "org.springframework:spring-webmvc:${versions.spring}"
+    implementation "org.glassfish.web:jakarta.servlet.jsp.jstl:${versions.jakartaJstl}"
+    compileOnly "jakarta.servlet:jakarta.servlet-api:${versions.jakartaServlet}"
     implementation project(":core")
     implementation project(":spring")
 }
