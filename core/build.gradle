@@ -4,35 +4,37 @@ plugins {
 
 group 'Loop54'
 version '1.0.0'
-archivesBaseName = 'loop54-core'
+base {
+    archivesName = 'loop54-core'
+}
 
-sourceCompatibility = 1.8
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation(
-            'org.junit.jupiter:junit-jupiter-api:5.1.0'
-    )
-    testRuntimeOnly(
-            'org.junit.jupiter:junit-jupiter-engine:5.1.0'
-    )
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.6'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.6'
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.5'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:6.0.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:6.0.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.0.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.0'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.21'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.5'
 }
 
 test {
     useJUnitPlatform()
 }
 
-task fatJar(type: Jar) {
+tasks.register('fatJar', Jar) {
     description 'Assembles a jar archive that includes all dependencies'
-    baseName = archivesBaseName + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    archiveBaseName = base.archivesName.get() + '-all'
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 build.finalizedBy(fatJar)

@@ -3,26 +3,31 @@ plugins {
 }
 
 group 'Loop54'
-archivesBaseName = 'loop54-spring'
 version '1.0.0'
+base {
+    archivesName = 'loop54-spring'
+}
 
-sourceCompatibility = 1.8
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile 'org.springframework:spring-web:4.1.6.RELEASE'
-    compile 'javax.servlet:javax.servlet-api:3.0.1'
-    compile project(":core")
+    implementation 'org.springframework:spring-web:7.0.3'
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0'
+    implementation project(":core")
 }
 
-task fatJar(type: Jar) {
+tasks.register('fatJar', Jar) {
     description 'Assembles a jar archive that includes all dependencies'
-    baseName = archivesBaseName + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    archiveBaseName = base.archivesName.get() + '-all'
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 build.finalizedBy(fatJar)
