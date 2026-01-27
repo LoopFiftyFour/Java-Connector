@@ -25,11 +25,12 @@ public class SpringConfiguration {
         return viewResolver;
     }
 
-    @Bean
+    @Bean(destroyMethod = "close")
     public ILoop54ClientProvider loop54ClientProvider() {
         /*
         This creates a new client provider with only one setting. The SpringRemoteClientInfoProvider will take the
         RequestContextHolder.currentRequestAttributes() and use that to serve user data to the Loop54 library.
+        The destroyMethod = "close" ensures the HTTP clients are properly closed when the Spring context shuts down.
         */
         return new Loop54ClientProvider(
                 new SpringRemoteClientInfoProvider(),

@@ -11,17 +11,19 @@ import com.loop54.model.response.ErrorResponse;
 import com.loop54.model.response.Response;
 import com.loop54.serialization.Serializer;
 import com.loop54.user.UserMetaData;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHeaders;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpHeaders;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.io.entity.StringEntity;
+import org.apache.hc.core5.util.Timeout;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 
 /** Handles the request to the Loop54 API. This can be used as a singleton. */
@@ -59,8 +61,8 @@ public class RequestManager implements IRequestManager {
         this.settings = settings;
 
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(settings.getRequestTimeoutMs())
-                .setConnectionRequestTimeout(settings.getRequestTimeoutMs())
+                .setConnectTimeout(Timeout.ofMilliseconds(settings.getRequestTimeoutMs()))
+                .setConnectionRequestTimeout(Timeout.ofMilliseconds(settings.getRequestTimeoutMs()))
                 .build();
 
         httpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
@@ -95,7 +97,7 @@ public class RequestManager implements IRequestManager {
         String endpoint = getValidatedEndpoint();
         HttpPost httpPost = new HttpPost(endpoint + "/" + request.action);
         setHeadersOnRequest(httpPost, request);
-        httpPost.setEntity(new StringEntity(request.body, "UTF-8"));
+        httpPost.setEntity(new StringEntity(request.body, StandardCharsets.UTF_8));
 
         CloseableHttpResponse response;
 
@@ -110,12 +112,12 @@ public class RequestManager implements IRequestManager {
             String content;
             HttpEntity entity = response.getEntity();
             try {
-                content = EntityUtils.toString(entity, "UTF-8");
-            } catch (IOException ioe) {
-                throw new EngineNotReachableException("Failed to receive a response from the engine at '" + endpoint + "'", ioe);
+                content = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+            } catch (Exception e) {
+                throw new EngineNotReachableException("Failed to receive a response from the engine at '" + endpoint + "'", e);
             }
 
-            if (response.getStatusLine().getStatusCode() / 100 == 2)
+            if (response.getCode() / 100 == 2)
                 return Serializer.deserialize(content, responseType);
             else
                 throw new EngineStatusCodeException(Serializer.deserialize(content, ErrorResponse.class).error);
@@ -151,5 +153,16 @@ public class RequestManager implements IRequestManager {
     private void addHeaderIfNotNull(HttpPost httpPost, String headerName, String headerValue) {
         if (headerValue != null)
             httpPost.addHeader(headerName, headerValue);
+    }
+
+    /**
+     * Closes the underlying HTTP client and releases any system resources associated with it.
+     * After calling this method, the RequestManager should no longer be used.
+     *
+     * @throws IOException if an I/O error occurs while closing the HTTP client
+     */
+    @Override
+    public void close() throws IOException {
+        httpClient.close();
     }
 }

@@ -9,6 +9,7 @@ import com.loop54.user.IRemoteClientInfo;
 import com.loop54.user.IRemoteClientInfoProvider;
 import com.loop54.user.UserMetaData;
 
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -182,5 +183,16 @@ public class Loop54Client implements ILoop54Client {
 
         metaData.setFromClientInfo(remoteClientInfo);
         return metaData;
+    }
+
+    /**
+     * Closes the underlying request manager and releases any system resources associated with it.
+     * After calling this method, the client should no longer be used.
+     *
+     * @throws IOException if an I/O error occurs while closing the request manager
+     */
+    @Override
+    public void close() throws IOException {
+        requestManager.close();
     }
 }

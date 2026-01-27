@@ -26,7 +26,7 @@ public abstract class GetPopularOrRecentEntitiesRequest extends Request
 
     /**
      * A user ID to retrieve the most common/recent entities for that user or null to retrieve the globally most common/recent entities.
-     * {@link GetGetPopularOrRecentEntitiesRequest#CURRENT_USER_PLACEHOLDER} can be specified to use the user ID from the User-Id request header.
+     * {@link GetPopularOrRecentEntitiesRequest#CURRENT_USER_PLACEHOLDER} can be specified to use the user ID from the User-Id request header.
      */
     public String forUserId;
     

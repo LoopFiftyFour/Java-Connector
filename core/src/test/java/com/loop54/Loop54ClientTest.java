@@ -30,6 +30,11 @@ public class Loop54ClientTest {
             calledMetaData = metaData;
             return CompletableFuture.completedFuture(null);
         }
+
+        @Override
+        public void close() {
+            // No resources to close in test mock
+        }
     }
 
     @Test

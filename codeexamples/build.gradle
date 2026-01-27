@@ -1,19 +1,20 @@
-apply plugin: 'java'
-apply plugin: 'war'
-apply from: 'https://raw.github.com/gretty-gradle-plugin/gretty/master/pluginScripts/gretty-2.3.0.plugin'
+plugins {
+    id 'java'
+    id 'war'
+    id 'org.gretty'
+}
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-repositories {
-    mavenLocal()
-    mavenCentral()
+gretty {
+    servletContainer = 'tomcat10'
+    contextPath = '/'
 }
 
 dependencies {
-    compile 'ch.qos.logback:logback-classic:1.1.3'
-    compile 'org.springframework:spring-webmvc:4.1.6.RELEASE'
-    compile 'javax.servlet:jstl:1.2'
-    compile project(":core")
-    compile project(":spring")
+    implementation "ch.qos.logback:logback-classic:${versions.logback}"
+    implementation "org.springframework:spring-webmvc:${versions.spring}"
+    implementation "jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:${versions.jakartaJstl}"
+    implementation "org.glassfish.web:jakarta.servlet.jsp.jstl:${versions.jakartaJstl}"
+    compileOnly "jakarta.servlet:jakarta.servlet-api:${versions.jakartaServlet}"
+    implementation project(":core")
+    implementation project(":spring")
 }

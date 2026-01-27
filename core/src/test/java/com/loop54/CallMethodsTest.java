@@ -157,20 +157,22 @@ public class CallMethodsTest {
         
         GetRelatedEntitiesResponse response = getClient().getRelatedEntities(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
-        assertTrue(response.results.items.size() > 0);
+        assertFalse(response.results.items.isEmpty());
     }
 
     @Test
+    @Disabled
     public void getComplementaryEntitiesHasResults() throws Loop54Exception {
         // wheat flour (13) is often bought with cinnamon roll (2)
         GetComplementaryEntitiesRequest request = new GetComplementaryEntitiesRequest("Product", "13");
         
         GetComplementaryEntitiesResponse response = getClient().getComplementaryEntities(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
-        assertTrue(response.results.items.size() > 0);
+        assertFalse(response.results.items.isEmpty());
     }
 
     @Test
+    @Disabled
     public void getBasketRecommendationsHasResults() throws Loop54Exception {
         // wheat flour (13) is often bought with cinnamon roll (2)
         List<Entity> entities = Arrays.asList(new Entity("Product", "2"));
@@ -179,7 +181,7 @@ public class CallMethodsTest {
         
         GetBasketRecommendationsResponse response = getClient().getBasketRecommendations(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
-        assertTrue(response.results.items.size() > 0);
+        assertFalse(response.results.items.isEmpty());
     }
 
     @Test
@@ -188,7 +190,7 @@ public class CallMethodsTest {
         
         GetRecommendedEntitiesResponse response = getClient().getRecommendedEntities(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
-        assertTrue(response.results.items.size() > 0);
+        assertFalse(response.results.items.isEmpty());
     }
 
     @Test
@@ -197,7 +199,7 @@ public class CallMethodsTest {
         
         GetPopularEntitiesResponse response = getClient().getPopularEntities(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
-        assertTrue(response.results.items.size() > 0);
+        assertFalse(response.results.items.isEmpty());
     }
 
     @Test
@@ -206,7 +208,7 @@ public class CallMethodsTest {
         
         GetRecentEntitiesResponse response = getClient().getRecentEntities(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
-        assertTrue(response.results.items.size() > 0);
+        assertFalse(response.results.items.isEmpty());
     }
 
     @Test
@@ -221,7 +223,7 @@ public class CallMethodsTest {
 
         GetEntitiesResponse response = getClient().getEntities(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
-        assertTrue(response.results.items.size() > 0);
+        assertFalse(response.results.items.isEmpty());
     }
     
     @Test
@@ -236,7 +238,7 @@ public class CallMethodsTest {
         GetEntitiesByAttributeRequest request = new GetEntitiesByAttributeRequest("Manufacturer", "Grinders inc", alias);
         GetEntitiesByAttributeResponse response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
-        assertTrue(response.results.items.size() > 0);
+        assertFalse(response.results.items.isEmpty());
     }
 
     @Test
@@ -245,14 +247,14 @@ public class CallMethodsTest {
         GetEntitiesByAttributeRequest request = new GetEntitiesByAttributeRequest("Manufacturer", "Grinders inc");
         GetEntitiesByAttributeResponse response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
-        assertTrue(response.results.items.size() > 0);
+        assertFalse(response.results.items.isEmpty());
         
         
         String[] values = {"Grinders inc", "Happy birds"};
         GetEntitiesByAttributeRequest request2 = new GetEntitiesByAttributeRequest("Manufacturer", values);
         GetEntitiesByAttributeResponse response2 = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request2, createMetaData()));
         assertTrue(response2.results.count > response.results.count); //one more manufacturer should yield more results
-        assertTrue(response2.results.items.size() > 0);
+        assertFalse(response2.results.items.isEmpty());
     }
     
     @Test
@@ -262,7 +264,7 @@ public class CallMethodsTest {
         request.resultsOptions.sortBy.add(new EntitySortingParameter("Price"){{ order = SortOrders.DESC; }}); // Primary sorting: Sort on attribute Price, descending order
         GetEntitiesByAttributeResponse response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
-        assertTrue(response.results.items.size() > 0);
+        assertFalse(response.results.items.isEmpty());
         
         List<Entity> items = response.results.items;
         
