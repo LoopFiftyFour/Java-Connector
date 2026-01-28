@@ -15,6 +15,7 @@ dependencies {
     implementation "org.apache.httpcomponents.client5:httpclient5:${versions.httpClient}"
 }
 
+// If the archive name is changed, also adjust the 'checkRemoteArtifacts' task, so it checks for the correct artifact names.
 tasks.register('fatJar', Jar) {
     description 'Assembles a jar archive that includes all dependencies'
     archiveBaseName = base.archivesName.get() + '-all'
