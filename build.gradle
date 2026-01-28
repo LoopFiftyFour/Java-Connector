@@ -78,3 +78,62 @@ tasks.register("setVersion") {
         println "Version updated to ${newVersion}"
     }
 }
+
+tasks.register("checkRemoteArtifacts") {
+    description = "Checks via ssh if artifacts already exist on deploy server. Make sure the system running this task has a respective ssh key. " +
+        "Usage: ./gradlew checkRemoteArtifacts -PdeployHost=... -PdeployUser=... -PdeployPath=..."
+
+    doLast {
+        def requiredProps = ['deployHost', 'deployUser', 'deployPath']
+        def missingProps = requiredProps.findAll { !project.hasProperty(it) }
+        if (missingProps) {
+            throw new GradleException("Missing required properties: ${missingProps.join(', ')}.\nUsage: ./gradlew checkRemoteArtifacts -PdeployHost=... -PdeployUser=... -PdeployPath=...")
+        }
+
+        def host = project.property('deployHost')
+        def user = project.property('deployUser')
+        def basePath = project.property('deployPath')
+        def version = projectVersion
+
+        def subprojectsToCheck = ['core', 'spring']
+        def existingArtifacts = []
+
+        subprojectsToCheck.each { subprojectName ->
+            def subproj = project(":${subprojectName}")
+            def archivesName = subproj.base.archivesName.get()
+            def jars = ["${archivesName}-${version}.jar", "${archivesName}-all-${version}.jar"]
+
+            jars.each { jar ->
+                def remotePath = "${basePath}/${subprojectName}/${jar}"
+                def sshCommand = [
+                    'ssh',
+                    '-o', 'BatchMode=yes',
+                    '-o', 'ConnectTimeout=10',
+                    "${user}@${host}",
+                    'test', '-f', remotePath
+                ]
+                def process = sshCommand.execute()
+                def exitCode = process.waitFor()
+                if (exitCode == 255) {
+                    def stderr = process.errorStream.text
+                    throw new GradleException("SSH connection failed (make sure the running system provides a valid ssh key): " +
+                        "${stderr ?: 'Could not connect to ' + host}")
+                }
+                if (exitCode == 0) {
+                    existingArtifacts << "${subprojectName}/${jar}"
+                }
+            }
+        }
+
+        if (existingArtifacts) {
+            throw new GradleException(
+                "ERROR: The following artifacts already exist on the deploy server:\n" +
+                existingArtifacts.collect { "  - ${it}" }.join('\n') + "\n\n" +
+                "Please increment the version before deploying:\n" +
+                "  ./gradlew setVersion -PnewVersion=x.y.z"
+            )
+        }
+
+        println "OK: No existing artifacts found for version ${version}"
+    }
+}
