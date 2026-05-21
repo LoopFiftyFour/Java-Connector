@@ -10,7 +10,7 @@ buildscript {
 }
 
 ext {
-    projectVersion = '2.0.1'
+    projectVersion = '5.0.1'
     versions = [
         spring              : '7.0.3',
         jakartaServlet      : '6.1.0',
@@ -43,6 +43,10 @@ subprojects {
         test {
             useJUnitPlatform()
         }
+
+        tasks.named('build') {
+            dependsOn rootProject.tasks.named('checkVersionHeaders')
+        }
     }
 }
 
@@ -60,6 +64,16 @@ tasks.register("generateReadme") {
     }
 }
 
+def resolveVersionHeadersFile = {
+    fileTree(rootDir).matching {
+        include "**/VersionHeaders.java"
+        exclude "**/build/**"
+        exclude "**/test/**"
+    }.singleFile
+}
+
+def libVersionPattern = /LIB_VERSION\s*=\s*"Java:[^"]*"/
+
 tasks.register("setVersion") {
     description = "Sets the project version. Usage: ./gradlew setVersion -PnewVersion=x.y.z"
 
@@ -73,9 +87,29 @@ tasks.register("setVersion") {
         def content = buildFile.text
         def updated = content.replaceFirst(/projectVersion\s*=\s*'[^']*'/, "projectVersion = '${newVersion}'")
         buildFile.text = updated
+        def versionHeadersFile = resolveVersionHeadersFile()
+        versionHeadersFile.text = versionHeadersFile.text.replaceFirst(libVersionPattern, "LIB_VERSION = \"Java:${newVersion}\"")
+
         // Update ext property for generateReadme task
         ext.projectVersion = newVersion
         println "Version updated to ${newVersion}"
+    }
+}
+
+tasks.register("checkVersionHeaders") {
+    description = "Check that LIB_VERSION in VersionHeaders.java matches projectVersion in build.gradle"
+    doLast {
+        def versionHeadersFileContent = resolveVersionHeadersFile().text
+        def match = versionHeadersFileContent =~ libVersionPattern
+        if (!match) {
+            throw new GradleException("Could not find LIB_VERSION in VersionHeaders.java")
+        }
+        def libVersion = (versionHeadersFileContent =~ /LIB_VERSION\s*=\s*"Java:([^"]*)"/)[ 0][1]
+        if (libVersion != projectVersion) {
+            throw new GradleException("Version mismatch: LIB_VERSION is 'Java:${libVersion}' but projectVersion is '${projectVersion}'. " +
+                "Run: ./gradlew setVersion -PnewVersion=${projectVersion}")
+        }
+        println "Version check passed: ${projectVersion}"
     }
 }
 
