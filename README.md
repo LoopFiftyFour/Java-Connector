@@ -4,10 +4,10 @@ Java Wrapper for Loop54 JSON V3 API
 ## How to install
 Either download any of these jars for the desired version and import them into you project:
 
-* [loop54-core-2.0.1.jar](https://static.loop54.com/lib/java/core/loop54-core-2.0.1.jar) - **Core** functionality **without** its dependencies
-* [loop54-core-all-2.0.1.jar](https://static.loop54.com/lib/java/core/loop54-core-all-2.0.1.jar) - **Core** functionality **with** all its dependencies 
-* [loop54-spring-2.0.1.jar](https://static.loop54.com/lib/java/spring/loop54-spring-2.0.1.jar) - **Core** functionality **plus Spring** specific implementation **without** its dependencies
-* [loop54-spring-all-2.0.1.jar](https://static.loop54.com/lib/java/spring/loop54-spring-all-2.0.1.jar) - **Core** functionality **plus Spring** specific implementation **with** all its dependencies
+* [loop54-core-5.0.1.jar](https://static.loop54.com/lib/java/core/loop54-core-5.0.1.jar) - **Core** functionality **without** its dependencies
+* [loop54-core-all-5.0.1.jar](https://static.loop54.com/lib/java/core/loop54-core-all-5.0.1.jar) - **Core** functionality **with** all its dependencies 
+* [loop54-spring-5.0.1.jar](https://static.loop54.com/lib/java/spring/loop54-spring-5.0.1.jar) - **Core** functionality **plus Spring** specific implementation **without** its dependencies
+* [loop54-spring-all-5.0.1.jar](https://static.loop54.com/lib/java/spring/loop54-spring-all-5.0.1.jar) - **Core** functionality **plus Spring** specific implementation **with** all its dependencies
 
 Or download the source and reference the core and spring modules and build it using gradle.
 
