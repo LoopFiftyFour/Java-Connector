@@ -10,7 +10,7 @@ buildscript {
 }
 
 ext {
-    projectVersion = '5.0.1'
+    projectVersion = '5.0.2'
     versions = [
         spring              : '7.0.3',
         jakartaServlet      : '6.1.0',
