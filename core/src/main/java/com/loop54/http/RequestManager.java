@@ -12,12 +12,14 @@ import com.loop54.model.response.Response;
 import com.loop54.serialization.Serializer;
 import com.loop54.user.UserMetaData;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.config.ConnectionConfig;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpHeaders;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.util.Timeout;
@@ -60,12 +62,22 @@ public class RequestManager implements IRequestManager {
 
         this.settings = settings;
 
-        RequestConfig requestConfig = RequestConfig.custom()
+		var connectionConfig = ConnectionConfig.custom()
                 .setConnectTimeout(Timeout.ofMilliseconds(settings.getRequestTimeoutMs()))
+                .build();
+
+		var connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
+                .setDefaultConnectionConfig(connectionConfig)
+                .build();
+
+        var requestConfig = RequestConfig.custom()
                 .setConnectionRequestTimeout(Timeout.ofMilliseconds(settings.getRequestTimeoutMs()))
                 .build();
 
-        httpClient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
+		httpClient = HttpClients.custom()
+                .setConnectionManager(connectionManager)
+                .setDefaultRequestConfig(requestConfig)
+                .build();
     }
 
     @Override
@@ -99,35 +111,32 @@ public class RequestManager implements IRequestManager {
         setHeadersOnRequest(httpPost, request);
         httpPost.setEntity(new StringEntity(request.body, StandardCharsets.UTF_8));
 
-        CloseableHttpResponse response;
-
-        try {
-            response = httpClient.execute(httpPost);
-        } catch (IOException ioe) {
-            throw new EngineNotReachableException("Could not make request to engine at '" + endpoint + "', you might have entered the wrong endpoint or there might " +
-                    "be a firewall blocking outgoing port 80", ioe);
-        }
-
-        try {
-            String content;
-            HttpEntity entity = response.getEntity();
+        HttpClientResponseHandler<ApiResponse> handler = response -> {
+			String content;
+			HttpEntity entity = response.getEntity();
             try {
-                content = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+				content = EntityUtils.toString(entity, StandardCharsets.UTF_8);
             } catch (Exception e) {
-                throw new EngineNotReachableException("Failed to receive a response from the engine at '" + endpoint + "'", e);
+                // Wrapped in its own type, so an error while reading the body stays distinguishable from connection errors
+                throw new EntityReadException(e);
             }
+            return new ApiResponse(response.getCode(), content);
+        };
 
-            if (response.getCode() / 100 == 2)
-                return Serializer.deserialize(content, responseType);
-            else
-                throw new EngineStatusCodeException(Serializer.deserialize(content, ErrorResponse.class).error);
-        } finally {
-            try {
-                response.close();
-            } catch (IOException ioe) {
-                // http response could not be closed; ignore
-            }
+        ApiResponse apiResponse;
+        try {
+            apiResponse = httpClient.execute(httpPost, handler);
+        } catch (EntityReadException e) {
+            throw new EngineNotReachableException("Failed to receive a response from the engine at '" + endpoint + "'", e);
+        } catch (IOException e) {
+            throw new EngineNotReachableException("Could not make request to engine at '" + endpoint + "', you might have entered the wrong endpoint or there might " +
+                    "be a firewall blocking outgoing port 80", e);
         }
+
+        if (apiResponse.statusCode / 100 == 2)
+            return Serializer.deserialize(apiResponse.content, responseType);
+        else
+            throw new EngineStatusCodeException(Serializer.deserialize(apiResponse.content, ErrorResponse.class).error);
     }
 
     private String getValidatedEndpoint() {
@@ -164,5 +173,11 @@ public class RequestManager implements IRequestManager {
     @Override
     public void close() throws IOException {
         httpClient.close();
+    }
+
+    private record ApiResponse(int statusCode, String content){}
+
+    private static final class EntityReadException extends IOException {
+        EntityReadException(Exception cause) { super(cause); }
     }
 }

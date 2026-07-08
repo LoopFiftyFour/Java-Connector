@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.*;
 
 public class Serializer {
     public static final ObjectMapper MAPPER = new ObjectMapper()
-            .setSerializationInclusion(Include.NON_NULL)
+            .setDefaultPropertyInclusion(Include.NON_NULL)
             .registerModule(new SimpleModule().addDeserializer(Facet.class, new FacetJsonDeserializer()))
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
