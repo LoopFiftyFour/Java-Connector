@@ -3,6 +3,7 @@ package com.loop54.model;
 import com.loop54.exceptions.Loop54Exception;
 import com.loop54.model.response.EntityCollection;
 import com.loop54.model.response.Response;
+import com.loop54.model.response.SearchResponse;
 import com.loop54.serialization.Serializer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -85,6 +86,28 @@ public class ResponseTest {
         Assertions.assertThrows(Loop54Exception.class, () -> responseObject.getCustomDataOrThrow("doubleData", Double.class));
         Assertions.assertThrows(Loop54Exception.class, () -> responseObject.getCustomDataOrThrow("complexData", EntityCollection.class));
         Assertions.assertThrows(Loop54Exception.class, () -> responseObject.getCustomDataOrThrow("listData", List.class));
+    }
+
+    private static final String SEARCH_RESPONSE_WITH_CONTENT = "{ \"makesSense\": true, \"results\": { \"count\": 0, \"facets\": [], \"items\": [] }, " +
+            "\"contentSearchResults\": [ { \"entityType\": \"Brand\", \"results\": { \"count\": 1, \"facets\": [], " +
+            "\"items\": [ { \"id\": \"b-1\", \"type\": \"Brand\" } ] } } ] }";
+
+    @Test
+    public void searchResponseDeserializesContentSearchResults() throws Loop54Exception {
+        SearchResponse response = Serializer.deserialize(SEARCH_RESPONSE_WITH_CONTENT, SearchResponse.class);
+        Assertions.assertEquals(1, response.contentSearchResults.size());
+
+        EntityCollection brands = response.getContentSearchResults("Brand");
+        Assertions.assertEquals(1, brands.count);
+        Assertions.assertEquals("b-1", brands.items.get(0).id);
+        Assertions.assertNull(response.getContentSearchResults("Article"));
+    }
+
+    @Test
+    public void searchResponseWithoutContentSearchResults() throws Loop54Exception {
+        SearchResponse response = Serializer.deserialize("{ \"makesSense\": true }", SearchResponse.class);
+        Assertions.assertNull(response.contentSearchResults);
+        Assertions.assertNull(response.getContentSearchResults("Brand"));
     }
 
     private Response getResponse(String responseJson) throws Loop54Exception {
