@@ -1,7 +1,7 @@
 package com.loop54.model.response;
 
 /** The result of a search operation. */
-public class SearchResponse extends Response {
+public class SearchResponse extends ContentResponse {
     /** Whether or not the engine understood the search query. */
     public boolean makesSense;
 

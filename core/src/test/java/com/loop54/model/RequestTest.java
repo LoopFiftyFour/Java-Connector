@@ -2,6 +2,11 @@ package com.loop54.model;
 
 import com.loop54.model.request.Request;
 import com.loop54.model.request.parameters.EntityCollectionParameters;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.loop54.exceptions.Loop54ArgumentException;
+import com.loop54.model.request.SearchRequest;
+import com.loop54.model.request.parameters.TypedEntityCollectionParameters;
+import com.loop54.serialization.Serializer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -50,5 +55,31 @@ public class RequestTest {
 
         Assertions.assertEquals(stringValue, request.customData.get("stringKey"));
         Assertions.assertEquals(stringValue2, request.customData.get("STRINGKey"));
+    }
+
+    @Test
+    public void searchRequestSerializesContentResultsOptions() throws Exception {
+        SearchRequest request = new SearchRequest("shoes");
+        request.addContentResultsOptions("Brand").take = 3;
+        request.addContentResultsOptions("Article").skip = 5;
+
+        JsonNode options = Serializer.MAPPER.readTree(Serializer.serialize(request)).get("contentResultsOptions");
+        Assertions.assertEquals(2, options.size());
+        Assertions.assertEquals("Brand", options.get(0).get("entityType").asText());
+        Assertions.assertEquals(3, options.get(0).get("take").asInt());
+        Assertions.assertEquals("Article", options.get(1).get("entityType").asText());
+        Assertions.assertEquals(5, options.get(1).get("skip").asInt());
+    }
+
+    @Test
+    public void searchRequestWithoutContentOptionsOmitsField() throws Exception {
+        JsonNode json = Serializer.MAPPER.readTree(Serializer.serialize(new SearchRequest("shoes")));
+        Assertions.assertFalse(json.has("contentResultsOptions"));
+    }
+
+    @Test
+    public void typedEntityCollectionParametersRequiresEntityType() {
+        Assertions.assertThrows(Loop54ArgumentException.class, () -> new TypedEntityCollectionParameters(null));
+        Assertions.assertThrows(Loop54ArgumentException.class, () -> new TypedEntityCollectionParameters(" "));
     }
 }

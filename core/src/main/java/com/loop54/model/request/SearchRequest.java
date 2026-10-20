@@ -4,7 +4,7 @@ import com.loop54.model.request.parameters.EntityCollectionParameters;
 import com.loop54.model.request.parameters.QueryCollectionParameters;
 
 /** This class is used to configure a search request to the Loop54 e-commerce search engine. */
-public class SearchRequest extends Request {
+public class SearchRequest extends ContentRequest {
     /**
      * The search query from the end-user. Can at most be 200 chars long.
      * @param query The query to search for.
