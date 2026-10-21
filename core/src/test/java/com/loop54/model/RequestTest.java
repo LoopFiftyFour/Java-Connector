@@ -82,4 +82,18 @@ public class RequestTest {
         Assertions.assertThrows(Loop54ArgumentException.class, () -> new TypedEntityCollectionParameters(null));
         Assertions.assertThrows(Loop54ArgumentException.class, () -> new TypedEntityCollectionParameters(" "));
     }
+
+    @Test
+    public void addContentResultsOptionsTwiceReturnsSameEntry() {
+        SearchRequest request = new SearchRequest("summit");
+        request.addContentResultsOptions("Brand").take = 2;
+        request.addContentResultsOptions("Brand").skip = 1;
+        request.addContentResultsOptions("Article");
+
+        Assertions.assertEquals(2, request.contentResultsOptions.size(), "Brand should not be added twice");
+        Assertions.assertEquals("Brand", request.contentResultsOptions.get(0).entityType);
+        Assertions.assertEquals(2, request.contentResultsOptions.get(0).take);
+        Assertions.assertEquals(1, request.contentResultsOptions.get(0).skip);
+        Assertions.assertEquals("Article", request.contentResultsOptions.get(1).entityType);
+    }
 }
