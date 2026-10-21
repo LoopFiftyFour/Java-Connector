@@ -16,12 +16,17 @@ public abstract class ContentRequest extends Request {
 
     /**
      * Adds a content entity type to search and returns its parameters, so that paging, sorting, faceting and filtering can be set on it.
+     * If parameters for that entity type were already added, the existing parameters are returned instead of adding a duplicate.
      * @param entityType The content entity type to search, e.g. "Brand". Case-sensitive.
      * @return The parameters for the added content entity type.
      */
     public TypedEntityCollectionParameters addContentResultsOptions(String entityType) {
         if (contentResultsOptions == null)
             contentResultsOptions = new ArrayList<>();
+
+        for (TypedEntityCollectionParameters existing : contentResultsOptions)
+            if (existing != null && existing.entityType.equals(entityType))
+                return existing;
 
         TypedEntityCollectionParameters options = new TypedEntityCollectionParameters(entityType);
         contentResultsOptions.add(options);
