@@ -2,7 +2,6 @@ package com.loop54.model;
 
 import com.loop54.model.request.Request;
 import com.loop54.model.request.parameters.EntityCollectionParameters;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.loop54.exceptions.Loop54ArgumentException;
 import com.loop54.model.request.SearchRequest;
 import com.loop54.model.request.parameters.TypedEntityCollectionParameters;
@@ -10,14 +9,14 @@ import com.loop54.serialization.Serializer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class RequestTest {
+class RequestTest {
     @Test
-    public void addCustomData() {
-        Request request = new Request();
+    void addCustomData() {
+        final var request = new Request();
 
-        String stringValue = "Hjalmar Söderberg";
-        double doubleValue = 13.37d;
-        EntityCollectionParameters complexValue = new EntityCollectionParameters();
+        final var stringValue = "Hjalmar Söderberg";
+        final var doubleValue = 13.37d;
+        final var complexValue = new EntityCollectionParameters();
         complexValue.skip = 0;
         complexValue.take = 10;
 
@@ -31,11 +30,11 @@ public class RequestTest {
     }
 
     @Test
-    public void addCustomDataMultipleTimes() {
-        Request request = new Request();
+    void addCustomDataMultipleTimes() {
+        final var request = new Request();
 
-        String stringValue = "Hjalmar Söderberg";
-        String stringValueAgain = "August Strindberg";
+        final var stringValue = "Hjalmar Söderberg";
+        final var stringValueAgain = "August Strindberg";
 
         request.addCustomData("stringKey", stringValue);
         request.addCustomData("stringKey", stringValueAgain);
@@ -44,11 +43,11 @@ public class RequestTest {
     }
 
     @Test
-    public void addCustomDataCaseSensitivity() {
-        Request request = new Request();
+    void addCustomDataCaseSensitivity() {
+        final var request = new Request();
 
-        String stringValue = "Hjalmar Söderberg";
-        String stringValue2 = "August Strindberg";
+        final var stringValue = "Hjalmar Söderberg";
+        final var stringValue2 = "August Strindberg";
 
         request.addCustomData("stringKey", stringValue);
         request.addCustomData("STRINGKey", stringValue2);
@@ -58,12 +57,12 @@ public class RequestTest {
     }
 
     @Test
-    public void searchRequestSerializesContentResultsOptions() throws Exception {
-        SearchRequest request = new SearchRequest("shoes");
+    void searchRequestSerializesContentResultsOptions() throws Exception {
+        final var request = new SearchRequest("shoes");
         request.addContentResultsOptions("Brand").take = 3;
         request.addContentResultsOptions("Article").skip = 5;
 
-        JsonNode options = Serializer.MAPPER.readTree(Serializer.serialize(request)).get("contentResultsOptions");
+        final var options = Serializer.MAPPER.readTree(Serializer.serialize(request)).get("contentResultsOptions");
         Assertions.assertEquals(2, options.size());
         Assertions.assertEquals("Brand", options.get(0).get("entityType").asText());
         Assertions.assertEquals(3, options.get(0).get("take").asInt());
@@ -72,20 +71,20 @@ public class RequestTest {
     }
 
     @Test
-    public void searchRequestWithoutContentOptionsOmitsField() throws Exception {
-        JsonNode json = Serializer.MAPPER.readTree(Serializer.serialize(new SearchRequest("shoes")));
+    void searchRequestWithoutContentOptionsOmitsField() throws Exception {
+        final var json = Serializer.MAPPER.readTree(Serializer.serialize(new SearchRequest("shoes")));
         Assertions.assertFalse(json.has("contentResultsOptions"));
     }
 
     @Test
-    public void typedEntityCollectionParametersRequiresEntityType() {
+    void typedEntityCollectionParametersRequiresEntityType() {
         Assertions.assertThrows(Loop54ArgumentException.class, () -> new TypedEntityCollectionParameters(null));
         Assertions.assertThrows(Loop54ArgumentException.class, () -> new TypedEntityCollectionParameters(" "));
     }
 
     @Test
-    public void addContentResultsOptionsTwiceReturnsSameEntry() {
-        SearchRequest request = new SearchRequest("summit");
+    void addContentResultsOptionsTwiceReturnsSameEntry() {
+        final var request = new SearchRequest("summit");
         request.addContentResultsOptions("Brand").take = 2;
         request.addContentResultsOptions("Brand").skip = 1;
         request.addContentResultsOptions("Article");

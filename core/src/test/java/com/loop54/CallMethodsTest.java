@@ -1,67 +1,77 @@
 package com.loop54;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
 import com.loop54.exceptions.Loop54Exception;
 import com.loop54.http.RequestManager;
 import com.loop54.model.Entity;
-import com.loop54.model.request.*;
+import com.loop54.model.request.AutoCompleteRequest;
+import com.loop54.model.request.GetBasketRecommendationsRequest;
+import com.loop54.model.request.GetComplementaryEntitiesRequest;
+import com.loop54.model.request.GetEntitiesByAttributeRequest;
+import com.loop54.model.request.GetEntitiesRequest;
+import com.loop54.model.request.GetPopularEntitiesRequest;
+import com.loop54.model.request.GetRecentEntitiesRequest;
+import com.loop54.model.request.GetRecommendedEntitiesRequest;
+import com.loop54.model.request.GetRelatedEntitiesRequest;
+import com.loop54.model.request.Request;
+import com.loop54.model.request.RequestAliasData;
+import com.loop54.model.request.SearchRequest;
 import com.loop54.model.request.parameters.EntitySortingParameter;
 import com.loop54.model.request.parameters.SortOrders;
 import com.loop54.model.request.parameters.facets.DistinctFacetItemSortingParameter;
 import com.loop54.model.request.parameters.filters.AttributeFilterParameter;
 import com.loop54.model.request.parameters.filters.FilterComparisonMode;
-import com.loop54.model.response.*;
-import com.loop54.model.response.DistinctFacet.DistinctFacetItem;
-import com.loop54.user.UserMetaData;
+import com.loop54.model.response.DistinctFacet;
+import com.loop54.model.response.EntityCollection;
 import com.loop54.user.NullClientInfo;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Disabled;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import com.loop54.user.UserMetaData;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CallMethodsTest {
+class CallMethodsTest {
     private Loop54Client getClient() {
-        Loop54Settings settings = new Loop54Settings("https://helloworld.54proxy.com", "TestApiKey", true, 5000);
-        return new Loop54Client(new RequestManager(settings), () -> new NullClientInfo());
+        final var settings = new Loop54Settings("https://helloworld.54proxy.com", "TestApiKey", true, 5000);
+        return new Loop54Client(new RequestManager(settings), NullClientInfo::new);
     }
 
     private UserMetaData createMetaData() {
-        UserMetaData metaData = new UserMetaData("testUser");
+        final var metaData = new UserMetaData("testUser");
         metaData.ipAddress = "0.0.0.0";
         return metaData;
     }
 
     @Test
-    public void autoCompleteHasResults() throws Loop54Exception {
-        for (String query : Arrays.asList("b", "be", "bee", "beef", "c", "ch", "chi", "chic", "chick", "chicke", "chicken"))
+    void autoCompleteHasResults() throws Loop54Exception {
+        for (final var query : Arrays.asList("b", "be", "bee", "beef", "c", "ch", "chi", "chic", "chick", "chicke", "chicken")) {
             autoComplete(query);
+        }
     }
 
-    private void autoComplete(String query) throws Loop54Exception {
-        AutoCompleteResponse response = getClient().autoComplete(Loop54Client.getRequestContainer(new AutoCompleteRequest(query), createMetaData()));
+    private void autoComplete(final String query) throws Loop54Exception {
+        final var response = getClient().autoComplete(Loop54Client.getRequestContainer(new AutoCompleteRequest(query), createMetaData()));
 
         assertTrue(response.queries.count > 0, "\"" + query + "\" returned a count of " + response.queries.count);
         assertFalse(response.queries.items.isEmpty(), "\"" + query + "\" returned no items");
     }
 
     @Test
-    public void searchHasResults() throws Loop54Exception {
+    void searchHasResults() throws Loop54Exception {
         search("steak");
         search("chicken breast");
     }
 
-    private void search(String query) throws Loop54Exception {
-        SearchResponse response = getClient().search(Loop54Client.getRequestContainer(new SearchRequest(query), createMetaData()));
+    private void search(final String query) throws Loop54Exception {
+        final var response = getClient().search(Loop54Client.getRequestContainer(new SearchRequest(query), createMetaData()));
 
         assertTrue(response.results.count > 0, response.results.count + "");
         assertFalse(response.results.items.isEmpty(), response.results.items.size() + "");
@@ -70,69 +80,65 @@ public class CallMethodsTest {
     }
 
     @Test
-    public void searchLimits() throws Loop54Exception {
-        for (String query : Arrays.asList("steak", "chicken breast"))
-            for (int count : Arrays.asList(2, 5, 10, 100))
+    void searchLimits() throws Loop54Exception {
+        for (final var query : Arrays.asList("steak", "chicken breast")) {
+            for (final int count : Arrays.asList(2, 5, 10, 100)) {
                 searchLimits(query, count);
+            }
+        }
     }
 
-    private void searchLimits(String query, int count) throws Loop54Exception {
-        SearchRequest searchRequest = new SearchRequest(query);
+    private void searchLimits(final String query, final int count) throws Loop54Exception {
+        final var searchRequest = new SearchRequest(query);
         searchRequest.resultsOptions.skip = 0;
         searchRequest.resultsOptions.take = count;
 
-        SearchResponse response = getClient().search(Loop54Client.getRequestContainer(searchRequest, createMetaData()));
+        final var response = getClient().search(Loop54Client.getRequestContainer(searchRequest, createMetaData()));
 
         assertCount(response.results, count);
     }
 
     @Test
-    public void searchWithCustomData() throws Loop54Exception {
-        SearchRequest searchRequest = new SearchRequest("banana");
+    void searchWithCustomData() throws Loop54Exception {
+        final var searchRequest = new SearchRequest("banana");
         searchRequest.addCustomData("message", "ping");
-        SearchResponse response = getClient().search(Loop54Client.getRequestContainer(searchRequest, createMetaData()));
-        String responseMessage = response.getCustomDataOrDefault("responseMessage", String.class);
-        Assertions.assertEquals("pong", responseMessage);
+        final var response = getClient().search(Loop54Client.getRequestContainer(searchRequest, createMetaData()));
+        final var responseMessage = response.getCustomDataOrDefault("responseMessage", String.class);
+        assertEquals("pong", responseMessage);
     }
     
     @Test
-    public void searchWithSortedFacets() throws Loop54Exception {
-        String facetName = "Manufacturer";
-        SearchRequest searchRequest = new SearchRequest("a");
+    void searchWithSortedFacets() throws Loop54Exception {
+        final var facetName = "Manufacturer";
+        final var searchRequest = new SearchRequest("a");
         // Add facets to the search request
-        ArrayList<DistinctFacetItemSortingParameter> sortBy = new ArrayList<>();
-        sortBy.add(new DistinctFacetItemSortingParameter(){{ type = DistinctFacetItemSortingParameter.Types.COUNT; order = SortOrders.DESC; }});
+        final List<DistinctFacetItemSortingParameter> sortBy = new ArrayList<>();
+        final var countDesc = new DistinctFacetItemSortingParameter();
+        countDesc.type = DistinctFacetItemSortingParameter.Types.COUNT;
+        countDesc.order = SortOrders.DESC;
+        sortBy.add(countDesc);
         searchRequest.resultsOptions.addDistinctFacet(facetName, null, null, sortBy);
-        SearchResponse response = getClient().search(Loop54Client.getRequestContainer(searchRequest, createMetaData()));
+        final var response = getClient().search(Loop54Client.getRequestContainer(searchRequest, createMetaData()));
         assertTrue(response.results.count > 0, response.results.count + "");
         assertFalse(response.results.items.isEmpty(), response.results.items.size() + "");
         assertFalse(response.results.facets.isEmpty(), response.results.facets.size() + "");
         
-        DistinctFacet facet = response.results.getDistinctFacetByName(facetName);
+        final var facet = response.results.getDistinctFacetByName(facetName);
         assertNotNull(facet, "Expected facet was not found");
         assertTrue(facet.hasValues(), "Expected facet had no values");
         
-        List<DistinctFacetItem> facetItems = facet.getItems();
+        final var facetItems = facet.getItems();
         
         // Sort the facet list in descending count order
-        List<DistinctFacetItem> facetItemsToSort = new ArrayList<>();
-        facetItemsToSort.addAll(facet.getItems());    
+        final List<DistinctFacet.DistinctFacetItem> facetItemsToSort = new ArrayList<>(facet.getItems());
         
-        Collections.sort(facetItemsToSort, new Comparator<DistinctFacetItem>() {
-            public int compare(DistinctFacetItem result1, DistinctFacetItem result2) {
-                if(result1.count > result2.count)
-                    return -1;
-                if(result1.count < result2.count)
-                    return 1;
-                return 0;
-            }
-        });
+        facetItemsToSort.sort((result1, result2) -> Integer.compare(result2.count, result1.count));
         
         // The facet list should already have been sorted, so no difference after sorting.
         assertIterableEquals(facetItems, facetItemsToSort);
     }
 
-    private void assertCount(EntityCollection results, int desiredCount) {
+    private void assertCount(final EntityCollection results, final int desiredCount) {
         // do not return more than exist
         assertTrue(results.items.size() <= results.count,
                 "The engine returned more results than the engine reported existed " +
@@ -144,151 +150,145 @@ public class CallMethodsTest {
                 "(" + results.items.size() + " vs " + desiredCount + ")");
 
         // if there are more than we asked for
-        if (results.count > desiredCount)
+        if (results.count > desiredCount) {
             assertEquals(results.items.size(), desiredCount); //return exactly as many as we asked for
-        else
+        } else {
             assertEquals(results.items.size(), results.count); //return exactly as many as exist
+        }
     }
 
     @Test
-    public void getRelatedEntitiesHasResults() throws Loop54Exception {
+    void getRelatedEntitiesHasResults() throws Loop54Exception {
         //Should be a wheat flour
-        GetRelatedEntitiesRequest request = new GetRelatedEntitiesRequest("Product", "13");
+        final var request = new GetRelatedEntitiesRequest("Product", "13");
         
-        GetRelatedEntitiesResponse response = getClient().getRelatedEntities(Loop54Client.getRequestContainer(request, createMetaData()));
+        final var response = getClient().getRelatedEntities(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
         assertFalse(response.results.items.isEmpty());
     }
 
     @Test
     @Disabled
-    public void getComplementaryEntitiesHasResults() throws Loop54Exception {
+    void getComplementaryEntitiesHasResults() throws Loop54Exception {
         // wheat flour (13) is often bought with cinnamon roll (2)
-        GetComplementaryEntitiesRequest request = new GetComplementaryEntitiesRequest("Product", "13");
+        final var request = new GetComplementaryEntitiesRequest("Product", "13");
         
-        GetComplementaryEntitiesResponse response = getClient().getComplementaryEntities(Loop54Client.getRequestContainer(request, createMetaData()));
+        final var response = getClient().getComplementaryEntities(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
         assertFalse(response.results.items.isEmpty());
     }
 
     @Test
     @Disabled
-    public void getBasketRecommendationsHasResults() throws Loop54Exception {
+    void getBasketRecommendationsHasResults() throws Loop54Exception {
         // wheat flour (13) is often bought with cinnamon roll (2)
-        List<Entity> entities = Arrays.asList(new Entity("Product", "2"));
+        final var entities = Arrays.asList(new Entity("Product", "2"));
 
-        GetBasketRecommendationsRequest request = new GetBasketRecommendationsRequest(entities);
+        final var request = new GetBasketRecommendationsRequest(entities);
         
-        GetBasketRecommendationsResponse response = getClient().getBasketRecommendations(Loop54Client.getRequestContainer(request, createMetaData()));
+        final var response = getClient().getBasketRecommendations(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
         assertFalse(response.results.items.isEmpty());
     }
 
     @Test
-    public void getRecommendedEntitiesHasResults() throws Loop54Exception {
-        GetRecommendedEntitiesRequest request = new GetRecommendedEntitiesRequest();
+    void getRecommendedEntitiesHasResults() throws Loop54Exception {
+        final var request = new GetRecommendedEntitiesRequest();
         
-        GetRecommendedEntitiesResponse response = getClient().getRecommendedEntities(Loop54Client.getRequestContainer(request, createMetaData()));
+        final var response = getClient().getRecommendedEntities(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
         assertFalse(response.results.items.isEmpty());
     }
 
     @Test
-    public void getPopularEntitiesHasResults() throws Loop54Exception {
-        GetPopularEntitiesRequest request = new GetPopularEntitiesRequest("click");
+    void getPopularEntitiesHasResults() throws Loop54Exception {
+        final var request = new GetPopularEntitiesRequest("click");
         
-        GetPopularEntitiesResponse response = getClient().getPopularEntities(Loop54Client.getRequestContainer(request, createMetaData()));
+        final var response = getClient().getPopularEntities(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
         assertFalse(response.results.items.isEmpty());
     }
 
     @Test
-    public void getRecentEntitiesHasResults() throws Loop54Exception {
-        GetRecentEntitiesRequest request = new GetRecentEntitiesRequest("click");
+    void getRecentEntitiesHasResults() throws Loop54Exception {
+        final var request = new GetRecentEntitiesRequest("click");
         
-        GetRecentEntitiesResponse response = getClient().getRecentEntities(Loop54Client.getRequestContainer(request, createMetaData()));
+        final var response = getClient().getRecentEntities(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
         assertFalse(response.results.items.isEmpty());
     }
 
     @Test
-    public void getEntitiesHasResults() throws Loop54Exception {
+    void getEntitiesHasResults() throws Loop54Exception {
         //Should result in an expensive steak
-        GetEntitiesRequest request = new GetEntitiesRequest();
+        final var request = new GetEntitiesRequest();
 
-        AttributeFilterParameter<Double> filter = new AttributeFilterParameter<>("Price", 100.0);
+        final var filter = new AttributeFilterParameter<>("Price", 100.0);
         filter.comparisonMode = FilterComparisonMode.GREATER_THAN_OR_EQUALS;
 
         request.resultsOptions.filter = filter;
 
-        GetEntitiesResponse response = getClient().getEntities(Loop54Client.getRequestContainer(request, createMetaData()));
+        final var response = getClient().getEntities(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
         assertFalse(response.results.items.isEmpty());
     }
     
     @Test
-    public void getEntitiesByAttributeHasResults() throws Loop54Exception {
+    void getEntitiesByAttributeHasResults() throws Loop54Exception {
         
-        RequestAliasData alias = new RequestAliasData();
+        final var alias = new RequestAliasData();
         alias.name = "ManufacturerAlias";
         alias.value = "GrindersAlias";
         alias.details = "This request was generated by the Java Connector tests.";
         
         //Should result in two flour products
-        GetEntitiesByAttributeRequest request = new GetEntitiesByAttributeRequest("Manufacturer", "Grinders inc", alias);
-        GetEntitiesByAttributeResponse response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));
+        final var request = new GetEntitiesByAttributeRequest("Manufacturer", "Grinders inc", alias);
+        final var response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
         assertFalse(response.results.items.isEmpty());
     }
 
     @Test
-    public void getEntitiesByAttributeHasResultsMulti() throws Loop54Exception {
+    void getEntitiesByAttributeHasResultsMulti() throws Loop54Exception {
         //Should result in two flour products
-        GetEntitiesByAttributeRequest request = new GetEntitiesByAttributeRequest("Manufacturer", "Grinders inc");
-        GetEntitiesByAttributeResponse response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));
+        final var request = new GetEntitiesByAttributeRequest("Manufacturer", "Grinders inc");
+        final var response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
         assertFalse(response.results.items.isEmpty());
         
         
-        String[] values = {"Grinders inc", "Happy birds"};
-        GetEntitiesByAttributeRequest request2 = new GetEntitiesByAttributeRequest("Manufacturer", values);
-        GetEntitiesByAttributeResponse response2 = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request2, createMetaData()));
+        final var values = new String[] {"Grinders inc", "Happy birds"};
+        final var request2 = new GetEntitiesByAttributeRequest("Manufacturer", values);
+        final var response2 = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request2, createMetaData()));
         assertTrue(response2.results.count > response.results.count); //one more manufacturer should yield more results
         assertFalse(response2.results.items.isEmpty());
     }
     
     @Test
-    public void getEntitiesByAttributeSort() throws Loop54Exception {
-        GetEntitiesByAttributeRequest request = new GetEntitiesByAttributeRequest("Category", "meat");
+    void getEntitiesByAttributeSort() throws Loop54Exception {
+        final var request = new GetEntitiesByAttributeRequest("Category", "meat");
         request.resultsOptions.sortBy = new ArrayList<>();
         request.resultsOptions.sortBy.add(new EntitySortingParameter("Price"){{ order = SortOrders.DESC; }}); // Primary sorting: Sort on attribute Price, descending order
-        GetEntitiesByAttributeResponse response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));
+        final var response = getClient().getEntitiesByAttribute(Loop54Client.getRequestContainer(request, createMetaData()));
         assertTrue(response.results.count > 0);
         assertFalse(response.results.items.isEmpty());
         
-        List<Entity> items = response.results.items;
+        final var items = response.results.items;
         
         // Sort the item list in descending price order
-        List<Entity> itemsToSort = new ArrayList<>();
-        itemsToSort.addAll(response.results.items);    
-        Collections.sort(itemsToSort, new Comparator<Entity>() {
-            public int compare(Entity result1, Entity result2) {
-                Double price1 = result1.getAttributeValueOrNull("price", Double.class);
-                Double price2 = result2.getAttributeValueOrNull("price", Double.class);
-                if(price1 > price2)
-                    return -1;
-                if(price1 < price2)
-                    return 1;
-                return 0;
-            }
-        });    
+        final List<Entity> itemsToSort = new ArrayList<>(response.results.items);
+        itemsToSort.sort((result1, result2) -> {
+            final var price1 = result1.getAttributeValueOrNull("price", Double.class);
+            final var price2 = result2.getAttributeValueOrNull("price", Double.class);
+            return price2.compareTo(price1);
+        });
         
         // The item list should already have been sorted, so no difference after sorting.
         assertIterableEquals(items, itemsToSort);
     }
     
     @Test
-    public void sync() throws Loop54Exception {
-        Response response = getClient().sync(Loop54Client.getRequestContainer(new Request(), createMetaData()));
+    void sync() throws Loop54Exception {
+        final var response = getClient().sync(Loop54Client.getRequestContainer(new Request(), createMetaData()));
     }
 }

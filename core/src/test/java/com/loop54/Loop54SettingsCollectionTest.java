@@ -1,28 +1,30 @@
 package com.loop54;
 
-import com.loop54.Loop54Settings;
 import com.loop54.exceptions.Loop54ArgumentException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
-public class Loop54SettingsCollectionTest {
+class Loop54SettingsCollectionTest {
     @Test
-    public void create() {
-        com.loop54.Loop54SettingsCollection result = Loop54SettingsCollection.create();
+    void create() {
+        final var result = Loop54SettingsCollection.create();
         Assertions.assertNotNull(result);
         Assertions.assertEquals(0, result.size());
         Assertions.assertFalse(result.iterator().hasNext());
     }
 
     @Test
-    public void createAndAdd() {
-        com.loop54.Loop54SettingsCollection result = Loop54SettingsCollection.create()
+    void createAndAdd() {
+        final var result = Loop54SettingsCollection.create()
                 .add("Test", "https://test-1.54proxy.com");
 
-        Iterator<Map.Entry<String, Loop54Settings>> iterator = result.iterator();
-        Map.Entry<String, Loop54Settings> setting = iterator.next();
+        final var iterator = result.iterator();
+        final var setting = iterator.next();
 
         Assertions.assertFalse(iterator.hasNext());
         Assertions.assertEquals("Test", setting.getKey());
@@ -30,10 +32,10 @@ public class Loop54SettingsCollectionTest {
     }
 
     @Test
-    public void addNullShouldThrow() {
-        com.loop54.Loop54SettingsCollection result = Loop54SettingsCollection.create();
+    void addNullShouldThrow() {
+        final var result = Loop54SettingsCollection.create();
 
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class,
+        var exception = Assertions.assertThrows(IllegalArgumentException.class,
                 () -> result.add("Test1", (String)null));
         Assertions.assertTrue(exception.getMessage().contains("endpoint"));
 
@@ -52,17 +54,17 @@ public class Loop54SettingsCollectionTest {
     }
 
     @Test
-    public void addMultipleAndEnumerate() {
-        com.loop54.Loop54SettingsCollection result = Loop54SettingsCollection.create()
+    void addMultipleAndEnumerate() {
+        final var result = Loop54SettingsCollection.create()
                 .add("Test1", "https://test-1.54proxy.com")
                 .add("Test2", "https://test-2.54proxy.com")
                 .add("Test3",
                         new Loop54Settings("https://test-3.54proxy.com",
                                 null,
                                 true,
-                                1337 ));
+                                1337));
 
-        List<Map.Entry<String, Loop54Settings>> settings = getSettingsAsList(result);
+        final var settings = getSettingsAsList(result);
 
         Assertions.assertEquals(3, settings.size());
         Assertions.assertEquals("Test1", settings.get(0).getKey());
@@ -75,26 +77,27 @@ public class Loop54SettingsCollectionTest {
     }
 
     @Test
-    public void addSameNameShouldThrow() {
-        com.loop54.Loop54SettingsCollection result = Loop54SettingsCollection.create()
+    void addSameNameShouldThrow() {
+        final var result = Loop54SettingsCollection.create()
                 .add("Test1", "https://test-1.54proxy.com");
 
-        Loop54ArgumentException exception = Assertions.assertThrows(Loop54ArgumentException.class,
+        final var exception = Assertions.assertThrows(Loop54ArgumentException.class,
                 () -> result.add("Test1", "https://test-1-2.54proxy.com"));
         Assertions.assertTrue(exception.getMessage().contains("Test1"));
 
         //Assert the collection is unchanged after the failure
-        List<Map.Entry<String, Loop54Settings>> settings = getSettingsAsList(result);
+        final var settings = getSettingsAsList(result);
         Assertions.assertEquals(1, result.size());
         Assertions.assertEquals(1, settings.size());
         Assertions.assertEquals("Test1", settings.get(0).getKey());
         Assertions.assertEquals("https://test-1.54proxy.com", settings.get(0).getValue().getEndpoint());
     }
 
-    private List<Map.Entry<String, Loop54Settings>> getSettingsAsList(com.loop54.Loop54SettingsCollection collection) {
-        List<Map.Entry<String, Loop54Settings>> settings = new ArrayList<>();
-        for(Map.Entry<String, Loop54Settings> setting : collection)
+    private List<Map.Entry<String, Loop54Settings>> getSettingsAsList(final Loop54SettingsCollection collection) {
+        final List<Map.Entry<String, Loop54Settings>> settings = new ArrayList<>();
+        for (final var setting : collection) {
             settings.add(setting);
+        }
         settings.sort(Comparator.comparing(Map.Entry::getKey));
         return settings;
     }
