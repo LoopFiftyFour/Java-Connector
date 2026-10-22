@@ -23,7 +23,8 @@ import java.util.concurrent.ExecutionException;
 public class Loop54Client implements ILoop54Client {
     private static final String SEARCH_REQUEST_NAME = "search";
     private static final String AUTO_COMPLETE_REQUEST_NAME = "autoComplete";
-    private static final String GET_ENTITIES_REQUEST_NAME = "getEntities";
+    private static final String SUGGEST_REQUEST_NAME       = "suggest";
+    private static final String GET_ENTITIES_REQUEST_NAME  = "getEntities";
     private static final String GET_ENTITIES_BY_ATTRIBUTE_REQUEST_NAME = "getEntitiesByAttribute";
     private static final String GET_RELATED_ENTITIES_REQUEST_NAME = "getRelatedEntities";
     private static final String GET_COMPLEMENTARY_ENTITIES_REQUEST_NAME = "getComplementaryEntities";
@@ -72,6 +73,11 @@ public class Loop54Client implements ILoop54Client {
     @Override public GetEntitiesByAttributeResponse getEntitiesByAttribute(RequestContainer<GetEntitiesByAttributeRequest> request) throws Loop54Exception { return getFuture(getEntitiesByAttributeAsync(request)); }
     @Override public CompletableFuture<GetEntitiesByAttributeResponse> getEntitiesByAttributeAsync(GetEntitiesByAttributeRequest request) { return getEntitiesByAttributeAsync(getRequestContainer(request)); }
     @Override public CompletableFuture<GetEntitiesByAttributeResponse> getEntitiesByAttributeAsync(RequestContainer<GetEntitiesByAttributeRequest> request) { return callEngine(GET_ENTITIES_BY_ATTRIBUTE_REQUEST_NAME, request, GetEntitiesByAttributeResponse.class); }
+
+    @Override public SuggestResponse suggest(SuggestRequest request) throws Loop54Exception { return getFuture(suggestAsync(request)); }
+    @Override public SuggestResponse suggest(RequestContainer<SuggestRequest> request) throws Loop54Exception { return getFuture(suggestAsync(request)); }
+    @Override public CompletableFuture<SuggestResponse> suggestAsync(SuggestRequest request) { return suggestAsync(getRequestContainer(request)); }
+    @Override public CompletableFuture<SuggestResponse> suggestAsync(RequestContainer<SuggestRequest> request) { return callEngine(SUGGEST_REQUEST_NAME, request, SuggestResponse.class); }
 
     @Override public AutoCompleteResponse autoComplete(AutoCompleteRequest request) throws Loop54Exception { return getFuture(autoCompleteAsync(request)); }
     @Override public AutoCompleteResponse autoComplete(RequestContainer<AutoCompleteRequest> request) throws Loop54Exception { return getFuture(autoCompleteAsync(request)); }

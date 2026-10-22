@@ -22,6 +22,7 @@ import com.loop54.model.request.GetRelatedEntitiesRequest;
 import com.loop54.model.request.Request;
 import com.loop54.model.request.RequestAliasData;
 import com.loop54.model.request.SearchRequest;
+import com.loop54.model.request.SuggestRequest;
 import com.loop54.model.request.parameters.EntitySortingParameter;
 import com.loop54.model.request.parameters.SortOrders;
 import com.loop54.model.request.parameters.facets.DistinctFacetItemSortingParameter;
@@ -29,6 +30,7 @@ import com.loop54.model.request.parameters.filters.AttributeFilterParameter;
 import com.loop54.model.request.parameters.filters.FilterComparisonMode;
 import com.loop54.model.response.DistinctFacet;
 import com.loop54.model.response.EntityCollection;
+import com.loop54.model.response.SuggestResponse;
 import com.loop54.user.NullClientInfo;
 import com.loop54.user.UserMetaData;
 
@@ -63,6 +65,22 @@ class CallMethodsTest {
         assertTrue(response.queries.count > 0, "\"" + query + "\" returned a count of " + response.queries.count);
         assertFalse(response.queries.items.isEmpty(), "\"" + query + "\" returned no items");
     }
+
+	@Test
+	@Disabled("Endpoint does not exist yet")
+	void suggestHasResults() throws Loop54Exception {
+		for (final String query : Arrays.asList("b", "be", "bee", "beef", "c", "ch", "chi", "chic", "chick", "chicke", "chicken")) {
+			final SuggestResponse response = getClient().suggest(Loop54Client.getRequestContainer(new SuggestRequest(query),
+																								  createMetaData()));
+
+			assertTrue(response.queries.count > 0, "\"" + query + "\" returned a count of " + response.queries.count);
+			assertFalse(response.queries.items.isEmpty(), "\"" + query + "\" returned no items");
+		}
+
+		final SuggestResponse response = getClient().suggest(Loop54Client.getRequestContainer(new SuggestRequest("steak"), createMetaData()));
+		assertTrue(response.results.count > 0, response.results.count + "");
+		assertFalse(response.results.items.isEmpty(), response.results.items.size() + "");
+	}
 
     @Test
     void searchHasResults() throws Loop54Exception {
