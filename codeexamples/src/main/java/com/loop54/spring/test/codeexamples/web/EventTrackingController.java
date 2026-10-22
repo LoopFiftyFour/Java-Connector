@@ -18,25 +18,25 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/eventtracking")
 public class EventTrackingController {
 
-	private ILoop54Client loop54Client;
+	private final ILoop54Client loop54Client;
 
 	@Autowired
-	public EventTrackingController(ILoop54Client loop54Client) {
+	public EventTrackingController(final ILoop54Client loop54Client) {
 		this.loop54Client = loop54Client;
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView index() throws Loop54Exception {
 		//Setup
-		String productId = "1";
+		final var productId = "1";
 
 		// Code examples
-		Entity clickedEntity = createEventsExample(productId);
+		final var clickedEntity = createEventsExample(productId);
 		customerUserIDExample(clickedEntity);
 		return new ModelAndView("eventtracking");
 	}
 
-	private Entity createEventsExample(String productId) throws Loop54Exception 
+	private Entity createEventsExample(final String productId) throws Loop54Exception 
 	{
 		System.out.println("create-events: ");
 
@@ -44,22 +44,20 @@ public class EventTrackingController {
 		// Code examples
 
 		// click event (can be called on the product page)
-		Entity clickedEntity = new Entity("Product", productId);
+		final var clickedEntity = new Entity("Product", productId);
 		loop54Client.createEvents(new CreateEventsRequest(new ClickEvent(clickedEntity)));
 
 		// addtocart event (call this when a customer adds a product to cart)
-		Entity addToCartEntity = new Entity("Product", productId);
+		final var addToCartEntity = new Entity("Product", productId);
 		loop54Client.createEvents(new CreateEventsRequest(new AddToCartEvent(addToCartEntity)));
 
 		// purchase events (can be called when an order is processed, or on the "thank you" page)
-		Entity purchasedEntity = new Entity("Product", productId);
-		loop54Client.createEvents(new CreateEventsRequest(new PurchaseEvent(purchasedEntity)
-		{{
-			orderId = "13t09j1g"; // Optional
-			quantity = 5; // Optional
-			revenue = 249.0; // Optional
-		}}
-				));
+		final var purchasedEntity = new Entity("Product", productId);
+		final var purchaseEvent = new PurchaseEvent(purchasedEntity)
+				.withOrderId("13t09j1g") // Optional
+				.withQuantity(5) // Optional
+				.withRevenue(249.0); // Optional
+		loop54Client.createEvents(new CreateEventsRequest(purchaseEvent));
 		// CODE SAMPLE END
 
 		System.out.println("create-events (end) ");
@@ -67,7 +65,7 @@ public class EventTrackingController {
 		return clickedEntity;
 	}
 
-	private void customerUserIDExample(Entity clickedEntity) throws Loop54Exception 
+	private void customerUserIDExample(final Entity clickedEntity) throws Loop54Exception 
 	{
 		System.out.println("create-events-custom-user-id: ");
 
@@ -75,8 +73,8 @@ public class EventTrackingController {
 		// How it works
 
 		//click event with a custom user ID
-		CreateEventsRequest request = new CreateEventsRequest(new ClickEvent(clickedEntity));
-		UserMetaData data = new UserMetaData("testUserID");
+		final var request = new CreateEventsRequest(new ClickEvent(clickedEntity));
+		final var data = new UserMetaData("testUserID");
 		loop54Client.createEvents(Loop54Client.getRequestContainer(request, data));
 		// CODE SAMPLE END
 

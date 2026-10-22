@@ -1,17 +1,55 @@
 package com.loop54;
 
-import com.loop54.exceptions.Loop54Exception;
-import com.loop54.model.request.*;
-import com.loop54.model.response.*;
-
 import java.io.Closeable;
 import java.util.concurrent.CompletableFuture;
+
+import com.loop54.exceptions.Loop54Exception;
+import com.loop54.model.request.AutoCompleteRequest;
+import com.loop54.model.request.CreateEventsRequest;
+import com.loop54.model.request.GetBasketRecommendationsRequest;
+import com.loop54.model.request.GetComplementaryEntitiesRequest;
+import com.loop54.model.request.GetEntitiesByAttributeRequest;
+import com.loop54.model.request.GetEntitiesRequest;
+import com.loop54.model.request.GetPopularEntitiesRequest;
+import com.loop54.model.request.GetRecentEntitiesRequest;
+import com.loop54.model.request.GetRecommendedEntitiesRequest;
+import com.loop54.model.request.GetRelatedEntitiesRequest;
+import com.loop54.model.request.Request;
+import com.loop54.model.request.SearchRequest;
+import com.loop54.model.request.SuggestRequest;
+import com.loop54.model.response.AutoCompleteResponse;
+import com.loop54.model.response.GetBasketRecommendationsResponse;
+import com.loop54.model.response.GetComplementaryEntitiesResponse;
+import com.loop54.model.response.GetEntitiesByAttributeResponse;
+import com.loop54.model.response.GetEntitiesResponse;
+import com.loop54.model.response.GetPopularEntitiesResponse;
+import com.loop54.model.response.GetRecentEntitiesResponse;
+import com.loop54.model.response.GetRecommendedEntitiesResponse;
+import com.loop54.model.response.GetRelatedEntitiesResponse;
+import com.loop54.model.response.Response;
+import com.loop54.model.response.SearchResponse;
+import com.loop54.model.response.SuggestResponse;
 
 public interface ILoop54Client extends Closeable {
     AutoCompleteResponse autoComplete(AutoCompleteRequest request) throws Loop54Exception;
     AutoCompleteResponse autoComplete(RequestContainer<AutoCompleteRequest> request) throws Loop54Exception;
     CompletableFuture<AutoCompleteResponse> autoCompleteAsync(AutoCompleteRequest request);
     CompletableFuture<AutoCompleteResponse> autoCompleteAsync(RequestContainer<AutoCompleteRequest> request);
+
+    // The 'Suggest' endpoint methods have default implementations, so that existing custom implementations of this interface
+    // (e.g. test doubles) keep compiling after upgrading. Loop54Client overrides all of them.
+    default SuggestResponse suggest(final SuggestRequest request) throws Loop54Exception {
+        throw new UnsupportedOperationException("Suggest is not supported by " + getClass().getName());
+    }
+    default SuggestResponse suggest(final RequestContainer<SuggestRequest> request) throws Loop54Exception {
+        throw new UnsupportedOperationException("Suggest is not supported by " + getClass().getName());
+    }
+    default CompletableFuture<SuggestResponse> suggestAsync(final SuggestRequest request) {
+        return CompletableFuture.failedFuture(new UnsupportedOperationException("Suggest is not supported by " + getClass().getName()));
+    }
+    default CompletableFuture<SuggestResponse> suggestAsync(final RequestContainer<SuggestRequest> request) {
+        return CompletableFuture.failedFuture(new UnsupportedOperationException("Suggest is not supported by " + getClass().getName()));
+    }
 
     SearchResponse search(SearchRequest request) throws Loop54Exception;
     SearchResponse search(RequestContainer<SearchRequest> request) throws Loop54Exception;
@@ -64,7 +102,7 @@ public interface ILoop54Client extends Closeable {
     CompletableFuture<Response> syncAsync();
     CompletableFuture<Response> syncAsync(Request request);
     CompletableFuture<Response> syncAsync(RequestContainer<Request> request);
-	
+
     Response createEvents(CreateEventsRequest request) throws Loop54Exception;
     Response createEvents(RequestContainer<CreateEventsRequest> request) throws Loop54Exception;
     CompletableFuture<Response> createEventsAsync(CreateEventsRequest request);

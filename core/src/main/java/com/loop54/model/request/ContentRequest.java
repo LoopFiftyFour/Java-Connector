@@ -4,6 +4,7 @@ import com.loop54.model.request.parameters.TypedEntityCollectionParameters;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /** Base class for requests that can also retrieve Content Search results. */
 public abstract class ContentRequest extends Request {
@@ -31,5 +32,17 @@ public abstract class ContentRequest extends Request {
         TypedEntityCollectionParameters options = new TypedEntityCollectionParameters(entityType);
         contentResultsOptions.add(options);
         return options;
+    }
+
+    /**
+     * Chainable variant of {@link #addContentResultsOptions(String)}: adds the options for a content entity type (or reuses the existing ones)
+     * and configures them, e.g. {@code request.withContentResults("Brand", c -> c.page(0, 3))}.
+     * @param entityType The content entity type to search, e.g. "Brand". Case-sensitive.
+     * @param configurator Applied to the parameters of that content entity type.
+     * @return This request, for chaining.
+     */
+    public ContentRequest withContentResults(final String entityType, final Consumer<TypedEntityCollectionParameters> configurator) {
+        configurator.accept(addContentResultsOptions(entityType));
+        return this;
     }
 }

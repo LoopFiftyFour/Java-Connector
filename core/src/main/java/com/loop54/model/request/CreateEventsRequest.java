@@ -1,11 +1,10 @@
 package com.loop54.model.request;
 
-
-import com.loop54.model.request.parameters.EntityCollectionParameters;
-import com.loop54.model.request.parameters.Event;
 import com.loop54.model.request.parameters.*;
+import com.loop54.model.request.parameters.Event;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,4 +25,20 @@ public class CreateEventsRequest extends Request {
      * The events to send in the request. Usually clicks and addtocarts are sent by themselves but multiple purchase events is usually sent as one request.
      */
     public final List<Event> events = new ArrayList<>();
+
+    /**
+     * Appends events to the request.
+     * @param events The events to add. Can be of type {@link ClickEvent}, {@link AddToCartEvent}, {@link PurchaseEvent} or {@link CustomEvent}.
+     * @return This request, for chaining.
+     */
+    public CreateEventsRequest withEvents(final Event... events) {
+        this.events.addAll(Arrays.asList(events));
+        return this;
+    }
+
+    @Override
+    public CreateEventsRequest withCustomData(final String key, final Object value) {
+        super.withCustomData(key, value);
+        return this;
+    }
 }
