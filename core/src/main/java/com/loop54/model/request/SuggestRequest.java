@@ -3,6 +3,8 @@ package com.loop54.model.request;
 import com.loop54.model.request.parameters.EntityCollectionParameters;
 import com.loop54.model.request.parameters.QueryCollectionParameters;
 
+import java.util.function.Consumer;
+
 /** This class is used for performing suggest requests to the Loop54 e-commerce search engine. */
 public class SuggestRequest extends Request {
     /**
@@ -36,4 +38,30 @@ public class SuggestRequest extends Request {
 	 * Parameters for specifying which direct results to retrieve. Such as filtering, faceting, sorting and paging.
 	 */
 	public final EntityCollectionParameters resultsOptions = new EntityCollectionParameters();
+
+    /**
+     * Configures {@link #queriesOptions}, e.g. {@code request.withQueries(q -> q.page(0, 10))}.
+     * @param configurator Applied to {@link #queriesOptions}.
+     * @return This request, for chaining.
+     */
+    public SuggestRequest withQueries(final Consumer<QueryCollectionParameters> configurator) {
+        configurator.accept(queriesOptions);
+        return this;
+    }
+
+    /**
+     * Configures {@link #resultsOptions}, e.g. {@code request.withResults(r -> r.page(0, 20).distinctFacet("Category"))}.
+     * @param configurator Applied to {@link #resultsOptions}.
+     * @return This request, for chaining.
+     */
+    public SuggestRequest withResults(final Consumer<EntityCollectionParameters> configurator) {
+        configurator.accept(resultsOptions);
+        return this;
+    }
+
+    @Override
+    public SuggestRequest withCustomData(final String key, final Object value) {
+        super.withCustomData(key, value);
+        return this;
+    }
 }

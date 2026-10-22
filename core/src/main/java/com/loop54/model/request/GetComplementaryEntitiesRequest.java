@@ -3,6 +3,8 @@ package com.loop54.model.request;
 import com.loop54.model.Entity;
 import com.loop54.model.request.parameters.EntityCollectionParameters;
 
+import java.util.function.Consumer;
+
 /** This class is used to configure a GetComplementaryEntities request to the Loop54 e-commerce search engine. */
 public class GetComplementaryEntitiesRequest extends Request {
 
@@ -40,4 +42,20 @@ public class GetComplementaryEntitiesRequest extends Request {
      * Note that filtering is advised when doing this request.
      */
     public final EntityCollectionParameters resultsOptions = new EntityCollectionParameters();
+
+    /**
+     * Configures {@link #resultsOptions}, e.g. {@code request.withResults(r -> r.page(0, 20).distinctFacet("Category"))}.
+     * @param configurator Applied to {@link #resultsOptions}.
+     * @return This request, for chaining.
+     */
+    public GetComplementaryEntitiesRequest withResults(final Consumer<EntityCollectionParameters> configurator) {
+        configurator.accept(resultsOptions);
+        return this;
+    }
+
+    @Override
+    public GetComplementaryEntitiesRequest withCustomData(final String key, final Object value) {
+        super.withCustomData(key, value);
+        return this;
+    }
 }

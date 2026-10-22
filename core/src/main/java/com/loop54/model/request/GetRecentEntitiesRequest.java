@@ -1,6 +1,9 @@
 package com.loop54.model.request;
 
+import com.loop54.model.request.parameters.EntityCollectionParameters;
+
 import java.util.List;
+import java.util.function.Consumer;
 
 /** This class used to perform a request to get entities that a user (or all users) most recently interacted with or navigated to. */
 public class GetRecentEntitiesRequest extends GetPopularOrRecentEntitiesRequest {
@@ -37,5 +40,21 @@ public class GetRecentEntitiesRequest extends GetPopularOrRecentEntitiesRequest 
      */
     public static GetRecentEntitiesRequest forCurrentUser(String behaviorType, List<String> entityType) {
         return new GetRecentEntitiesRequest(behaviorType, CURRENT_USER_PLACEHOLDER, entityType);
+    }
+
+    /**
+     * Configures {@link #resultsOptions}, e.g. {@code request.withResults(r -> r.page(0, 20).distinctFacet("Category"))}.
+     * @param configurator Applied to {@link #resultsOptions}.
+     * @return This request, for chaining.
+     */
+    public GetRecentEntitiesRequest withResults(final Consumer<EntityCollectionParameters> configurator) {
+        configurator.accept(resultsOptions);
+        return this;
+    }
+
+    @Override
+    public GetRecentEntitiesRequest withCustomData(final String key, final Object value) {
+        super.withCustomData(key, value);
+        return this;
     }
 }

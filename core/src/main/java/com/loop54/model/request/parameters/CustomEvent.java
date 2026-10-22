@@ -11,5 +11,5 @@ public class CustomEvent extends Event {
      * @param type Custom type string for the event. For example "Facebook_Like" or another interaction from the user.
      * @param entity The entity that the user has interacted with.
      */
-    public CustomEvent(String type, Entity entity) { super(type, entity); }
+    public CustomEvent(final String type, final Entity entity) { super(type, entity); }
 }

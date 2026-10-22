@@ -2,6 +2,8 @@ package com.loop54.model.request;
 
 import com.loop54.model.request.parameters.EntityCollectionParameters;
 
+import java.util.function.Consumer;
+
 /** This class is used to configure a GetEntities request to the Loop54 e-commerce search engine. */
 public class GetEntitiesByAttributeRequest extends Request {
 
@@ -45,4 +47,30 @@ public class GetEntitiesByAttributeRequest extends Request {
      * Note that filtering is advised when doing this request.
      */
     public final EntityCollectionParameters resultsOptions = new EntityCollectionParameters();
+
+    /**
+     * Sets the human-readable labels shown in the Portal.
+     * @param requestAlias The alias data to use.
+     * @return This request, for chaining.
+     */
+    public GetEntitiesByAttributeRequest withRequestAlias(final RequestAliasData requestAlias) {
+        this.requestAlias = requestAlias;
+        return this;
+    }
+
+    /**
+     * Configures {@link #resultsOptions}, e.g. {@code request.withResults(r -> r.page(0, 20).distinctFacet("Category"))}.
+     * @param configurator Applied to {@link #resultsOptions}.
+     * @return This request, for chaining.
+     */
+    public GetEntitiesByAttributeRequest withResults(final Consumer<EntityCollectionParameters> configurator) {
+        configurator.accept(resultsOptions);
+        return this;
+    }
+
+    @Override
+    public GetEntitiesByAttributeRequest withCustomData(final String key, final Object value) {
+        super.withCustomData(key, value);
+        return this;
+    }
 }

@@ -21,6 +21,17 @@ public class RangeFacetParameter<T> extends FacetParameter {
      */
     public static class RangeFacetSelectedParameter<T>
     {
+        public RangeFacetSelectedParameter() { }
+
+        /**
+         * @param min Selected minimum.
+         * @param max Selected maximum.
+         */
+        public RangeFacetSelectedParameter(final T min, final T max) {
+            this.min = min;
+            this.max = max;
+        }
+
         /** Selected minimum. */
         public T min;
 

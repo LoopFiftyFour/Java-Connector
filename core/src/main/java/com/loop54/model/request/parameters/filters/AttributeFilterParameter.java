@@ -48,4 +48,14 @@ public class AttributeFilterParameter<T> extends FilterParameter {
      * How to compare the attribute value against the provided value. Defaults to {@link FilterComparisonMode#EQUALS}.
      */
     public FilterComparisonMode comparisonMode = FilterComparisonMode.EQUALS;
+
+    /**
+     * Sets {@link #comparisonMode}, e.g. {@code new AttributeFilterParameter<>("Price", 100.0).withComparisonMode(FilterComparisonMode.GREATER_THAN)}.
+     * @param comparisonMode How to compare the attribute value against the provided value.
+     * @return This filter, for chaining.
+     */
+    public AttributeFilterParameter<T> withComparisonMode(final FilterComparisonMode comparisonMode) {
+        this.comparisonMode = comparisonMode;
+        return this;
+    }
 }

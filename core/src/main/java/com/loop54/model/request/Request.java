@@ -14,9 +14,21 @@ public class Request {
      * @param value Value to add to the custom data.
      */
     public void addCustomData(String key, Object value) {
-        if (customData == null)
-            customData = new HashMap<>(); //Case sensitive
+        if (customData == null) {
+			customData = new HashMap<>(); //Case sensitive
+		}
 
         customData.put(key, value);
+    }
+
+    /**
+     * Chainable variant of {@link #addCustomData(String, Object)}. Subclasses override this to return their own type.
+     * @param key Key to set the data on. The keys will be treated as case-sensitive.
+     * @param value Value to add to the custom data.
+     * @return This request, for chaining.
+     */
+    public Request withCustomData(final String key, final Object value) {
+        addCustomData(key, value);
+        return this;
     }
 }

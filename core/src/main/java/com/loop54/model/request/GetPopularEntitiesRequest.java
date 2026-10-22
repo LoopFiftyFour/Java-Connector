@@ -1,6 +1,9 @@
 package com.loop54.model.request;
 
+import com.loop54.model.request.parameters.EntityCollectionParameters;
+
 import java.util.List;
+import java.util.function.Consumer;
 
 /** This class used to perform a request to get entities that a user (or all users) most commonly interacted with or navigated to. */
 public class GetPopularEntitiesRequest extends GetPopularOrRecentEntitiesRequest {
@@ -38,5 +41,21 @@ public class GetPopularEntitiesRequest extends GetPopularOrRecentEntitiesRequest
      */
     public static GetPopularEntitiesRequest forCurrentUser(String behaviorType, List<String> entityType) {
         return new GetPopularEntitiesRequest(behaviorType, CURRENT_USER_PLACEHOLDER, entityType);
+    }
+
+    /**
+     * Configures {@link #resultsOptions}, e.g. {@code request.withResults(r -> r.page(0, 20).distinctFacet("Category"))}.
+     * @param configurator Applied to {@link #resultsOptions}.
+     * @return This request, for chaining.
+     */
+    public GetPopularEntitiesRequest withResults(final Consumer<EntityCollectionParameters> configurator) {
+        configurator.accept(resultsOptions);
+        return this;
+    }
+
+    @Override
+    public GetPopularEntitiesRequest withCustomData(final String key, final Object value) {
+        super.withCustomData(key, value);
+        return this;
     }
 }
