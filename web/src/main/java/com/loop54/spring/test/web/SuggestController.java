@@ -1,7 +1,5 @@
 package com.loop54.spring.test.web;
 
-import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +18,7 @@ import com.loop54.spring.test.model.SuggestResponseModel;
 @RequestMapping("/suggest")
 public class SuggestController {
 
-    private ILoop54ClientProvider loop54Service;
+    private final ILoop54ClientProvider loop54Service;
 
     @Autowired
     public SuggestController(final ILoop54ClientProvider loop54Service) {
@@ -30,19 +28,14 @@ public class SuggestController {
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView index() throws Loop54Exception {
         final var query = "banan";
-        final var request = new SuggestRequest(query, true); //almost done with banana
-        request.queriesOptions.skip = 0;
-        request.queriesOptions.take = 20;
-
-        request.queriesOptions.sortBy = new ArrayList<>();
-        request.queriesOptions.sortBy.add(new QuerySortingParameter(QuerySortingParameter.Types.ALPHABETIC, SortOrders.ASC));
-
-        request.resultsOptions.skip = 0;
-        request.resultsOptions.take = 20;
-        request.resultsOptions.addDistinctFacet("Manufacturer");
-        request.resultsOptions.addDistinctFacet("Organic");
-        request.resultsOptions.addDistinctFacet("Category");
-        request.resultsOptions.addRangeFacet("Price");
+        final var request = new SuggestRequest(query, true)
+                .withQueries(q -> q.page(0, 20)
+                        .sortBy(new QuerySortingParameter(QuerySortingParameter.Types.ALPHABETIC, SortOrders.ASC)))
+                .withResults(r -> r.page(0, 20)
+                        .distinctFacet("Manufacturer")
+                        .distinctFacet("Organic")
+                        .distinctFacet("Category")
+                        .rangeFacet("Price"));
 
         final var response = loop54Service.getNamed("english").suggest(request);
         final var model = new SuggestResponseModel();
