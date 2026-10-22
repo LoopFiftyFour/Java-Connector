@@ -14,11 +14,11 @@ public class GetRelatedEntitiesRequest extends Request {
      */
     public GetRelatedEntitiesRequest(final String entityType, final String entityId) {
         if (entityType == null) {
-			throw new IllegalArgumentException("entityType was null");
+            throw new IllegalArgumentException("entityType was null");
         }
 
         if (entityId == null) {
-			throw new IllegalArgumentException("entityId was null");
+            throw new IllegalArgumentException("entityId was null");
         }
 
         this.entity = new Entity(entityType, entityId);
@@ -29,7 +29,7 @@ public class GetRelatedEntitiesRequest extends Request {
      */
     public GetRelatedEntitiesRequest(final Entity entity) {
         if (entity == null) {
-			throw new IllegalArgumentException("entity was null");
+            throw new IllegalArgumentException("entity was null");
         }
 
         this.entity = entity;
