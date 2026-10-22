@@ -14,6 +14,7 @@
     <li><a href="<c:url value="/getrelatedentities"/>">GetRelatedEntities</a></li>
     <li><a href="<c:url value="/getentitiesbyattribute"/>">GetEntitiesByAttribute</a></li>
     <li><a href="<c:url value="/autocomplete"/>">AutoComplete</a></li>
+    <li><a href="<c:url value="/suggest"/>">Suggest</a></li>
     <li><a href="<c:url value="/createevents"/>">CreateEvents</a></li>
 </ul>
 </body>
