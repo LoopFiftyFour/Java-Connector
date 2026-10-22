@@ -15,8 +15,8 @@ public class Request {
      */
     public void addCustomData(String key, Object value) {
         if (customData == null) {
-			customData = new HashMap<>(); //Case sensitive
-		}
+            customData = new HashMap<>(); //Case sensitive
+        }
 
         customData.put(key, value);
     }

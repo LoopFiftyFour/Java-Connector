@@ -103,7 +103,7 @@ public class EntityCollectionParameters {
      */
     public EntityCollectionParameters sortBy(final EntitySortingParameter... sortingParameters) {
         if (sortBy == null) {
-			sortBy = new ArrayList<>();
+            sortBy = new ArrayList<>();
         }
 
         sortBy.addAll(Arrays.asList(sortingParameters));

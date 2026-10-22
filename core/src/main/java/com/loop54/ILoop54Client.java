@@ -13,10 +13,10 @@ public interface ILoop54Client extends Closeable {
     CompletableFuture<AutoCompleteResponse> autoCompleteAsync(AutoCompleteRequest request);
     CompletableFuture<AutoCompleteResponse> autoCompleteAsync(RequestContainer<AutoCompleteRequest> request);
 
-	SuggestResponse suggest(SuggestRequest request) throws Loop54Exception;
-	SuggestResponse suggest(RequestContainer<SuggestRequest> request) throws Loop54Exception;
-	CompletableFuture<SuggestResponse> suggestAsync(SuggestRequest request);
-	CompletableFuture<SuggestResponse> suggestAsync(RequestContainer<SuggestRequest> request);
+    SuggestResponse suggest(SuggestRequest request) throws Loop54Exception;
+    SuggestResponse suggest(RequestContainer<SuggestRequest> request) throws Loop54Exception;
+    CompletableFuture<SuggestResponse> suggestAsync(SuggestRequest request);
+    CompletableFuture<SuggestResponse> suggestAsync(RequestContainer<SuggestRequest> request);
 
     SearchResponse search(SearchRequest request) throws Loop54Exception;
     SearchResponse search(RequestContainer<SearchRequest> request) throws Loop54Exception;
@@ -69,7 +69,7 @@ public interface ILoop54Client extends Closeable {
     CompletableFuture<Response> syncAsync();
     CompletableFuture<Response> syncAsync(Request request);
     CompletableFuture<Response> syncAsync(RequestContainer<Request> request);
-	
+
     Response createEvents(CreateEventsRequest request) throws Loop54Exception;
     Response createEvents(RequestContainer<CreateEventsRequest> request) throws Loop54Exception;
     CompletableFuture<Response> createEventsAsync(CreateEventsRequest request);

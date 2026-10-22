@@ -34,7 +34,7 @@ public class QueryCollectionParameters {
      */
     public QueryCollectionParameters sortBy(final QuerySortingParameter... sortingParameters) {
         if (sortBy == null) {
-			sortBy = new ArrayList<>();
+            sortBy = new ArrayList<>();
         }
 
         sortBy.addAll(Arrays.asList(sortingParameters));
