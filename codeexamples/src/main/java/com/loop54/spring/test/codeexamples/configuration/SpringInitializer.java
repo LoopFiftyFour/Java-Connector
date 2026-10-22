@@ -4,15 +4,14 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 
 import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletRegistration;
 
 public class SpringInitializer implements WebApplicationInitializer {
-    public void onStartup(ServletContext container) {
-        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+    public void onStartup(final ServletContext container) {
+        final var ctx = new AnnotationConfigWebApplicationContext();
         ctx.register(SpringConfiguration.class);
         ctx.setServletContext(container);
 
-        ServletRegistration.Dynamic servlet = container.addServlet("dispatcher", new DispatcherServlet(ctx));
+        final var servlet = container.addServlet("dispatcher", new DispatcherServlet(ctx));
 
         servlet.setLoadOnStartup(1);
         servlet.addMapping("/");

@@ -1,7 +1,5 @@
 package com.loop54.spring.test.codeexamples.web;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,15 +9,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.loop54.ILoop54Client;
 import com.loop54.exceptions.Loop54Exception;
-import com.loop54.model.Entity;
 import com.loop54.model.request.SuggestRequest;
-import com.loop54.model.response.SuggestResponse;
 
 @Controller
 @RequestMapping("/suggest")
 public class SuggestController {
 
-	private ILoop54Client loop54Client;
+	private final ILoop54Client loop54Client;
 
 	@Autowired
 	public SuggestController(final ILoop54Client loop54Client) {
@@ -29,10 +25,10 @@ public class SuggestController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView index() throws Loop54Exception {
 		// Setup
-		final String query1 = "a";
-		final String query2 = "b";
-		final String query3 = "dfshdfjsdkhfsdjkf";
-		final String query4 = "apple";
+		final var query1 = "a";
+		final var query2 = "b";
+		final var query3 = "dfshdfjsdkhfsdjkf";
+		final var query4 = "apple";
 
 		// Code examples
 		// Query-suggestion part of the 'Suggest' module
@@ -54,12 +50,11 @@ public class SuggestController {
 
 		// CODE SAMPLE suggest-full BEGIN
 		// Below is an example of a request - response cycle of a 'Suggest' request
-		final SuggestRequest request = new SuggestRequest(query, true);
-		request.queriesOptions.skip = 0;
-		request.queriesOptions.take = 9;
-		final SuggestResponse response = loop54Client.suggest(request);
+		final var request = new SuggestRequest(query, true)
+				.withQueries(q -> q.page(0, 9));
+		final var response = loop54Client.suggest(request);
 
-		final List<String> queries = response.queries.items.stream().map(q->q.query).collect(Collectors.toList());
+		final var queries = response.queries.items.stream().map(q -> q.query).toList();
 
 		// print out all suggested queries
 		System.out.println("queries: " + String.join(", ", queries));
@@ -68,17 +63,16 @@ public class SuggestController {
 		System.out.println("suggest-full (end) ");
 	}
 
-	private void suggestScopedExample(String query) throws Loop54Exception
+	private void suggestScopedExample(final String query) throws Loop54Exception
 	{
 		System.out.println("suggest-scoped: ");
 
 		// CODE SAMPLE suggest-scoped BEGIN
 		// Below is an example of a request - response cycle of a 'Suggest' request
 		// where scopes are used to provide the user with more context
-		final SuggestRequest request = new SuggestRequest(query, true);
-		request.queriesOptions.skip = 0;
-		request.queriesOptions.take = 9;
-		final SuggestResponse response = loop54Client.suggest(request);
+		final var request = new SuggestRequest(query, true)
+				.withQueries(q -> q.page(0, 9));
+		final var response = loop54Client.suggest(request);
 
 		// prints out the scoped suggestions
 		if(response.scopedQuery != null)
@@ -94,19 +88,17 @@ public class SuggestController {
 
 	private void suggestExample(final String query) throws Loop54Exception
 	{
-		System.out.println("suggest-full: ");
+		System.out.println("suggest-search: ");
 
-		// CODE SAMPLE suggest-full BEGIN
+		// CODE SAMPLE suggest-search BEGIN
 		// The search field
 		// initialize 'Suggest' request and set search query
-		final SuggestRequest request = new SuggestRequest(query);
-
-		// specify the number of response items
-		request.resultsOptions.skip = 0;
-		request.resultsOptions.take = 10;
+		final var request = new SuggestRequest(query)
+				// specify the number of response items
+				.withResults(r -> r.page(0, 10));
 
 		// fetch the response from the engine
-		final SuggestResponse response = loop54Client.suggest(request);
+		final var response = loop54Client.suggest(request);
 
 		System.out.println("Original Query: " + response.originalQuery);
 		System.out.println("Query used for search: " + response.queryUsedForSearch);
@@ -116,20 +108,20 @@ public class SuggestController {
 		}
 
 		// render direct results
-		final List<Entity> results = response.results.items;
+		final var results = response.results.items;
 
 		if (response.results.count == 0) {
 			System.out.println("There were no items.");
 		}
 
-		for(final Entity resultItem : results)
+		for (final var resultItem : results)
 		{
-			final String productId = resultItem.id;
-			final String productTitle = resultItem.getAttributeValueOrNull("title", String.class);
+			final var productId = resultItem.id;
+			final var productTitle = resultItem.getAttributeValueOrNull("title", String.class);
 			System.out.println(productId + " " + productTitle); //render a product on the 'Suggest' results page
 		}
 		// CODE SAMPLE END
 
-		System.out.println("suggest-full (end) ");
+		System.out.println("suggest-search (end) ");
 	}
 }
