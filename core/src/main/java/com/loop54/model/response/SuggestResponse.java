@@ -1,7 +1,7 @@
 package com.loop54.model.response;
 
 /** The result of a suggest request. */
-public class SuggestResponse extends Response {
+public class SuggestResponse extends ContentResponse {
     /** Whether the engine understood the search query. */
     public boolean makesSense;
 

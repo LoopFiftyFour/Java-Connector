@@ -1,12 +1,17 @@
 package com.loop54.model;
 
 import com.loop54.exceptions.Loop54Exception;
+import com.loop54.model.response.ContentResponse;
 import com.loop54.model.response.EntityCollection;
 import com.loop54.model.response.Response;
 import com.loop54.model.response.SearchResponse;
+import com.loop54.model.response.SuggestResponse;
 import com.loop54.serialization.Serializer;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 
@@ -92,9 +97,11 @@ class ResponseTest {
             "\"contentSearchResults\": [ { \"entityType\": \"Brand\", \"results\": { \"count\": 1, \"facets\": [], " +
             "\"items\": [ { \"id\": \"b-1\", \"type\": \"Brand\" } ] } } ] }";
 
-    @Test
-    void searchResponseDeserializesContentSearchResults() throws Loop54Exception {
-        final var response = Serializer.deserialize(SEARCH_RESPONSE_WITH_CONTENT, SearchResponse.class);
+    @ParameterizedTest
+    @ValueSource(classes = { SearchResponse.class, SuggestResponse.class })
+	@DisplayName("Responses for requests supporting Content Search deserialize it's result")
+    void contentResponseDeserializesContentSearchResults(final Class<? extends ContentResponse> responseClass) throws Loop54Exception {
+        final var response = Serializer.deserialize(SEARCH_RESPONSE_WITH_CONTENT, responseClass);
         Assertions.assertEquals(1, response.contentSearchResults.size());
 
         final var brands = response.getContentSearchResults("Brand");
@@ -103,9 +110,11 @@ class ResponseTest {
         Assertions.assertNull(response.getContentSearchResults("Article"));
     }
 
-    @Test
-    void searchResponseWithoutContentSearchResults() throws Loop54Exception {
-        final var response = Serializer.deserialize("{ \"makesSense\": true }", SearchResponse.class);
+	@ParameterizedTest
+	@ValueSource(classes = { SearchResponse.class, SuggestResponse.class })
+	@DisplayName("Responses for requests supporting Content Search don't return 'contentSearchResults', when no results are available")
+    void contentResponseWithoutContentResults(final Class<? extends ContentResponse> responseClass) throws Loop54Exception {
+        final var response = Serializer.deserialize("{ \"makesSense\": true }", responseClass);
         Assertions.assertNull(response.contentSearchResults);
         Assertions.assertNull(response.getContentSearchResults("Brand"));
     }

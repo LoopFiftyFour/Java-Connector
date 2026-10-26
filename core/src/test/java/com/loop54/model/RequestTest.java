@@ -144,6 +144,26 @@ class RequestTest {
         Assertions.assertEquals(1, request.resultsOptions.facets.size());
     }
 
+	@Test
+	void suggestRequestSerializesContentResultsOptions() throws Exception {
+		final var request = new SuggestRequest("shoes");
+		request.addContentResultsOptions("Brand").take = 3;
+		request.addContentResultsOptions("Article").skip = 5;
+
+		final var options = Serializer.MAPPER.readTree(Serializer.serialize(request)).get("contentResultsOptions");
+		Assertions.assertEquals(2, options.size());
+		Assertions.assertEquals("Brand", options.get(0).get("entityType").asText());
+		Assertions.assertEquals(3, options.get(0).get("take").asInt());
+		Assertions.assertEquals("Article", options.get(1).get("entityType").asText());
+		Assertions.assertEquals(5, options.get(1).get("skip").asInt());
+	}
+
+	@Test
+	void suggestRequestWithoutContentOptionsOmitsField() throws Exception {
+		final var json = Serializer.MAPPER.readTree(Serializer.serialize(new SearchRequest("shoes")));
+		Assertions.assertFalse(json.has("contentResultsOptions"));
+	}
+
     @Test
     void sortByAppendsInOrder() {
         final var options = new EntityCollectionParameters()

@@ -6,7 +6,7 @@ import com.loop54.model.request.parameters.QueryCollectionParameters;
 import java.util.function.Consumer;
 
 /** This class is used for performing suggest requests to the Loop54 e-commerce search engine. */
-public class SuggestRequest extends Request {
+public class SuggestRequest extends ContentRequest {
     /**
      * The partial query that the user has entered.
      * @param query the query to get auto complete suggestions for.
