@@ -8,6 +8,7 @@ import com.loop54.model.request.parameters.facets.RangeFacetParameter;
 import com.loop54.model.request.parameters.filters.FilterParameter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /** This class specifies how a collection of entities should be paged, filtered, sorted and faceted. */
@@ -81,5 +82,99 @@ public class EntityCollectionParameters {
             facets = new ArrayList<>();
 
         facets.add(new RangeFacetParameter<>(attributeName, selected, name));
+    }
+
+    /**
+     * Sets how the entities should be paged.
+     * @param skip How many entities to skip.
+     * @param take How many entities to take.
+     * @return These parameters, for chaining.
+     */
+    public EntityCollectionParameters page(final int skip, final int take) {
+        this.skip = skip;
+        this.take = take;
+        return this;
+    }
+
+    /**
+     * Appends sorting parameters. The first sorting parameter added specifies the primary order.
+     * @param sortingParameters The sorting parameters to append.
+     * @return These parameters, for chaining.
+     */
+    public EntityCollectionParameters sortBy(final EntitySortingParameter... sortingParameters) {
+        if (sortBy == null) {
+            sortBy = new ArrayList<>();
+        }
+
+        sortBy.addAll(Arrays.asList(sortingParameters));
+        return this;
+    }
+
+    /**
+     * Chainable variant of {@link #addDistinctFacet(String)}.
+     * @param attributeName What attribute on the entities to facet on.
+     * @return These parameters, for chaining.
+     */
+    public EntityCollectionParameters distinctFacet(final String attributeName) {
+        addDistinctFacet(attributeName);
+        return this;
+    }
+
+    /**
+     * Chainable variant of {@link #addDistinctFacet(String, List)}.
+     * @param attributeName What attribute on the entities to facet on.
+     * @param selected Values selected by the user. If none are selected this can be null.
+     * @return These parameters, for chaining.
+     */
+    public EntityCollectionParameters distinctFacet(final String attributeName, final List<?> selected) {
+        addDistinctFacet(attributeName, selected);
+        return this;
+    }
+
+    /**
+     * Chainable variant of {@link #addDistinctFacet(String, List, String, List)}.
+     * @param attributeName What attribute on the entities to facet on.
+     * @param selected Values selected by the user. If none are selected this can be null.
+     * @param name The desired name of the facet in the response. Will be the same as the attributeName if null.
+     * @param sortBy How to sort the facet options in the response.
+     * @return These parameters, for chaining.
+     */
+    public EntityCollectionParameters distinctFacet(final String attributeName, final List<?> selected, final String name,
+                                                    final List<DistinctFacetItemSortingParameter> sortBy) {
+        addDistinctFacet(attributeName, selected, name, sortBy);
+        return this;
+    }
+
+    /**
+     * Chainable variant of {@link #addRangeFacet(String)}.
+     * @param attributeName What attribute on the entities to facet on.
+     * @return These parameters, for chaining.
+     */
+    public EntityCollectionParameters rangeFacet(final String attributeName) {
+        addRangeFacet(attributeName);
+        return this;
+    }
+
+    /**
+     * Chainable variant of {@link #addRangeFacet(String, RangeFacetParameter.RangeFacetSelectedParameter, String)}.
+     * @param attributeName What attribute on the entities to facet on.
+     * @param selected The min and max values selected by the user. Can be left to null if nothing is selected.
+     * @param name The desired name of the facet in the response. Will be the same as the attributeName if null.
+     * @return These parameters, for chaining.
+     */
+    public EntityCollectionParameters rangeFacet(final String attributeName, final RangeFacetParameter.RangeFacetSelectedParameter<?> selected,
+                                                 final String name) {
+        addRangeFacet(attributeName, selected, name);
+        return this;
+    }
+
+    /**
+     * Sets how the entities should be filtered.
+     * @param filter The filter to apply. Use {@code AndFilterParameter} or {@code OrFilterParameter} to combine several.
+     * @return These parameters, for chaining.
+     */
+    public EntityCollectionParameters filter(final FilterParameter filter) {
+        this.filter = filter;
+        return this;
     }
 }

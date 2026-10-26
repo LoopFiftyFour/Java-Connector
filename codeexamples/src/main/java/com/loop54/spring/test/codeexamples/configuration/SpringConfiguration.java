@@ -20,7 +20,7 @@ import com.loop54.spring.SpringRemoteClientInfoProvider;
 public class SpringConfiguration {
     @Bean
     public ViewResolver viewResolver() {
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        final var viewResolver = new InternalResourceViewResolver();
         viewResolver.setViewClass(JstlView.class);
         viewResolver.setPrefix("/");
         viewResolver.setSuffix(".jsp");

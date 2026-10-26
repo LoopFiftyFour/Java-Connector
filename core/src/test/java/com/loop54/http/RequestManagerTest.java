@@ -1,20 +1,26 @@
 package com.loop54.http;
 
+import java.util.concurrent.ExecutionException;
+
+import org.junit.jupiter.api.Test;
+
 import com.loop54.Loop54Settings;
 import com.loop54.exceptions.EngineNotReachableException;
 import com.loop54.exceptions.EngineStatusCodeException;
 import com.loop54.model.request.Request;
 import com.loop54.model.response.Response;
 import com.loop54.user.UserMetaData;
-import org.junit.jupiter.api.Test;
 
-import java.util.concurrent.ExecutionException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-public class RequestManagerTest {
-    private ResourceHoster setupHoster(String data, int statusCode) {
-        ResourceHoster hoster = new ResourceHoster();
+class RequestManagerTest {
+    private ResourceHoster setupHoster(final String data, final int statusCode) {
+        final var hoster = new ResourceHoster();
         hoster.resourceString = data;
         hoster.statusCode = statusCode;
         hoster.start();
@@ -23,17 +29,17 @@ public class RequestManagerTest {
     }
 
     @Test
-    public void successfulRequest() throws Exception {
-        ResourceHoster hoster = setupHoster("{\"customData\": {}}", 200);
+    void successfulRequest() throws Exception {
+        final var hoster = setupHoster("{\"customData\": {}}", 200);
 
-        Loop54Settings settings = new Loop54Settings("http://localhost:" + hoster.port, null, false, 1000);
-        try (com.loop54.http.RequestManager manager = new com.loop54.http.RequestManager(settings)) {
-            UserMetaData metaData = new UserMetaData("User.Name");
+        final var settings = new Loop54Settings("http://localhost:" + hoster.port, null, false, 1000);
+        try (final IRequestManager manager = new RequestManager(settings)) {
+            final var metaData = new UserMetaData("User.Name");
             metaData.referer = "https://www.loop54.com";
             metaData.userAgent = "LoopBrowser";
             metaData.ipAddress = "127.0.0.1";
 
-            Response response = manager.callEngineAsync("whatever", new Request(), metaData, Response.class).get();
+            final var response = manager.callEngineAsync("whatever", new Request(), metaData, Response.class).get();
 
             hoster.stop();
 
@@ -48,17 +54,18 @@ public class RequestManagerTest {
     }
 
     @Test
-    public void statusCodeError() throws Exception {
-        ResourceHoster hoster = setupHoster("{\"error\": { \"code\": 400, \"status\": \"Bad request\", " +
+    void statusCodeError() throws Exception {
+        final var hoster = setupHoster("{\"error\": { \"code\": 400, \"status\": \"Bad request\", " +
                 "\"title\": \"The request was not valid.\", \"detail\": \"Field skip is not within the allowed range.\", " +
                 "\"parameter\": \"request.results.skip\"}}", 400);
 
-        Loop54Settings settings = new Loop54Settings("http://localhost:" + hoster.port, null, false, 1000);
-        try (com.loop54.http.RequestManager manager = new com.loop54.http.RequestManager(settings)) {
-            UserMetaData metaData = new UserMetaData("User.Name");
+        final var settings = new Loop54Settings("http://localhost:" + hoster.port, null, false, 1000);
+        try (final IRequestManager manager = new RequestManager(settings)) {
+            final var metaData = new UserMetaData("User.Name");
 
-            Exception exception = assertThrows(ExecutionException.class, () -> manager.callEngineAsync("whatever", new Request(), metaData, Response.class).get());
-            EngineStatusCodeException realException = (EngineStatusCodeException)exception.getCause();
+            final var exception = assertThrows(ExecutionException.class,
+                    () -> manager.callEngineAsync("whatever", new Request(), metaData, Response.class).get());
+            final var realException = assertInstanceOf(EngineStatusCodeException.class, exception.getCause());
 
             hoster.stop();
 
@@ -74,13 +81,14 @@ public class RequestManagerTest {
     }
 
     @Test
-    public void unreachableError() throws Exception {
-        Loop54Settings settings = new Loop54Settings("http://localhost:1337", null, false, 100);
-        try (com.loop54.http.RequestManager manager = new com.loop54.http.RequestManager(settings)) {
-            UserMetaData metaData = new UserMetaData("User.Name");
+    void unreachableError() throws Exception {
+        final var settings = new Loop54Settings("http://localhost:1337", null, false, 100);
+        try (final IRequestManager manager = new RequestManager(settings)) {
+            final var metaData = new UserMetaData("User.Name");
 
-            Exception exception = assertThrows(ExecutionException.class, () -> manager.callEngineAsync("whatever", new Request(), metaData, Response.class).get());
-            assertEquals(EngineNotReachableException.class, exception.getCause().getClass());
+            final var exception = assertThrows(ExecutionException.class,
+                    () -> manager.callEngineAsync("whatever", new Request(), metaData, Response.class).get());
+            assertSame(EngineNotReachableException.class, exception.getCause().getClass());
         }
     }
 }

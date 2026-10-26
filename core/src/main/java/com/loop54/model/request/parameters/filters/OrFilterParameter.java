@@ -1,6 +1,7 @@
 package com.loop54.model.request.parameters.filters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,4 +23,14 @@ public class OrFilterParameter extends FilterParameter {
      * The filters that should be combined.
      */
     public final List<FilterParameter> or = new ArrayList<>();
+
+    /**
+     * Appends filters to combine using OR logic.
+     * @param filters The filters to append.
+     * @return This filter, for chaining.
+     */
+    public OrFilterParameter or(final FilterParameter... filters) {
+        or.addAll(Arrays.asList(filters));
+        return this;
+    }
 }

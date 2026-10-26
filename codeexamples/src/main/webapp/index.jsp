@@ -10,7 +10,8 @@
     <li><a href="<c:url value="/search"/>">Search</a></li>
     <li><a href="<c:url value="/faceting"/>">Faceting</a></li>
     <li><a href="<c:url value="/categorylisting"/>">CategoryListing</a></li>
-    <li><a href="<c:url value="/autocomplete"/>">AutoComplete</a></li>    
+    <li><a href="<c:url value="/autocomplete"/>">AutoComplete</a></li>
+    <li><a href="<c:url value="/suggest"/>">Suggest</a></li>
     <li><a href="<c:url value="/eventtracking"/>">EventTracking</a></li>    
     <li><a href="<c:url value="/getbasketrecommendations"/>">GetBasketRecommendations</a></li>
     <li><a href="<c:url value="/sync"/>">Sync</a></li> 	

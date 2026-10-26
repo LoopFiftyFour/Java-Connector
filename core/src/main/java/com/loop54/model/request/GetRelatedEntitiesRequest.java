@@ -3,6 +3,8 @@ package com.loop54.model.request;
 import com.loop54.model.Entity;
 import com.loop54.model.request.parameters.EntityCollectionParameters;
 
+import java.util.function.Consumer;
+
 /** This class is used to configure a GetEntities request to the Loop54 e-commerce search engine. */
 public class GetRelatedEntitiesRequest extends Request {
 
@@ -10,12 +12,14 @@ public class GetRelatedEntitiesRequest extends Request {
      * @param entityType Type of the entity to query
      * @param entityId Id of the entity to query
      */
-    public GetRelatedEntitiesRequest(String entityType, String entityId) {
-        if (entityType == null)
+    public GetRelatedEntitiesRequest(final String entityType, final String entityId) {
+        if (entityType == null) {
             throw new IllegalArgumentException("entityType was null");
+        }
 
-        if (entityId == null)
+        if (entityId == null) {
             throw new IllegalArgumentException("entityId was null");
+        }
 
         this.entity = new Entity(entityType, entityId);
     }
@@ -23,9 +27,10 @@ public class GetRelatedEntitiesRequest extends Request {
     /**
      * @param entity The entity to use in the query.
      */
-    public GetRelatedEntitiesRequest(Entity entity) {
-        if (entity == null)
+    public GetRelatedEntitiesRequest(final Entity entity) {
+        if (entity == null) {
             throw new IllegalArgumentException("entity was null");
+        }
 
         this.entity = entity;
     }
@@ -40,4 +45,20 @@ public class GetRelatedEntitiesRequest extends Request {
      * Note that filtering is advised when doing this request.
      */
     public final EntityCollectionParameters resultsOptions = new EntityCollectionParameters();
+
+    /**
+     * Configures {@link #resultsOptions}, e.g. {@code request.withResults(r -> r.page(0, 20).distinctFacet("Category"))}.
+     * @param configurator Applied to {@link #resultsOptions}.
+     * @return This request, for chaining.
+     */
+    public GetRelatedEntitiesRequest withResults(final Consumer<EntityCollectionParameters> configurator) {
+        configurator.accept(resultsOptions);
+        return this;
+    }
+
+    @Override
+    public GetRelatedEntitiesRequest withCustomData(final String key, final Object value) {
+        super.withCustomData(key, value);
+        return this;
+    }
 }

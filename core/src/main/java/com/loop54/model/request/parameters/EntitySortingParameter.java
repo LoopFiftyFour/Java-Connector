@@ -21,6 +21,25 @@ public class EntitySortingParameter {
         this.attributeName = attributeName;
     }
 
+    /**
+     * @param type How to order the entities.
+     * @param order In what order to sort the entities.
+     */
+    public EntitySortingParameter(final Types type, final SortOrders order) {
+        this(type);
+        this.order = order;
+    }
+
+    /**
+     * Used when wanting to order on a certain attribute on the entities.
+     * @param attributeName What attribute to sort on. For instance "category" or "price". Note that the attributes in your environment might vary.
+     * @param order In what order to sort the entities.
+     */
+    public EntitySortingParameter(final String attributeName, final SortOrders order) {
+        this(attributeName);
+        this.order = order;
+    }
+
     /** How the entities should be sorted. */
     public Types type;
 
